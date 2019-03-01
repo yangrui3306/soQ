@@ -14,7 +14,8 @@ class Collection extends NotORM {
 
     protected function getTableName($id) {
         return 'collection';
-    }
+		}
+		
     /**
      * 根据用户ID查找所有收藏
      */

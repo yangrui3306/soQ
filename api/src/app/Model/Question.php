@@ -14,7 +14,8 @@ class Question extends NotORM {
 
     protected function getTableName($id) {
         return 'question';
-    }
+		}
+		
     /**
      * 根据题目Id查找题目
      */
@@ -23,7 +24,8 @@ class Question extends NotORM {
           ->select('*')
           ->where('Id',$id)
           ->fetchAll();
-  }
+	}
+	
     /**
      * 根据分类Id查找所有题目
      */
@@ -32,10 +34,13 @@ class Question extends NotORM {
             ->select('*')
             ->where('CategoryId',$cid)
             ->fetchAll();
-    }
+		}
+		
     /**
      * 根据分类Id和关键字匹配指定大于某数量的题目
-     * 注：传入的keyword的关键字优先级从高到低已排序
+		 * @param cid 分类id
+		 * @param keywords 传入的keyword的关键字优先级从高到低已排序
+		 * @param num 题目数量
      */
     public function GetQuestionsByKeyWord($cid,$keywords,$num=3)
     {

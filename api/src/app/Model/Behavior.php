@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @author : goodtimp
  * @time : 2019-3-1
@@ -14,7 +13,8 @@ class Behavior extends NotORM {
 
     protected function getTableName($id) {
         return 'behavior';
-    }
+		}
+		
     /**
      * 根据用户ID查找所有所有操作
      */

@@ -14,7 +14,8 @@ class Category extends NotORM {
 
     protected function getTableName($id) {
         return 'category';
-    }
+		}
+		
     /**
      * 查找所有题目分类
      */

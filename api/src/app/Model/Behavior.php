@@ -1,6 +1,5 @@
 <?php
 
-echo "jjj";
 /**
  * @author : goodtimp
  * @time : 2019-3-1

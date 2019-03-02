@@ -107,6 +107,10 @@ class GD {
     return $codeArr;
 	}
 
+	/**
+	 * 生成用户随机头像
+	 * @param  str  用户名
+	 */
 		public function getUserDefaultAvatarByName($str) {
         $text = mb_substr($str,0,1,'utf-8'); //截取第一个字符
 

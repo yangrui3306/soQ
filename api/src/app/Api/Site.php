@@ -1,7 +1,7 @@
 <?php
 namespace App\Api;
 use PhalApi\Api;
-
+use App\Domain\User as Domain;
 /**
  * 默认接口服务类
  * @author: dogstar <chanzonghuang@gmail.com> 2014-10-04
@@ -25,10 +25,12 @@ class Site extends Api {
      * @exception 400 非法请求，参数传递错误
      */
     public function index() {
+			$user = new Domain();
+			$sex = $user -> GetUserSexById(1);
         return array(
             'title' => 'Hello ' . $this->username,
-            'version' => PHALAPI_VERSION,
-            'time' => $_SERVER['REQUEST_TIME'],
+						'version' => PHALAPI_VERSION,
+            'times' => $_SERVER['REQUEST_TIME'],
         );
     }
 }

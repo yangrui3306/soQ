@@ -5,7 +5,7 @@
  * @time : 2019-3-1
 */
 
-namespace App\Model\Examples;
+namespace App\Model;
 
 use PhalApi\Model\NotORMModel as NotORM;
 

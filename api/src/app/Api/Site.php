@@ -1,7 +1,8 @@
 <?php
 namespace App\Api;
 use PhalApi\Api;
-use App\Domain\User as Domain;
+use App\Common\Match as Match;
+
 /**
  * 默认接口服务类
  * @author: dogstar <chanzonghuang@gmail.com> 2014-10-04
@@ -25,12 +26,9 @@ class Site extends Api {
      * @exception 400 非法请求，参数传递错误
      */
     public function index() {
-			$user = new Domain();
-			$sex = $user -> GetUserSexById(1);
+        $a=new Match();
         return array(
-            'title' => 'Hello ' . $this->username,
-						'version' => PHALAPI_VERSION,
-            'times' => $_SERVER['REQUEST_TIME'],
+            'title' => $a->levenshtein('把向东运动记做“+”，向西运动记做“-”，下列士大夫说法正确的是','如果把向东运动地方记做“+”，如果向西记做“-”，下列说法正确的是')            
         );
     }
 }

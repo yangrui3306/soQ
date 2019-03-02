@@ -1,5 +1,6 @@
 <?php
 namespace App\Domain;
+
 use App\Model\User as Model;
 
 class User

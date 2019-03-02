@@ -3,6 +3,9 @@ namespace App\Api;
 use PhalApi\Api;
 use App\Common\Match as Match;
 
+use App\Common\Tools as Tools;
+use App\Model\KeyWord as KeyWord;
+use App\Domain\Question\Recommend;
 /**
  * 默认接口服务类
  * @author: dogstar <chanzonghuang@gmail.com> 2014-10-04
@@ -26,9 +29,10 @@ class Site extends Api {
      * @exception 400 非法请求，参数传递错误
      */
     public function index() {
-        $a=new Match();
+        $a=new Recommend();
         return array(
-            'title' => $a->levenshtein('把向东运动记做“+”，向西运动记做“-”，下列士大夫说法正确的是','如果把向东运动地方记做“+”，如果向西记做“-”，下列说法正确的是')            
+            'title' => $a->recommend(2)
+            //'title' => $a->gesAllKeyWord()           
         );
     }
 }

@@ -14,12 +14,12 @@ use App\Common\Match as CommonMatch;
 class Recommend
 {
   /**
-   * 通过题目Id，推荐相应题目
+   * 通过题目Id，推荐相应题目,需修改用户Id
    * @param $id 题目Id
    * @param $num 需要推荐的数量，默认为3
    * @return 题目信息
    */
-  public function recommend($id,$num=1)
+  public function recommend($id,$uid,$num=3)
   {
     $mquestion = new ModelSearchQ();
 
@@ -27,7 +27,7 @@ class Recommend
 
     $questions = $mquestion->mGetQuestionsByCategoryId($question['CategoryId']); //查找分类相同的题目
     //需要cookie传入用户Id
-    $questions = $mquestion->mGetNotUserCollect(1); //查找用户没有收藏的题目
+    $questions = $mquestion->mGetNotUserCollect($uid); //查找用户没有收藏的题目
 
     $keys = explode(",", $question["KeyWords"]); //转数组
     $questions=$mquestion->mGetNotQuestionById($id,$questions);

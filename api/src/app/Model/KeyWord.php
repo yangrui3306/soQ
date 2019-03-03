@@ -26,12 +26,23 @@ class KeyWord extends NotORM {
     }
 
     /**
-     * 根据KeyWord字段得到关键字信息
+     * 根据关键字Id得到关键字信息
      * @param string类型，逗号分隔类似"1,2,3,"
-     * @return 关键字文字
+     * @return Array 关键字文字Array
      */
-    public function gesKeyWordsById($idarr) {
+    public function gesKeyWordsByIds($idarr) {
       $commond="SELECT * FROM keyword where Id in (".$idarr.')';
       return $this->getORM()->queryAll($commond);
+  }
+   /**
+     * 根据KeyWord字段得到关键字信息
+     * @param string类型，逗号分隔类似"三角函数,二元一次,"
+     * @return 关键字Id Array
+     */
+    public function gesKeyWordsByWords($words) {
+   
+      // 数据库查询语句，判断题目中存在的关键字
+     $command = "select Id,Word from keyword where '" . $words . "' like concat('%',Word,'%')";
+     return  $this->getORM()->queryAll($command);
   }
 }

@@ -5,7 +5,7 @@
  * @time : 2019-3-1
  */
 namespace App\Common;
-
+use App\Common\Tools as Tools;
 
 class Match
 {
@@ -50,7 +50,6 @@ class Match
    */
   public static function qLevenShtein($q, $qs, $num)
   {
-    if (count($qs) <= $num) return $qs;
     //排序
     $reslut = array();
     $leven = array();
@@ -60,11 +59,11 @@ class Match
       for ($i = 0; $i < count($reslut); $i++) {
         if ($leven[$i] < $re) break;
       }
-
-      array_splice($reslut, $i, 0, $mq); 
-      array_splice($leven, $i, 0, $re); //向 $temp 的$i下标处插入$cnt数据
+      
+      Tools::insertArray($reslut, $i, $mq); 
+      Tools::insertArray($leven, $i, $re); //向 $temp 的$i下标处插入$cnt数据
     }
-
+    if (count($qs) <= $num) return $reslut;
     return array_slice($reslut,0,$num);
   }
 }

@@ -5,7 +5,7 @@
  * @time : 2019-3-1
 */
 
-namespace App\Model\User;
+namespace App\Model;
 
 use PhalApi\Model\NotORMModel as NotORM;
 
@@ -21,8 +21,13 @@ class User extends NotORM {
 	 	 * @author ipso
 	 	 */
 		public function getAll(){
-			$model = $this->NotORM();
+			$model = $this -> getORM();
 			return $model -> fetchAll();
+		}
+
+		public function getSex($name){
+			$model = $this -> getORM();
+			return $model -> where('Id', $name) -> fetchOne();
 		}
 
     /**

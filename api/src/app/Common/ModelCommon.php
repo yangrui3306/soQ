@@ -6,7 +6,6 @@
  */
 namespace App\Common;
 use App\Model\MatchQuestion as ModelMatchQuestion;
-use App\Model\Question as ModelQuestion;
 
 class ModelCommon
 {

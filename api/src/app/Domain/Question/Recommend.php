@@ -19,7 +19,7 @@ class Recommend
    * @param $num 需要推荐的数量，默认为3
    * @return 题目信息
    */
-  public function recommend($id,$uid,$num=3)
+  public function recommendByQId($id,$uid,$num=3)
   {
     $mquestion = new ModelSearchQ();
 
@@ -34,5 +34,14 @@ class Recommend
     $questions = $mquestion->mGetQuestionsByKeyWord($keys, $num, $questions); //需修改
  
     return CommonMatch::qLevenShtein($question,$questions,$num);
+  }
+
+  /**
+   * 根据用户Id，对其行为分析，推荐主页题目
+   * 
+   */
+  public function recommendByUId($uid)
+  {
+    
   }
 }

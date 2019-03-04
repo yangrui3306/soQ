@@ -36,9 +36,9 @@ class Site extends Api {
             "Type"=>"2",
             "KeyWords"=>"全等,三角函数",
             "Schools"=>"1",
-            "Text"=>"二元一次  编辑删除 3  全等三角形  编辑删除 4  相反数 ");
+            "Text"=>"  二元一次 编辑除 3  全等三角形编辑删除 4  相反数 ");
         return array(
-            'title' => "Hello World!"
+            'title' => $a->upQuestion($q)
             //'title' => $a->gesAllKeyWord()           
         );
     }

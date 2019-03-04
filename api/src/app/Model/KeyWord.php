@@ -42,7 +42,7 @@ class KeyWord extends NotORM {
     public function gesKeyWordsByWords($words) {
    
       // 数据库查询语句，判断题目中存在的关键字
-     $command = "select Id,Word from keyword where '" . $words . "' like concat('%',Word,'%')";
+     $command = "select * from keyword where '" . $words . "' like concat('%',Word,'%')";
      return  $this->getORM()->queryAll($command);
   }
 }

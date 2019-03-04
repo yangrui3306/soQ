@@ -43,12 +43,12 @@ class Match
   }
 
   /** 题目相似度匹配出最大的前n个
-   * @param $str 匹配的题目
-   * @param $arr 待匹配的题目数组
+   * @param $q 匹配的题目
+   * @param $qs 待匹配的题目数组
    * @param $n 前n个相似度最大的
    * @return 前n个题目数组，若输入数组数量不够n直接输出
    */
-  public static function qLevenShtein($q, $qs, $num)
+  public static function qLevenShtein($q, $qs, $num=3)
   {
     //排序
     $reslut = array();
@@ -59,11 +59,11 @@ class Match
       for ($i = 0; $i < count($reslut); $i++) {
         if ($leven[$i] < $re) break;
       }
-      
       Tools::insertArray($reslut, $i, $mq); 
       Tools::insertArray($leven, $i, $re); //向 $temp 的$i下标处插入$cnt数据
     }
     if (count($qs) <= $num) return $reslut;
     return array_slice($reslut,0,$num);
   }
+
 }

@@ -21,21 +21,29 @@ class Upload
   /**
    * 通过题目Id，推荐相应题目,需修改用户Id
    * @param $q 题目{CategoryId,Content,Analysis,Type,KeyWords(文字形式.逗号隔开),SchoolId,Text}
-   * @return 返回插入的Id
+   * @return 返回插入的Id,题目重复也将返回对应题目Id
    */
   public function upQuestion($q)
   {
     $mquestion = new ModelAddQ();
-    
+    $squestion = new ModelSearchQ();
+
     /*-------提取关键字---------*/
-    if(!array_key_exists("Text",$q)||!$q["Text"]) $q["Text"]=$q["Content"];//保证Text必须有文字，否则输入原题的富文本
-    $idarr = Tools::GetValueByKey(Tools::ExtractKeyWords($q["Text"]),"Id");//生成仅有Id字段的数组
+    if (!array_key_exists("Text", $q) || !$q["Text"]) $q["Text"] = $q["Content"]; //保证Text必须有文字，否则输入原题的富文本
+    
+    $idarr = Tools::GetValueByKey(Tools::ExtractKeyWords($q["Text"]), "Id"); //生成仅有Id字段的数组
     // 提取给出的关键字
     if (array_key_exists("KeyWords", $q)) {
-      $idarr1 = Tools::GetValueByKey(Tools::ExtractKeyWords($q["KeyWords"]),"Id");
-      $idarr = array_merge($idarr1, $idarr);
+      $idarr1 = Tools::GetValueByKey(Tools::ExtractKeyWords($q["KeyWords"]), "Id");
+      $idarr = array_merge($idarr1, $idarr);//合成，输入的关键字优先
     }
-    $q["KeyWords"]=implode(",", $idarr);
+
+    $q["KeyWords"] = implode(",", $idarr);
+    /*----------end for keyword------*/
+    
+
+    $s = $squestion->checkDuplicate($q); //判重 若重复返回重复的Id
+    if ($s != null) return $s["Id"];
 
     return $mquestion->AddQuestion($q);
   }

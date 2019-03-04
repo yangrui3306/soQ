@@ -9,7 +9,8 @@ namespace App\Model\Question;
 
 use App\Model\Collection as ModelCollection;
 use PhalApi\Model\NotORMModel as NotORM;
-
+use PhalApi\Exception;
+use App\Common\Match;
 
 class Search extends NotORM
 {
@@ -76,8 +77,8 @@ class Search extends NotORM
     return $questions->where('NOT Id',$idarr);
   }
   /**
-     * 根据关键字匹配指定大于某数量的题目
-		 * @param array keywords 传入的keyword的关键字优先级从高到低已排序,
+     * 根据关键字匹配指定大于某数量的题目（优先匹配关键字最大的）
+		 * @param array keywords 传入的关键字Idarray优先级从高到低已排序,
 		 * @param num 题目数量
      * @param questions 经过处理的数据库可直接操作的题目
      * @return 数据库可操作类型
@@ -97,5 +98,28 @@ class Search extends NotORM
     return $questions;
   }
 
-  
+  /**
+   * 题目判重
+   * @param $q 题目
+   * @param $id 题目Id
+   * @param $leven 相似度大于等于该值将视为重复
+   */
+  public function checkDuplicate($q,$leven=0.95)
+  {
+    try{
+      $questions=$this->mGetQuestionsByCategoryId($q["CategoryId"]);
+     
+      $questions=$questions->where('KeyWords', $q["KeyWords"]);
+      
+      $questions=Match::qLevenShtein($q,$questions->fetchALl(),1);
+      $question=$questions[0];
+    
+      if(Match::levenShtein($q["Text"],$question["Text"])>=$leven) return $question;
+    }
+    catch(Exception $e)
+    {
+      return null;
+    }
+    return null;
+  }
 }

@@ -11,36 +11,53 @@ use App\Model\KeyWord as KeyWord;
 class  Tools
 {
   /** 
-     * 关键字提取并根据出现次数排序 静态方法 "::"调用
+     * 关键字提取并根据出现次数和权值排序 静态方法 "::"调用
      * @param $text 待提取的文字
-     * @return 关键字Id和Word数组
+     * @return array 关键字Id、Word、权重数组（从大到小排序后）
      */
   public static function ExtractKeyWords($text)
   {
     $kw = new KeyWord();
-  
 
     // 数据库查询语句，判断题目中存在的关键字
     //$command = "select Id,Word from keyword where '" . $text . "' like concat('%',Word,'%')";
     $keyarr = $kw->gesKeyWordsByWords($text);
-   
-    //排序
-    $reslut = array();
-    $temp = array();
-    foreach ($keyarr as $key) {
-
-      $cnt = substr_count($text, $key['Word']);
-      for ($i = 0; $i < count($reslut); $i++) {
-        if ($temp[$i] < $cnt) break;
-      }
-
-      Tools::insertArray($reslut, $i, $key);
-
-      Tools::insertArray($temp, $i, $cnt); //向 $temp 的$i下标处插入$cnt数据
+ 
+    for ($i=0;$i<count($keyarr);$i++) {
+      $cnt = substr_count($text, $keyarr[$i]['Word']);
+      $keyarr[$i]["Weight"]=$keyarr[$i]["Weight"]*$cnt;
     }
-    return $reslut;
+    
+    Tools::SortByKey($keyarr,"Weight",false);
+    return $keyarr;
   }
 
+  /**
+   * 默认从小到大排序，第三个参数为false则为从大到小
+   * @param $arr 数组
+   * @param $key 排序的键值
+   * @param $f
+   */
+  public static function SortByKey(&$arr,$key,$f)
+  {
+    $reslut=array();
+    foreach($arr as $item)
+    {
+      for($i=0;$i<count($reslut);$i++)
+      {
+        if(!$f)
+        {
+          if($item[$key]>$reslut[$i][$key]) break;
+          
+        }
+        else {
+          if($item[$key]<$reslut[$i][$key]) break;
+        }
+      }
+      Tools::insertArray($reslut,$i,$item);
+    }
+    $arr=$reslut;
+  } 
   /**
    * 得到Array内指定的键，并生成相应的数组
    */

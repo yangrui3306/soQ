@@ -4,18 +4,12 @@
  * @time : 2019-3-4
 */
 
-namespace App\Model\Behavior;
+namespace App\Domain\Behavior;
+use App\Model\Serach as ModelSearch;
 
-use PhalApi\Model\NotORMModel as NotORM;
-
-
-class Statistics extends NotORM
+class Statistics 
 {
 
-    protected function getTableName($id)
-    {
-        return 'behavior';
-    }
     /**
      * 得到指定用户的最近几天内内或最近几道点赞题目统计返回相应数组
      * @param int $uid 用户Id
@@ -25,8 +19,13 @@ class Statistics extends NotORM
      */
     public function getStatisticsLike($uid,$data=-1,$num=0)
     {
-      $sbh=new Serach();
-      $bhs=$sbh->mGetLikeByUserId($uid);
+      $sbh=new ModelSearch();
+      $bhs=$sbh->mGetLikeByUserId($uid,$data,$num)->where("NOT QuestionId",array(null,0));//剔除未上传题库的题目
+      
       return $bhs; 
     }
+
+    /**
+     * 统计题目数组中的关键字
+     */
 }

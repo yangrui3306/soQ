@@ -30,17 +30,17 @@ class Site extends Api {
      * @exception 400 非法请求，参数传递错误
      */
     public function index() {
-        $a=new ModelStatistics();
-        // $q=array("CategoryId"=>"1",
-        //     "Content"=>"二元一次  编辑删除 3  全等三角形  编辑删除 4  相反数  编辑删除5  倒数 ",
-        //     "Analysis"=>" 全等三角形",
-        //     "Type"=>"2",
-        //     "KeyWords"=>"全等,三角函数",
-        //     "Schools"=>"1",
-        //     "Text"=>"  二元一次 编辑除 3  全等三角形编辑删除 4  相反数 ");
+        $a=new Upload();
+        $q=array("CategoryId"=>"1",
+            "Content"=>"二元一次  编辑删除 3  全等三角形  编辑删除 4  相反数  编辑删除5  倒数 ",
+            "Analysis"=>" 全等三角形",
+            "Type"=>"2",
+            "KeyWords"=>"全等,三角函数,二元一次",
+            "Schools"=>"1",
+            "Text"=>"  二元一次 编辑除 3  全等三角形编辑删除 4  相反数 ");
         return array(
-            'title' => $a->getStatisticsLike(1)
+            'title' => $a->upQuestion($q)
             //'title' => $a->gesAllKeyWord()           
         );
-    }
+    }//2019-03-02 00:00:00 date("Y-m-d h:m:s")
 }

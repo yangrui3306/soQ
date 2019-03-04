@@ -11,9 +11,9 @@ use App\Model\KeyWord as KeyWord;
 class  Tools
 {
   /** 
-     * 关键字提取并根据出现次数排序 静态方法 "::"调用
+     * 关键字提取并根据出现次数和权值排序 静态方法 "::"调用
      * @param $text 待提取的文字
-     * @return 关键字Id、Word、权重数组（从大到小排序后）
+     * @return array 关键字Id、Word、权重数组（从大到小排序后）
      */
   public static function ExtractKeyWords($text)
   {
@@ -27,7 +27,7 @@ class  Tools
       $cnt = substr_count($text, $keyarr[$i]['Word']);
       $keyarr[$i]["Weight"]=$keyarr[$i]["Weight"]*$cnt;
     }
-  
+    
     Tools::SortByKey($keyarr,"Weight",false);
     return $keyarr;
   }

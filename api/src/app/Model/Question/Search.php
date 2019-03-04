@@ -77,8 +77,8 @@ class Search extends NotORM
     return $questions->where('NOT Id',$idarr);
   }
   /**
-     * 根据关键字匹配指定大于某数量的题目
-		 * @param array keywords 传入的keyword的关键字优先级从高到低已排序,
+     * 根据关键字匹配指定大于某数量的题目（优先匹配关键字最大的）
+		 * @param array keywords 传入的关键字Idarray优先级从高到低已排序,
 		 * @param num 题目数量
      * @param questions 经过处理的数据库可直接操作的题目
      * @return 数据库可操作类型

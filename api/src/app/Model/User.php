@@ -30,6 +30,16 @@ class User extends NotORM {
 			return $model -> where('Id', $name) -> fetchOne();
 		}
 
+		public function getByPhone($phone){
+			$model = $this -> getORM();
+			return $model -> where('Phone', $phone) -> fetchOne();
+		}
+
+		public function getByName($name){
+			$model = $this -> getORM();
+			return $model -> where('Name', $name) -> fetchOne();
+		}
+
     /**
      * 根据用户ID查找用户
      */

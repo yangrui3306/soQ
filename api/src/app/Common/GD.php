@@ -114,12 +114,12 @@ class GD {
 		public function getUserDefaultAvatarByName($str) {
         $text = mb_substr($str,0,1,'utf-8'); //截取第一个字符
 
-        // if($text > '@' && $text < '{') //英文字符
-        //     $text = strtoupper($text);
-        // else {
-        //     $words = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        //     $text = $words[rand(0,25)];
-        // }
+        if($text > '@' && $text < '{') //英文字符
+            $text = strtoupper($text);
+        else {
+            $words = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            $text = $words[rand(0,25)];
+        }
         //图片宽高
         $width = 25;
         $height = 25;

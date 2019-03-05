@@ -36,6 +36,7 @@ $di->response = new \PhalApi\Response\JsonResponse(JSON_UNESCAPED_UNICODE);
 
 // 签名验证服务
 // $di->filter = new \PhalApi\Filter\SimpleMD5Filter();
+// $di->filter = new App\Common\SignFilter();
 
 // 缓存 - Memcache/Memcached
 // $di->cache = function () {

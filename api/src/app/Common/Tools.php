@@ -67,7 +67,8 @@ class  Tools
       $reslut=array();
       foreach($arr as $temp)
       {
-        array_push($reslut,$temp[$key]);
+        if(array_key_exists($key,$temp))
+          array_push($reslut,$temp[$key]);
       }
       return $reslut;
     }
@@ -93,4 +94,25 @@ class  Tools
     $arr[$i]=$temp;
     return $arr;
   }
+
+  /** 针对于Keyword操作合并相同的Key，并相加Weight */
+  public static function mergeKeyWeight(&$arr)
+  {
+    $reslut=array();
+    
+    foreach($arr as $item)
+    {
+      for($i=0;$i<count($reslut);$i++)
+      {
+        if($reslut[$i]["Id"]==$item["Id"]) break;
+      }
+      if($i==count($reslut))
+        Tools::insertArray($reslut,0,$item);
+      else
+        $reslut[$i]["Weight"]= $reslut[$i]["Weight"]+$item["Weight"];
+    }
+    $arr=$reslut;
+    return $reslut;
+  }
+  
 }

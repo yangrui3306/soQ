@@ -11,6 +11,7 @@ use App\Common\ModelCommon as ModelCommon;
 use App\Model\KeyWord as ModelKeyWord;
 use App\Common\Tools as Tools;
 use App\Common\Match as CommonMatch;
+
 class Recommend
 {
   /**
@@ -19,7 +20,7 @@ class Recommend
    * @param $num 需要推荐的数量，默认为3
    * @return 题目信息
    */
-  public function recommendByQId($id,$uid,$num=3)
+  public function recommendByQId($id, $uid, $num = 3)
   {
     $mquestion = new ModelSearchQ();
 
@@ -27,13 +28,15 @@ class Recommend
 
     $questions = $mquestion->mGetQuestionsByCategoryId($question['CategoryId']); //查找分类相同的题目
     //需要cookie传入用户Id
-    $questions = $mquestion->mGetNotUserCollect($uid); //查找用户没有收藏的题目
+    $questions = QTools::deleteQuestionsForUser($uid); //剔除用户已经操作的题目
 
-    $keys = explode(",", $question["KeyWords"]); //转数组
-    $questions=$mquestion->mGetNotQuestionById($id,$questions);
+    //$keys = explode(",", $question["KeyWords"]); //转数组
+    $keys=QTools::mergeQuestionKeys($question["KeyWords"],$question["KeysWeight"]);
+   
+    $questions = $mquestion->mGetNotQuestionById($id, $questions);
     $questions = $mquestion->mGetQuestionsByKeyWord($keys, $num, $questions); //需修改
- 
-    return CommonMatch::qLevenShtein($question,$questions,$num);
+
+    return CommonMatch::qLevenShtein($question, $questions, $num);
   }
 
   /**
@@ -41,7 +44,5 @@ class Recommend
    * 
    */
   public function recommendByUId($uid)
-  {
-    
-  }
+  { }
 }

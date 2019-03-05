@@ -40,7 +40,7 @@ class Upload
       }//对用户输入的关键字添加双倍权值
       $key=array_merge($key1,$key);
       
-      $key=$this->AddKeyWeight($key);      
+      Tools::mergeKeyWeight($key);      
     }
     Tools::SortByKey($key,"Weight",false);
     $idarr = Tools::GetValueByKey($key, "Id"); //生成仅有Id字段的数组
@@ -57,25 +57,5 @@ class Upload
 
     return $mquestion->AddQuestion($q);
   }
-
-  /**合并相同的Key，并相加Weight */
-  private function AddKeyWeight($arr)
-  {
-    $reslut=array();
-    
-    foreach($arr as $item)
-    {
-      for($i=0;$i<count($reslut);$i++)
-      {
-        if($reslut[$i]["Id"]==$item["Id"]) break;
-      }
-      if($i==count($reslut))
-        Tools::insertArray($reslut,0,$item);
-      else
-        $reslut[$i]["Weight"]= $reslut[$i]["Weight"]+$item["Weight"];
-    }
-    return $reslut;
-  }
-  
 
 }

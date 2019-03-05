@@ -38,7 +38,7 @@ class Match
         $dif[$i][$j] = min($dif[$i - 1][$j - 1] + $temp, $dif[$i][$j - 1] + 1, $dif[$i - 1][$j] + 1);
       }
     }
-    $similarity = 1 -  $dif[$len1][$len2] * 1.0 / max(strlen($str1), strlen($str2));
+    $similarity = 1 -  $dif[$len1][$len2] * 1.0 / max(strlen($str1), strlen($str2),1);
     return $similarity;
   }
 

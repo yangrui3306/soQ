@@ -45,7 +45,7 @@ class Search extends NotORM
         return $this->mGetType($uid,$data,$num,$bs)->where("Type",2);
     }
     /**
-     * 根据用户ID查找所有点赞操作
+     * 根据用户ID查找所有搜索操作
      * @return 返回数据库可操作类型
      */
     public function mGetSearchByUserId($uid,$data=-1,$num=0,$bs=null)

@@ -32,7 +32,7 @@ class Upload
     if (!array_key_exists("Text", $q) || !$q["Text"]) $q["Text"] = $q["Content"]; //保证Text必须有文字，否则输入原题的富文本
     $key=Tools::ExtractKeyWords($q["Text"]);
     // 提取给出的关键字
-    if (array_key_exists("KeyWords", $q)) {
+    if (array_key_exists("KeyWords", $q) && strlen($q["KeyWords"])) {
       $key1=Tools::ExtractKeyWords($q["KeyWords"]);
       for($i=0;$i<count($key1);$i++)
       {

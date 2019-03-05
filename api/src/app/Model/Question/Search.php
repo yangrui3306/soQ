@@ -120,6 +120,7 @@ class Search extends NotORM
       $questions = $questions->where('KeyWords', $q["KeyWords"]);
 
       $questions = Match::qLevenShtein($q, $questions->fetchALl(), 1);
+      if($questions==null||count($questions)<=0) return null;
       $question = $questions[0];
 
       if (Match::levenShtein($q["Text"], $question["Text"]) >= $leven) return $question;

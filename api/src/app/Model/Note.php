@@ -48,5 +48,16 @@ class Note extends NotORM {
             ->where('CategoryId', $cateid)
             ->fetchAll();
     }
+
+    /**根据关键字查找用户笔记 */
+    public function getNotesByKeywords($uid,$keys)
+    {
+        $s="%";
+        for($i=0;$i<strlen($keys);$i++)
+        {
+            $s=$s+$keys[$i]+"%";
+        }
+        return $this->getORM()->where("UserId",$uid)->where("(Content,Headline) LIKE ?",$s)->fetchAll();
+    }
     
 }

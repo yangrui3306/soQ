@@ -23,4 +23,17 @@ class MyStandard {
 			'data'  => $data,
 		);
 	}
+	/**
+	 * 组织返回信息的格式，将返回信息放入数组
+	 * @param state 状态码 正确为0
+	 * @param msg   返回信息,
+	 * @param data  返回的数据
+	 */
+	public static function gReturn($state = 0, $data = null, $msg = ''){
+		return array(
+			'code' => $state,
+			'msg'   => $msg,
+			'data'  => $data,
+		);
+	}
 }

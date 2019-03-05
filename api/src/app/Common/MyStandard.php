@@ -16,7 +16,21 @@ class MyStandard {
 	 * @param msg   返回信息,
 	 * @param data  返回的数据
 	 */
-	public function getReturn($state = 0, $msg = '', $data = null){
+	public function getReturn($state = 1, $msg = '', $data = null){
+		return array(
+			'code' => $state,
+			'msg'   => $msg,
+			'data'  => $data,
+		);
+	}
+
+	/**
+	 * 组织返回信息的格式，将返回信息放入数组
+	 * @param state 状态码
+	 * @param msg   返回信息,
+	 * @param data  返回的数据
+	 */
+	public static function gReturn($state = 1, $data = null, $msg = ''){
 		return array(
 			'code' => $state,
 			'msg'   => $msg,

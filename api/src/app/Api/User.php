@@ -31,6 +31,9 @@ class User extends Api {
 				'Avatar'        => array('name' => 'avatar', 'desc' => '用户头像', 'source' => 'post'),
 				'Certification' => array('name' => 'certification', 'desc' => '教室资格证', 'source' => 'post'),
 			),
+			'getUser' => array(
+				'Name' => array('name' => 'name', 'require' => true, 'min' => 1, 'max' => 50, 'desc' => '用户名'),
+			),
 		);
 	}
 
@@ -71,6 +74,9 @@ class User extends Api {
 		return $returnRule -> getReturn(1, $res['msg'], 'token');
 	}
 
+	/**
+	 * 用户注册接口
+	 */
 	public function add(){
 		$user = array(
 			'Name'          => $this -> Name,
@@ -87,7 +93,35 @@ class User extends Api {
 			'Certification' => $this -> Certification,
 		);
 
+		$returnRule = new MyStandard();
 		$domain = new Domain();
 		$res = $domain -> add($user);
+		if($res['code'] == 0){
+			return $returnRule -> getReturn(0, $res['msg']);
+		}
+		return $returnRule -> getReturn(1, $res['msg'], 'token');
+	}
+
+	/**
+	 * 通过用户名获取用户信息
+	 */
+	public function getUser(){
+		$name = $this -> Name;
+		$domain = new Domain();
+		$returnRule = new MyStandard();
+		$res = $domain -> getUserByName($name);
+		if($res['code'] == 0){
+			return $returnRule -> getReturn(0, $res['msg']);
+		}
+		return $returnRule -> getReturn(1, $res['msg'], $res['data']);
+	}
+
+	/**
+	 * 获取当前在线人数
+	 */
+	public function getOnline(){
+		$domain = new Domain();
+		$count = $domain -> getOnlineByToken();
+		return $returnRule -> getReturn(1, '', $count);
 	}
 } 

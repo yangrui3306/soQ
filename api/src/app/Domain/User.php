@@ -71,14 +71,75 @@ class User
 		if($phone != 1){
 			return array(
 				'code' => 0,
-				'msg'  => '用户名已存在!',
+				'msg'  => '手机号码格式不正确!',
 				'data' => '',
 			);
 		}
 		// 手机号码查重
-
+		$isPhone = $model -> getByPhone($data['Phone']);
+		if($isPhone != null){
+			return array(
+				'code' => 0,
+				'msg'  => '手机号码已注册!',
+				'data' => '',
+			);
+		}
 		// 通过学校名称获取学校id
-
+		$schoolModel = new School();
+		$school = $schoolModel -> getByName($data['School']);
+		if($school == null){
+			return array(
+				'code' => 0,
+				'msg'  => '学校不存在!',
+				'data' => '',
+			);
+		}
+		$data['SchoolId'] = $school['Id'];
+		unset($data['School']);
 		// 写入数据库
+		$sql = $model -> insertOne($data);
+		if(!$sql){
+			return array(
+				'code' => 0,
+				'msg'  => '注册操作异常!',
+				'data' => '',
+			);
+		}
+		return array(
+			'code' => 1,
+			'msg'  => '用户注册成功!',
+			'data' => '',
+		);
+	}
+
+	/**
+	 * 通过用户名获取用户信息
+	 * @param name 用户名
+	 */
+	public function getUserByName($name){
+		$model = new Model();
+		// 检查用户名
+		$sql = $model -> getByName($name);
+		if(!$sql){
+			return array(
+				'code' => 0,
+				'msg'  => '用户名不存在!',
+				'data' => '',
+			);
+		}
+		return array(
+			'code' => 1,
+			'msg'  => '获取用户信息成功!',
+			'data' => $sql,
+		);
+	}
+
+	/**
+	 * 获取tonken数量
+	 */
+	public function getOnlineByToken(){
+		$tokenModel = new Token();
+		$count = count($tokenModel -> getAll());
+		return $count;
 	}
 }

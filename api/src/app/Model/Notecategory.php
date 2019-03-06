@@ -26,4 +26,17 @@ class Notecategory extends NotORM {
             ->where('UserId',$userid)
             ->fetchAll();
     }
+    /**
+     * 判断用户是否含有该笔记分类
+		 * @param userid 用户id
+         * @param cateid
+         * @return 0为否，1为有
+     */
+    public function judgeCateForUser($userid,$cateid) {
+        return $this->getORM()
+            ->select('*')
+            ->where('UserId',$userid)
+            ->where('Id',$cateid)
+            ->count();
+    }
 }

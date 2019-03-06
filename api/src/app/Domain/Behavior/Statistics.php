@@ -33,12 +33,7 @@ class Statistics
       $keys = array_merge($cs,$ls,$ms,$ss);
       Tools::mergeKeyWeight($keys);
       Tools::SortByKey($keys,"Weight",false);
-     
-      $mquestion = new ModelSearchQ();
-      $qs=QTools::deleteQuestionsForUser($uid);//去除用户操作部分
-
-      $questions = $mquestion->mGetQuestionsByKeyWord($keys,0,$qs); //关键字匹配相应题目
-      return $questions;
+      return $keys;
     }
 
 

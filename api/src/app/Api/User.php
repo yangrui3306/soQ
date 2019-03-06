@@ -27,9 +27,7 @@ class User extends Api {
 				'Address'       => array('name' => 'address', 'desc' => '用户地址', 'source' => 'post'),
 				'Intro'         => array('name' => 'intro', 'desc' => '用户简介', 'source' => 'post'),
 				'Occupation'    => array('name' => 'occupation', 'desc' => '用户职业', 'type' => 'int', 'max' => 1, 'source' => 'post'),
-				'Coin'          => array('name' => 'coin', 'desc' => '用户金币', 'type' => 'int', 'source' => 'post'),
 				'Avatar'        => array('name' => 'avatar', 'desc' => '用户头像', 'source' => 'post'),
-				'Certification' => array('name' => 'certification', 'desc' => '教室资格证', 'source' => 'post'),
 			),
 			'getUser' => array(
 				'Name' => array('name' => 'name', 'require' => true, 'min' => 1, 'max' => 50, 'desc' => '用户名'),
@@ -88,9 +86,7 @@ class User extends Api {
 			'Address'       => $this -> Address,
 			'Intro'         => $this -> Intro,
 			'Occupation'    => $this -> Occupation,
-			'Coin'          => $this -> Coin,
 			'Avatar'        => $this -> Avatar,
-			'Certification' => $this -> Certification,
 		);
 
 		$returnRule = new MyStandard();
@@ -114,6 +110,14 @@ class User extends Api {
 			return $returnRule -> getReturn(0, $res['msg']);
 		}
 		return $returnRule -> getReturn(1, $res['msg'], $res['data']);
+	}
+
+	/**
+	 * 用户主页推荐
+	 */
+	public function getRecommend()
+	{
+		
 	}
 
 	/**

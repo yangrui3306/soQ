@@ -65,5 +65,18 @@ class Match
     if (count($qs) <= $num) return $reslut;
     return array_slice($reslut,0,$num);
   }
-
+  /**
+   * 关键字匹配，输入关键字输出为可用户数据库模糊查找的字符串
+   * @param $keys 例如：质量
+   * @return string 质量->%质%量%
+   */
+  public static function AllWordMatch($keys)
+  {
+    $s="%";
+    for($i=0;$i<strlen($keys);$i++)
+    {
+        $s=$s+$keys[$i]+"%";
+    }
+    return $s;
+  }
 }

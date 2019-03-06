@@ -19,11 +19,11 @@ class Basic
    * 查找题目
    * @param $q 必须含有Text键
    */
-  public static function searchQuestion($q)
+  public static function searchQuestion($q,$num=3)
   {
     $keys=Tools::ExtractKeyWords($q["Text"]);
     $mq=new ModelSearchQ();
-    $qs=$mq->mGetQuestionsByKeyWord($keys,5);
-    return CommonMatch::qLevenShtein($q,$qs);
+    $qs=$mq->mGetQuestionsByKeyWord($keys,$num*2);
+    return CommonMatch::qLevenShtein($q,$qs,$num);
   }
 }

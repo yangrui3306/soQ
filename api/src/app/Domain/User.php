@@ -3,18 +3,20 @@ namespace App\Domain;
 
 use App\Model\User as Model;
 use App\Model\School;
-
+use App\Domain\Question\Recommend;
+use App\Model\Note as ModelNote;
 class User
 {
-
+	const recommendDate=30;// 推荐算法中行为分析天数
 	/**
 	 * 获取用户性别(测试)
 	 * @param  name 用户名
 	 * @return sex  用户性别
 	 */
-	public function GetUserSexById($id){
+	public function GetUserSexById($id)
+	{
 		$model = new Model();
-		$sex = $model -> getSex($id);
+		$sex = $model->getSex($id);
 		return $sex;
 	}
 
@@ -22,23 +24,24 @@ class User
 	 * 用户名或者是手机号码登录
 	 * @param username 用户名或者用户注册手机
 	 */
-	public function login($username, $pass){
+	public function login($username, $pass)
+	{
 
 		$model = new Model();
 		// 判断是用户名还是电话登录  
 		$isPhone = preg_match('/^0?(13|14|15|17|18|19)[0-9]{9}$/', $username, $str);
-		if($isPhone == 1){
-			$user = $model -> getByPhone($username);
-		}else{
-			$user = $model -> getByName($username);
+		if ($isPhone == 1) {
+			$user = $model->getByPhone($username);
+		} else {
+			$user = $model->getByName($username);
 		}
-		if(!$user)
+		if (!$user)
 			return array(
 				'code' => 0,
 				'msg'  => '用户名或手机号码不存在!',
 				'data' => '',
 			);
-		if($user['Password'] != $pass)
+		if ($user['Password'] != $pass)
 			return array(
 				'code' => 0,
 				'msg'  => "用户密码不正确!",
@@ -55,11 +58,12 @@ class User
 	 * 用户注册
 	 * @param data 包含用户信息的数组
 	 */
-	public function add($data){
+	public function add($data)
+	{
 		$model = new Model();
 		// 用户名查重
-		$name = $model -> getByName($data['Name']);
-		if($res != null){
+		$name = $model->getByName($data['Name']);
+		if ($res != null) {
 			return array(
 				'code' => 0,
 				'msg'  => '用户名已存在!',
@@ -68,7 +72,7 @@ class User
 		}
 		// 手机正则匹配
 		$phone = preg_match('/^0?(13|14|15|17|18|19)[0-9]{9}$/', $data['Phone']);
-		if($phone != 1){
+		if ($phone != 1) {
 			return array(
 				'code' => 0,
 				'msg'  => '手机号码格式不正确!',
@@ -76,8 +80,8 @@ class User
 			);
 		}
 		// 手机号码查重
-		$isPhone = $model -> getByPhone($data['Phone']);
-		if($isPhone != null){
+		$isPhone = $model->getByPhone($data['Phone']);
+		if ($isPhone != null) {
 			return array(
 				'code' => 0,
 				'msg'  => '手机号码已注册!',
@@ -86,8 +90,8 @@ class User
 		}
 		// 通过学校名称获取学校id
 		$schoolModel = new School();
-		$school = $schoolModel -> getByName($data['School']);
-		if($school == null){
+		$school = $schoolModel->getByName($data['School']);
+		if ($school == null) {
 			return array(
 				'code' => 0,
 				'msg'  => '学校不存在!',
@@ -97,8 +101,8 @@ class User
 		$data['SchoolId'] = $school['Id'];
 		unset($data['School']);
 		// 写入数据库
-		$sql = $model -> insertOne($data);
-		if(!$sql){
+		$sql = $model->insertOne($data);
+		if (!$sql) {
 			return array(
 				'code' => 0,
 				'msg'  => '注册操作异常!',
@@ -116,11 +120,12 @@ class User
 	 * 通过用户名获取用户信息
 	 * @param name 用户名
 	 */
-	public function getUserByName($name){
+	public function getUserByName($name)
+	{
 		$model = new Model();
 		// 检查用户名
-		$sql = $model -> getByName($name);
-		if(!$sql){
+		$sql = $model->getByName($name);
+		if (!$sql) {
 			return array(
 				'code' => 0,
 				'msg'  => '用户名不存在!',
@@ -137,9 +142,25 @@ class User
 	/**
 	 * 获取tonken数量
 	 */
-	public function getOnlineByToken(){
+	public function getOnlineByToken()
+	{
 		$tokenModel = new Token();
-		$count = count($tokenModel -> getAll());
+		$count = count($tokenModel->getAll());
 		return $count;
 	}
+
+
+	/**
+	 * 用户主页推荐
+		根据用户最近30天的行为记录推荐题目(默认5道)，和最近三条笔记内容。
+	 */
+
+	public function getIndexRecommend($uid,$notesNum=3,$mistakeNum=5)
+	{
+		$dq=new Recommend();
+		$questions=$dq->recommendByUId($uid,User::recommendDate,$mistakeNum);
+		$mn=new ModelNote();
+		$notes=$mn->getNotesByUserId($uid,$notesNum);
+	}
 }
+

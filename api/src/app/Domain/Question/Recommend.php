@@ -7,9 +7,7 @@
 namespace App\Domain\Question;
 
 use App\Model\Question\Search as ModelSearchQ;
-use App\Common\ModelCommon as ModelCommon;
-use App\Model\KeyWord as ModelKeyWord;
-use App\Common\Tools as Tools;
+use App\Domain\Behavior\Statistics;
 use App\Common\Match as CommonMatch;
 
 class Recommend
@@ -41,8 +39,20 @@ class Recommend
 
   /**
    * 根据用户Id，对其行为分析，推荐主页题目
-   * 
+   *  @param int $uid 用户Id
+     * @param int $data 指定前几天(0为当天)，默认从创建开始
+     * @param int $num 指定数量，默认为最大数量
+     * @return 题目数组
    */
-  public function recommendByUId($uid)
-  { }
+  public function recommendByUId($uid,$date=-1,$num=0)
+  {
+    $ds=new Statistics();
+    $keys=$$ds->getStatisticsBehavior($uid,$date,$num);
+
+    $mquestion = new ModelSearchQ();
+    $qs=QTools::deleteQuestionsForUser($uid);//去除用户操作部分
+
+    $questions = $mquestion->mGetQuestionsByKeyWord($keys,0,$qs); //关键字匹配相应题目
+    return $questions;
+   }
 }

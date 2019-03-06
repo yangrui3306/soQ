@@ -4,5 +4,5 @@ use App\Model\Collection as Model;
 
 class Collection
 {
-	public function 
+	// public function 
 }

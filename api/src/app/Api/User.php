@@ -118,7 +118,9 @@ class User extends Api {
 	 */
 	public function getRecommend()
 	{
-		
+		$du=new Domain();
+		$re=$du->getIndexRecommend($uid);
+		return MyStandard::gReturn(0,$re);
 	}
 
 	/**

@@ -22,11 +22,6 @@ class User extends NotORM {
 			return $model -> fetchAll();
 		}
 
-		public function getSex($name){
-			$model = $this -> getORM();
-			return $model -> where('Id', $name) -> fetchOne();
-		}
-
 		public function getByPhone($phone){
 			$model = $this -> getORM();
 			return $model -> where('Phone', $phone) -> fetchOne();
@@ -35,6 +30,21 @@ class User extends NotORM {
 		public function getByName($name){
 			$model = $this -> getORM();
 			return $model -> where('Name', $name) -> fetchOne();
+		}
+
+		public function getUidByName($name){
+			$model = $this -> getORM();
+			return $model -> where("Name", $name) -> select("Id") -> fetchOne();
+		}
+
+		public function getUidByPhone($phone){
+			$model = $this -> getORM();
+			return $model -> where("Name", $phone) -> select("Id") -> fetchOne();
+		}
+
+		public function getUid(){
+			$model = $this -> getORM();
+			return $model -> select("Id") -> fetchAll();
 		}
 
     /**

@@ -135,6 +135,15 @@ class User
 	}
 
 	/**
+	 * 获取所有用户的ID
+	 */
+	public function getUid(){
+		$model = new Model();
+		$sql = $model -> getUid();
+		return $sql;
+	}
+
+	/**
 	 * 获取tonken数量
 	 */
 	public function getOnlineByToken(){

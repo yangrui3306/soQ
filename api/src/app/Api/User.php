@@ -34,6 +34,7 @@ class User extends Api {
 			'getUser' => array(
 				'Name' => array('name' => 'name', 'require' => true, 'min' => 1, 'max' => 50, 'desc' => '用户名'),
 			),
+			'getUid' => array(),
 		);
 	}
 
@@ -123,5 +124,15 @@ class User extends Api {
 		$domain = new Domain();
 		$count = $domain -> getOnlineByToken();
 		return $returnRule -> getReturn(1, '', $count);
+	}
+
+	/**
+	 * 获取所有用户ID
+	 */
+	public function getUid(){
+		$domain = new Domain();
+		$uid = $domain -> getUid();
+		$returnRule = new MyStandard();
+		return $returnRule -> getReturn(0, '', $uid);
 	}
 } 

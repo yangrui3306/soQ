@@ -161,6 +161,7 @@ class User
 		$questions=$dq->recommendByUId($uid,User::recommendDate,$mistakeNum);
 		$mn=new ModelNote();
 		$notes=$mn->getNotesByUserId($uid,$notesNum);
+		return array("Notes"=>$notes,"Questions"=>$questions);
 	}
 }
 

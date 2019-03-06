@@ -7,6 +7,7 @@ use App\Common\GD;
 
 /**
  * 用户模块接口服务
+ * @author ipso
  */
 class User extends Api {
 	

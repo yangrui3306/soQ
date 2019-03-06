@@ -38,5 +38,13 @@ class Notecategory extends NotORM {
             ->where('UserId',$userid)
             ->where('Id',$cateid)
             ->count();
-    }
+		}
+		
+		/**
+		 * @author ipso
+		 */
+		public function getCidByName($name){
+			$model = $this -> getORM();
+			return $model -> where('Name', $name) -> select("Id") -> fetchOne();
+		}
 }

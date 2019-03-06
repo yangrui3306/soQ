@@ -25,6 +25,7 @@ class Search extends NotORM
         return $this->getORM()
             ->select('*')
             ->where('UserId', $uid)
+            ->order("Id DESC")
             ->fetchAll();
     }
     /**
@@ -64,6 +65,9 @@ class Search extends NotORM
     }
     /**
      * Common 得到某一个类型的操作
+     * @param uid 用户Id
+     * @param data 几天前
+     * @param num 前n条数据
      * @return 返回数据库可操作类型
      */
     private function mGetType($uid,$data=-1,$num=0,$bs=null)
@@ -77,10 +81,12 @@ class Search extends NotORM
             $time=$time." 00:00:00";
             $bs=$bs->where("Date >= ?" ,$time);
         }
+        $bs=$bs->order('Id DESC');//降序排序,获取最新的数据
         if($num!=1)
         {
-            //
+            $bs=$bs->limit($num);
         }
+        
         return $bs;
     }
 }

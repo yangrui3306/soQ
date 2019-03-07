@@ -11,7 +11,7 @@ use App\Common\ModelCommon as ModelCommon;
 use App\Model\KeyWord as ModelKeyWord;
 use App\Common\Tools as Tools;
 use App\Common\Match as CommonMatch;
-use App\Model\Question\Add as ModelAddQ;
+use App\Model\Question\Basic as ModelAddQ;
 
 /**
  * 上传题目相关操作

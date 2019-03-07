@@ -3,7 +3,9 @@ namespace App\Api;
 use PhalApi\Api;
 use App\Common\MyStandard;
 use App\Domain\School as Domain;
-
+/**
+ * 学校部分
+ */
 class School extends Api{
 
 	public function getRules(){

@@ -5,6 +5,9 @@ use App\Model\User as Model;
 use App\Model\School;
 use App\Domain\Question\Recommend;
 use App\Model\Note as ModelNote;
+use PhalApi\Exception;
+use App\Domain\Question\Basic as QBasic;
+
 class User
 {
 	const recommendDate=30;// 推荐算法中行为分析天数
@@ -50,7 +53,7 @@ class User
 		return array(
 			'code' => 1,
 			'msg'  => "登录数据库验证成功!",
-			'data' => $user['Id'],
+			'data' => $user,
 		);
 	}
 
@@ -164,13 +167,25 @@ class User
 	 * 根据用户最近30天的行为记录推荐题目(默认5道)，和最近三条笔记内容。
 	 */
 
-	public function getIndexRecommend($uid,$notesNum=3,$mistakeNum=5)
+	public function getIndexRecommend($uid,$notesNum=3,$qnum=5)
 	{
-		$dq=new Recommend();
-		$questions=$dq->recommendByUId($uid,User::recommendDate,$mistakeNum);
-		$mn=new ModelNote();
-		$notes=$mn->getNotesByUserId($uid,$notesNum);
-		return array("Notes"=>$notes,"Questions"=>$questions);
+		try{
+			$dq=new Recommend();
+			$questions=$dq->recommendByUId($uid,User::recommendDate,$qnum);
+		
+			if(count($questions)<=0)
+			{
+				$questions=QBasic::hotQuestion($qnum);
+			}
+
+			$mn=new ModelNote();
+			$notes=$mn->getNotesByUserId($uid,$notesNum);
+			return array("Notes"=>$notes,"Questions"=>$questions);
+		}
+		catch (Exception $e)
+		{
+			return array("Notes"=>[],"Questions"=>[]);
+		}
 	}
 }
 

@@ -11,8 +11,7 @@ use App\Domain\Question\Basic;
 use App\Model\Question\Search as ModelSearchQ;
 use App\Domain\Behavior\Statistics as ModelStatistics;
 /**
- * 默认接口服务类
- * @author: dogstar <chanzonghuang@gmail.com> 2014-10-04
+ * 测试接口
  */
 class Site extends Api {
     public function getRules() {

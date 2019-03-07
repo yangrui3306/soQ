@@ -13,9 +13,7 @@ use App\Common\Match;
 class Note extends NotORM
 {
 
-	/* --------------      数据库查询      ----------------- */
-
-    protected function getTableName()
+    protected function getTableName($id)
     {
         return 'note';
     }
@@ -31,8 +29,8 @@ class Note extends NotORM
             ->where('UserId', $userid)
             ->order("Id DESC");
         if ($num > 0) {
-                $notes = $notes->limit($num);
-            }
+            $notes = $notes->limit($num);
+        }
         return $notes;
     }
 
@@ -68,45 +66,53 @@ class Note extends NotORM
         $s = Match::AllWordMatch($keys);
         return $this->getORM()->where("UserId", $uid)->where("(Content,Headline) LIKE ?", $s)
             ->order("Id DESC")->fetchAll();
-		}
+    }
 
-		/**
+    /**
 		 * 获取笔记数量
 		 */
-		public function getCount(){
-			$model = $this -> getORM();
-			return $model -> count("Id");
-		}
+    public function getCount()
+    {
+        $model = $this->getORM();
+        return $model->count("Id");
+    }
 
-		/**
+    /**
 		 * 获取当前页的数据
 		 * @param begin  开始位置
 		 * @param length 获取数量
 		 */
-		public function getByLimit($begin, $length){
-			$model = $this -> getORM();
-			return $model -> limit($begin, $length) -> fetchAll();
-		}
-		
+    public function getByLimit($begin, $length)
+    {
+        $model = $this->getORM();
+        return $model->limit($begin, $length)->fetchAll();
+    }
 
-		/* --------------      数据库插入      ----------------- */
 
-		public function insertOne($data){
-			$model = $this -> getORM();
-			return $model -> insert($data);
-		}
+    /* --------------      数据库插入      ----------------- */
 
-		/* --------------      数据库更新      ----------------- */
+    public function insertOne($data)
+    {
+        $orm = $this->getORM();
+		$orm->insert($data);
 
-		public function updateOne($data){
-			$model = $this -> getORM();
-			return $model -> where('Id', $data['Id']) -> update($data);
-		}
+		// 返回新增的ID（注意，这里不能使用连贯操作，因为要保持同一个ORM实例）
+		return $orm->insert_id();
+    }
 
-		/* --------------      数据库删除      ----------------- */
+    /* --------------      数据库更新      ----------------- */
 
-		public function deleteOne($nid){
-			$model = $this -> getORM();
-			return $model -> where('Id', $uid) -> delete();
-		}
+    public function updateOne($data)
+    {
+        $model = $this->getORM();
+        return $model->where('Id', $data['Id'])->update($data);
+    }
+
+    /* --------------      数据库删除      ----------------- */
+
+    public function deleteOne($id)
+    {
+        $model = $this->getORM();
+        return $model->where('Id', $id)->delete();
+    }
 }

@@ -24,4 +24,11 @@ class Category extends NotORM {
             ->select('*')
             ->fetchAll();
     }
+    /**
+     * 根据分类Id获取分类信息
+     */
+    public function getCategoryById($id)
+    {
+        return $this->getORM()->where("Id",$id)->fetchOne();
+    }
 }

@@ -30,7 +30,7 @@ class MyStandard {
 	 * @param msg   返回信息,
 	 * @param data  返回的数据
 	 */
-	public static function gReturn($state = 1, $data = null, $msg = ''){
+	public static function gReturn($state = 0, $data = null, $msg = ''){
 		return array(
 			'code' => $state,
 			'msg'   => $msg,

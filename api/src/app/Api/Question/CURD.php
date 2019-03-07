@@ -15,8 +15,8 @@ use App\Model\Question\Search as ModelSearchQ;
 use App\Domain\Behavior\Statistics as ModelStatistics;
 
 /**
- * 数据库CURD基本操作示例
- * @author dogstar 20170612
+ * 题目的CURD基本操作示例
+ * @author goodtimp 20190306
  */
 
 class CURD extends Api
@@ -36,6 +36,9 @@ class CURD extends Api
                 'Text' => array('name' => 'Text', 'require' => true, 'max' => 2000, 'desc' => '文本'),
                 'Num' => array('name' => 'Num', 'desc' => '匹配n个')
             ),
+            'getById'=>array(
+                'Id'=>array('name' => 'Id', 'require' => true,'min='=>1,'desc' => '题目Id'),
+            )
 
         );
     }
@@ -64,10 +67,25 @@ class CURD extends Api
         return MyStandard::gReturn(0, $rs);
     }
 
+    /**
+     * 搜索题目
+     * @desc 匹配题目
+     * @return 题目信息
+     */
     public function search()
     {
         $q = array('Text' => $this->Text);
         $reslut = DomainBasic::searchQuestion($q, 3); //查找前三个
         return MyStandard::gReturn(0, $reslut);
+    }
+    /**
+     * 通过Id得到题目
+     * @desc 通过Id得到相应题目信息
+     */
+    public function getById()
+    {
+        $mq=new DomainBasic();
+        $re=$mq::findQuestionById($this->Id);
+        return MyStandard::gReturn(0,$re);
     }
 }

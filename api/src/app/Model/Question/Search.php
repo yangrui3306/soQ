@@ -35,6 +35,13 @@ class Search extends NotORM
       ->fetchAll();
     return $q ? $q[0] : null;
   }
+
+/**查找最热门的几道题目 */
+public function getHotQuesion($num)
+{
+  $q=$this->getORM()
+  ->order("CollectNumber DESC")->limit($num)->fetchAll();
+}
   /**根据题目Id的数组，得到question的数组 */
   public function getQuestionsByIdarr($idarr)
   {
@@ -81,7 +88,9 @@ class Search extends NotORM
   {
     $mcollection = new ModelCollection();
     if ($questions == null) $questions = $this->getORM();
-    $idarr = $mcollection->getCollectionsByUserId($uid);
+    $idarr = $mcollection->getCollectionQuestionsByUserId($uid);
+    
+
     return $questions->where('NOT Id', $idarr);
   }
   /**

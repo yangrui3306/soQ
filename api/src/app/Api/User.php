@@ -6,7 +6,7 @@ use App\Common\MyStandard;
 use App\Common\GD;
 
 /**
- * 用户模块接口服务
+ * 用户
  */
 class User extends Api {
 	
@@ -33,6 +33,11 @@ class User extends Api {
 				'Name' => array('name' => 'name', 'require' => true, 'min' => 1, 'max' => 50, 'desc' => '用户名'),
 			),
 			'getUid' => array(),
+			'getRecommend'=>array(
+				'uid'  => array('name' => 'uid',  'desc' => '用户id'),
+				'ncnt'  => array('name' => 'notenumber', 'default'=>3, 'desc' => '笔记'),
+				'qcnt'=>array('name'=> 'questionnumber',  'default'=>5,'desc' => '题目')
+			)
 		);
 	}
 
@@ -53,7 +58,7 @@ class User extends Api {
 
 	/**
 	 * 用户登录
-	 * 
+	 * @desc 用户登录
 	 * @return array(
 	 * 	code 状态码
 	 * 	msg  返回信息
@@ -74,7 +79,9 @@ class User extends Api {
 	}
 
 	/**
-	 * 用户注册接口
+	 * 用户注册
+	 * @desc 用户注册
+	 
 	 */
 	public function add(){
 		$user = array(
@@ -99,9 +106,11 @@ class User extends Api {
 		return $returnRule -> getReturn(1, $res['msg'], 'token');
 	}
 
-	/**
-	 * 通过用户名获取用户信息
-	 */
+	 /**
+   * 通过用户名获取用户信息
+   * @desc 通过用户名获取用户信息
+   */
+	
 	public function getUser(){
 		$name = $this -> Name;
 		$domain = new Domain();
@@ -112,14 +121,19 @@ class User extends Api {
 		}
 		return $returnRule -> getReturn(1, $res['msg'], $res['data']);
 	}
+	 /**
+   * 用户主页推荐
+   * @desc 用户主页推荐,笔记和题目
+	 * @return ["Notes"=>[···],"Questions"=>[···]]
+   */
 
-	/**
-	 * 用户主页推荐
-	 */
 	public function getRecommend()
 	{
+		$uid=$this->uid;
+		$ncnt=$this->ncnt;
+		$qcnt=$this->qcnt;
 		$du=new Domain();
-		$re=$du->getIndexRecommend($uid);
+		$re=$du->getIndexRecommend($uid,$ncnt,$qcnt);
 		return MyStandard::gReturn(0,$re);
 	}
 
@@ -128,12 +142,14 @@ class User extends Api {
 	 */
 	public function getOnline(){
 		$domain = new Domain();
+		$returnRule = new MyStandard();
 		$count = $domain -> getOnlineByToken();
 		return $returnRule -> getReturn(1, '', $count);
 	}
 
 	/**
 	 * 获取所有用户ID
+	 * @desc 获取所有用户ID
 	 */
 	public function getUid(){
 		$domain = new Domain();

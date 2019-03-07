@@ -13,7 +13,7 @@ use App\Common\Match;
 class Note extends NotORM
 {
 
-    protected function getTableName()
+    protected function getTableName($id)
     {
         return 'note';
     }
@@ -29,8 +29,8 @@ class Note extends NotORM
             ->where('UserId', $userid)
             ->order("Id DESC");
         if ($num > 0) {
-                $notes = $notes->limit($num);
-            }
+            $notes = $notes->limit($num);
+        }
         return $notes;
     }
 

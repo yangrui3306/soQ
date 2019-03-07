@@ -16,7 +16,7 @@ use PhalApi\Exception;
 class Basic
 {
   /**
-   * 查找题目
+   * 匹配题目
    * @param $q 必须含有Text键
    */
   public static function searchQuestion($q,$num=3)
@@ -25,5 +25,19 @@ class Basic
     $mq=new ModelSearchQ();
     $qs=$mq->mGetQuestionsByKeyWord($keys,$num*2);
     return CommonMatch::qLevenShtein($q,$qs,$num);
+  }
+  /**推荐热门的题目 */
+  public static function hotQuestion($num=5)
+  {
+    $mq=new ModelSearchQ();
+    return $mq->getHotQuesion($num);
+  }
+  /**
+   * 根据Id查找题目
+   */
+  public static function findQuestionById($id)
+  {
+    $q=QTools::getQuestionViewById($id);
+    return $q;
   }
 }

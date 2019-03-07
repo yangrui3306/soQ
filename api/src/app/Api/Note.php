@@ -9,6 +9,10 @@ use App\Domain\Behavior\Statistics as ModelStatistics;
 use App\Model\Notecategory as ModelNoteCategory;
 use App\Domain\Note as DomainNote;
 
+/**
+ * 笔记
+ * @author: goodtimp 2019-03-06
+ */
 class Note extends Api
 {
   public function getRules()
@@ -44,6 +48,7 @@ class Note extends Api
     $dn=new DomainNote();
     
     $re=$dn->getNotesByKeywords($uid,$this->key);
+ 
     return MyStandard::gReturn(0,$re);
   }
 

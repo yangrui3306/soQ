@@ -47,12 +47,12 @@ class Recommend
   public function recommendByUId($uid,$date=-1,$num=0)
   {
     $ds=new Statistics();
-    $keys=$$ds->getStatisticsBehavior($uid,$date,$num);
+    $keys=$ds->getStatisticsBehavior($uid,$date,$num);
 
     $mquestion = new ModelSearchQ();
     $qs=QTools::deleteQuestionsForUser($uid);//去除用户操作部分
 
-    $questions = $mquestion->mGetQuestionsByKeyWord($keys,0,$qs); //关键字匹配相应题目
+    $questions = $mquestion->mGetQuestionsByKeyWord($keys,$num,$qs); //关键字匹配相应题目
     return $questions;
    }
 }

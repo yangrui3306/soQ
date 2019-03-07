@@ -7,10 +7,8 @@
 namespace App\Domain\Question;
 
 use App\Model\Question\Search as ModelSearchQ;
-use App\Common\ModelCommon as ModelCommon;
-use App\Model\KeyWord as ModelKeyWord;
-use App\Common\Tools as Tools;
-use App\Common\Match as CommonMatch;
+use App\Model\Category as ModelCategory;
+use App\Model\KeyWord as ModelKeyWords;
 use PhalApi\Exception;
 
 class QTools
@@ -50,5 +48,18 @@ class QTools
 
     $questions=$mquestion->mGetNotUserCollect($uid,$qs);
     return $questions;
+  }
+  /**获取可显示的题目信息(将categoryId换成name等) */
+  public static function getQuestionViewById($id)
+  {
+    $mq=new ModelSearchQ();
+    $mc=new ModelCategory();
+    $mk=new ModelKeyWords();
+
+    $q=$mq->getQuestionById($id);
+    $q["Category"]=$mc->getCategoryById($q["CategoryId"]);
+
+    $q["Words"]=$mk->gesKeyWordsByIds($q["KeyWords"]);
+    return $q;
   }
 }

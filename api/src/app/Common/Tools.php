@@ -115,4 +115,12 @@ class  Tools
     return $reslut;
   }
   
+  /**懒加载计算数据查找条数范围 
+   * @param pag 页数
+   * @param num 每一页数量
+  */
+  public static function getPageRange($pag,$num)
+  {
+    return ($pag-1)*$num;
+  }
 }

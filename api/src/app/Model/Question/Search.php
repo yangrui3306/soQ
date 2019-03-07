@@ -88,7 +88,9 @@ public function getHotQuesion($num)
   {
     $mcollection = new ModelCollection();
     if ($questions == null) $questions = $this->getORM();
-    $idarr = $mcollection->getCollectionsByUserId($uid);
+    $idarr = $mcollection->getCollectionQuestionsByUserId($uid);
+    
+
     return $questions->where('NOT Id', $idarr);
   }
   /**

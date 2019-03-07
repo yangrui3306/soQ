@@ -4,6 +4,7 @@ namespace App\Domain;
 use App\Model\Behavior\Basic as ModelBehavior;
 use App\Model\Mistake as ModelMistake;
 use App\Model\MistakeCategory as ModelMCategory;
+use App\Common\Tools;
 class Mistake {
   
   /**得到用户所有分类信息 */
@@ -40,18 +41,21 @@ class Mistake {
   /**根据题目Id查找错题（按热度排序）
    * @param num 数量
    */
-  public function getMistakeByQuestionId($qid,$num=5)
+  public function getMistakeByQuestionId($qid,$page=1,$num=5)
   {
     $mm=new ModelMistake();
-    return $mm->getMistakeByQId($qid,$num);
+    $min=Tools::getPageRange($page,$num);
+    
+    return $mm->getMistakeByQId($qid,$min,$num);
   }
   /**根据用户Id查找所有错题（按时间排序）
    * @param num 数量
    */
-  public function getMistakeByUserId($uid,$num=5)
+  public function getMistakeByUserId($uid,$page=1,$num=5)
   {
     $mm=new ModelMistake();
-    return $mm->getMistakeByUId($uid,$num);
+    $min=Tools::getPageRange($page,$num);
+    return $mm->getMistakeByUId($uid,$min,$num);
   }
 /**点赞
  * @param data {"MistakeId","UserId","QuestionId"}

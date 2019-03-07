@@ -53,7 +53,7 @@ class User
 		return array(
 			'code' => 1,
 			'msg'  => "登录数据库验证成功!",
-			'data' => $user['Id'],
+			'data' => $user,
 		);
 	}
 

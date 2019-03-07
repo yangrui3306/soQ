@@ -4,7 +4,7 @@ use PhalApi\Api;
 use App\Common\MyStandard;
 use App\Domain\School as Domain;
 /**
- * 错题整理部分
+ * 学校部分
  */
 class School extends Api{
 

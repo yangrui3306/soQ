@@ -6,12 +6,7 @@ use App\Common\MyStandard;
 use App\Common\GD;
 
 /**
-<<<<<<< HEAD
  * 用户
-=======
- * 用户模块接口服务
- * @author ipso
->>>>>>> d2f26e5e615bf8e8803e5656fec2a715f0aa83e1
  */
 class User extends Api {
 	
@@ -27,7 +22,7 @@ class User extends Api {
 				// 'Age'      => array('name' => 'age', 'type' => 'int', 'desc' => '年龄', 'source' => 'post'),
 				'Sex'           => array('name' => 'sex', 'enum', 'range' => array('female', 'male'), 'source' => 'post'),
 				'Phone'         => array('name' => 'phone', 'require' => true, 'desc' => '用户电话', 'source' => 'post'),
-				'Class'         => array('name' => 'class', 'desc' => '用户年级', 'source' => 'post'),
+				'MClass'         => array('name' => 'class', 'desc' => '用户年级', 'source' => 'post'),
 				'School'        => array('name' => 'school', 'desc' => '用户学校', 'source' => 'post'),
 				'Address'       => array('name' => 'address', 'desc' => '用户地址', 'source' => 'post'),
 				'Intro'         => array('name' => 'intro', 'desc' => '用户简介', 'source' => 'post'),
@@ -40,8 +35,8 @@ class User extends Api {
 			'getUid' => array(),
 			'getRecommend'=>array(
 				'uid'  => array('name' => 'uid',  'desc' => '用户id'),
-				'ncnt'  => array('name' => 'notenumber', 'default'=>3, 'desc' => '笔记'),
-				'qcnt'=>array('name'=> 'questionnumber',  'default'=>5,'desc' => '题目')
+				'ncnt'  => array('name' => 'notenumber', 'default'=>3, 'desc' => '显示笔记数量'),
+				'qcnt'=>array('name'=> 'questionnumber',  'default'=>6,'desc' => '每页显示题目数量'),
 			)
 		);
 	}
@@ -75,12 +70,12 @@ class User extends Api {
 		$pass = $this -> Password;
 		$domain = new Domain();
 		$res = $domain -> login($username, $pass);
-
+	
 		$returnRule = new MyStandard();
 		if($res['code'] == 0){
-			return $returnRule -> getReturn(0, $res['msg']);
+			return $returnRule -> getReturn(1, $res['msg']);
 		}
-		return $returnRule -> getReturn(1, $res['msg'], 'token');
+		return $returnRule -> getReturn(0, $res, 'token');
 	}
 
 	/**
@@ -94,7 +89,7 @@ class User extends Api {
 			'Password'      => $this -> Password,
 			'Sex'           => $this -> Sex,
 			'Phone'         => $this -> Phone,
-			'Class'         => $this -> Class,
+			'Class'         => $this -> MClass,
 			'School'        => $this -> School,
 			'Address'       => $this -> Address,
 			'Intro'         => $this -> Intro,
@@ -106,9 +101,9 @@ class User extends Api {
 		$domain = new Domain();
 		$res = $domain -> add($user);
 		if($res['code'] == 0){
-			return $returnRule -> getReturn(0, $res['msg']);
+			return $returnRule -> getReturn(1, $res['msg']);
 		}
-		return $returnRule -> getReturn(1, $res['msg'], 'token');
+		return $returnRule -> getReturn(0, $res['msg'], 'token');
 	}
 
 	 /**
@@ -122,9 +117,9 @@ class User extends Api {
 		$returnRule = new MyStandard();
 		$res = $domain -> getUserByName($name);
 		if($res['code'] == 0){
-			return $returnRule -> getReturn(0, $res['msg']);
+			return $returnRule -> getReturn(1, $res['msg']);
 		}
-		return $returnRule -> getReturn(1, $res['msg'], $res['data']);
+		return $returnRule -> getReturn(0, $res['msg'], $res['data']);
 	}
 	 /**
    * 用户主页推荐
@@ -137,6 +132,7 @@ class User extends Api {
 		$uid=$this->uid;
 		$ncnt=$this->ncnt;
 		$qcnt=$this->qcnt;
+	
 		$du=new Domain();
 		$re=$du->getIndexRecommend($uid,$ncnt,$qcnt);
 		return MyStandard::gReturn(0,$re);

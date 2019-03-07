@@ -6,7 +6,12 @@ use App\Common\MyStandard;
 use App\Common\GD;
 
 /**
+<<<<<<< HEAD
  * 用户
+=======
+ * 用户模块接口服务
+ * @author ipso
+>>>>>>> d2f26e5e615bf8e8803e5656fec2a715f0aa83e1
  */
 class User extends Api {
 	

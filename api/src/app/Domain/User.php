@@ -164,7 +164,7 @@ class User
 
 	/**
 	 * 用户主页推荐
-		根据用户最近30天的行为记录推荐题目(默认5道)，和最近三条笔记内容。
+	 * 根据用户最近30天的行为记录推荐题目(默认5道)，和最近三条笔记内容。
 	 */
 
 	public function getIndexRecommend($uid,$notesNum=3,$qnum=5)

@@ -13,7 +13,13 @@ use App\Common\Match;
 class Note extends NotORM
 {
 
+<<<<<<< HEAD
     protected function getTableName($id)
+=======
+	/* --------------      数据库查询      ----------------- */
+
+    protected function getTableName()
+>>>>>>> d2f26e5e615bf8e8803e5656fec2a715f0aa83e1
     {
         return 'note';
     }
@@ -49,7 +55,7 @@ class Note extends NotORM
     /**
      * 根据分类Id查找笔记
 		 * @param cateid 分类id
-         * @param num 获取前几个
+     * @param num 获取前几个
      */
     public function getNotesByCateId($cateid, $num = 0)
     {
@@ -66,5 +72,50 @@ class Note extends NotORM
         $s = Match::AllWordMatch($keys);
         return $this->getORM()->where("UserId", $uid)->where("(Content,Headline) LIKE ?", $s)
             ->order("Id DESC")->fetchAll();
+<<<<<<< HEAD
     }
 }
+=======
+		}
+
+		/**
+		 * 获取笔记数量
+		 */
+		public function getCount(){
+			$model = $this -> getORM();
+			return $model -> count("Id");
+		}
+
+		/**
+		 * 获取当前页的数据
+		 * @param begin  开始位置
+		 * @param length 获取数量
+		 */
+		public function getByLimit($begin, $length){
+			$model = $this -> getORM();
+			return $model -> limit($begin, $length) -> fetchAll();
+		}
+		
+
+		/* --------------      数据库插入      ----------------- */
+
+		public function insertOne($data){
+			$model = $this -> getORM();
+			return $model -> insert($data);
+		}
+
+		/* --------------      数据库更新      ----------------- */
+
+		public function updateOne($data){
+			$model = $this -> getORM();
+			return $model -> where('Id', $data['Id']) -> update($data);
+		}
+
+		/* --------------      数据库删除      ----------------- */
+
+		public function deleteOne($nid){
+			$model = $this -> getORM();
+			return $model -> where('Id', $uid) -> delete();
+		}
+}
+>>>>>>> d2f26e5e615bf8e8803e5656fec2a715f0aa83e1

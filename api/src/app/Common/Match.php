@@ -5,6 +5,7 @@
  * @time : 2019-3-1
  */
 namespace App\Common;
+
 use App\Common\Tools as Tools;
 
 class Match
@@ -38,7 +39,7 @@ class Match
         $dif[$i][$j] = min($dif[$i - 1][$j - 1] + $temp, $dif[$i][$j - 1] + 1, $dif[$i - 1][$j] + 1);
       }
     }
-    $similarity = 1 -  $dif[$len1][$len2] * 1.0 / max(strlen($str1), strlen($str2),1);
+    $similarity = 1 -  $dif[$len1][$len2] * 1.0 / max(strlen($str1), strlen($str2), 1);
     return $similarity;
   }
 
@@ -48,22 +49,22 @@ class Match
    * @param $n 前n个相似度最大的
    * @return 前n个题目数组，若输入数组数量不够n直接输出
    */
-  public static function qLevenShtein($q, $qs, $num=3)
+  public static function qLevenShtein($q, $qs, $num = 3)
   {
     //排序
     $reslut = array();
     $leven = array();
     foreach ($qs as $mq) {
       $re = Match::levenShtein($q["Text"], $mq["Text"]);
-     
+
       for ($i = 0; $i < count($reslut); $i++) {
         if ($leven[$i] < $re) break;
       }
-      Tools::insertArray($reslut, $i, $mq); 
+      Tools::insertArray($reslut, $i, $mq);
       Tools::insertArray($leven, $i, $re); //向 $temp 的$i下标处插入$cnt数据
     }
     if (count($qs) <= $num) return $reslut;
-    return array_slice($reslut,0,$num);
+    return array_slice($reslut, 0, $num);
   }
   /**
    * 关键字匹配，输入关键字输出为可用户数据库模糊查找的字符串
@@ -72,11 +73,13 @@ class Match
    */
   public static function AllWordMatch($keys)
   {
-    $s="%";
-    for($i=0;$i<strlen($keys);$i++)
-    {
-        $s=$s+$keys[$i]+"%";
-    }
+    $s = "%";
+    $arr=Tools::chToArray($keys);
+   
+    for ($i = 0; $i < count($arr); $i++) {
+        $s = $s . $arr[$i] . "%";
+      }
     return $s;
   }
+
 }

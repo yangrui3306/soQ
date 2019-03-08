@@ -78,7 +78,7 @@ class User extends Api {
 		if($res['code'] == 0){
 			return $returnRule -> getReturn(1, $res['msg']);
 		}
-		return $returnRule -> getReturn(0, $res, $code['pic']);
+		return $returnRule -> getReturn(0, '登录成功',$res['data']);
 	}
 
 	/**
@@ -89,7 +89,7 @@ class User extends Api {
 	public function add(){
 		$user = array(
 			'Name'          => $this -> Name,
-			'Password'      => $this -> Password,
+			'Password'      => md5($this -> Password),
 			'Sex'           => $this -> Sex,
 			'Phone'         => $this -> Phone,
 			'Class'         => $this -> MClass,

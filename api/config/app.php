@@ -9,23 +9,34 @@
 
 return array(
 		
-		/**
+	/**
   * 应用接口层的统一参数
   */
-//  'apiCommonRules' => array(
-//      'signSoQ' => array('name' => 'signature', 'require' => true),
-//  ),
+ 'apiCommonRules' => array(
+     'sign' => array('name' => 'sign', 'require' => true),
+ ),
 
     /**
      * 接口服务白名单，格式：接口服务类名.接口服务方法名
-     *
-     * 示例：
-     * - *.*         通配，全部接口服务，慎用！
-     * - Site.*      Api_Default接口类的全部方法
-     * - *.Index     全部接口类的Index方法
-     * - Site.Index  指定某个接口服务，即Api_Default::Index()
+     * @author ipso
      */
     'service_whitelist' => array(
-        'Site.Index',
+				'Collection.*',
+				'Focus.*',
+				'Like.*',
+				'Mistake.*',
+				'Note.*',
+				'QCategory.*',
+				'School.*',
+				'Site.*',
+				'User.getCode',
+				'User.add',
+				'User.getUser',
+				'User.getUid',
+				'User.getRecommend',
+				// 以命名空间名称为key
+        // 'App' => array(
+        //     'app.service_whitelist.{"App\Api\Question"}'
+        // ),
     ),
 );

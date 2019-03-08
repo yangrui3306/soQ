@@ -11,27 +11,30 @@ class SignFilter implements Filter{
 	 * @param sign 接入方签名
 	 */
 	public function check(){
-		$allParams = \PhalApi\DI()->request->getAll();
+		$allParam = \PhalApi\DI()->request->getAll(); // 获取接口所有参数
 		$sign = \PhalApi\DI()->request->get('sign');
 		
-
-		$sign = isset($allParams['sign']) ? $allParams['sign'] : '';
-    unset($allParams['sign']);
+		// 排除签名参数
+		$sign = isset($allParam['sign']) ? $allParam['sign'] : '';
+		unset($allParam['sign']);
+		unset($allParam['s']);
+		unset($allParam['service']);
 
 		// 将所有参数排序并接成字符串
-		ksort($params);
+		ksort($allParam);
     $paramsStrExceptSign = '';
-    foreach ($params as $val) {
+    foreach ($allParam as $val) {
         $paramsStrExceptSign .= $val; 
 		}
-		$str = strtoupper('soq'.$paramsStrExceptSign.'soq');
+		$str     = strtoupper('soq'.$paramsStrExceptSign.'soq');
 		$pubSign = md5($str);
-		// 
 		
-    $serverSign = md5($str);
+		// api端密匙
+		$serverSign = md5('api_'.$pubSign.'_api');
+		$userSign   = md5('api_'.$sign.'_api');
 
-    if ($sign != $serverSign) {
-        throw new BadRequestException('签名失败', 1);
+    if ($userSign != $serverSign) {
+        throw new BadRequestException($paramsStrExceptSign, 1);
     }
 	}
 }

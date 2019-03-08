@@ -54,8 +54,23 @@ class User extends NotORM {
 			$model = $this -> getORM();
         return $model->select('*')
           ->where('Id',$id)
-          ->fetchAll();
+          ->fetchOne();
 		}
+		/**将数组中UserId字段更改为User
+		 * 
+		 */
+		public function replaceUserId(&$data)
+		{
+			for($i=0;$i<count($data);$i++)
+			{
+				if(array_key_exists("UserId",$data[$i]))
+				{
+					$data[$i]["User"]=$this->getUserById($data[$i]["UserId"]);
+				}
+			}
+			return $data;
+		}
+
 		
 		/* -----------------   数据库插入操作   ------------------- */
 

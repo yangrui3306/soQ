@@ -8,13 +8,13 @@
  */
 
 return array(
-
-    /**
-     * 应用接口层的统一参数
-     */
-    'apiCommonRules' => array(
-        //'sign' => array('name' => 'sign', 'require' => true),
-    ),
+		
+		/**
+  * 应用接口层的统一参数
+  */
+//  'apiCommonRules' => array(
+//      'signSoQ' => array('name' => 'signature', 'require' => true),
+//  ),
 
     /**
      * 接口服务白名单，格式：接口服务类名.接口服务方法名

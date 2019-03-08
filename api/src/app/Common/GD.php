@@ -64,7 +64,7 @@ class GD {
         $letter      = substr($codeDataSource, mt_rand(0,strlen($codeDataSource) - 1),1);
         $code .= $letter;
         // 每个验证码之间的间隔
-        $x     = ($i*$width/4) + rand(5,10);
+        $x     = ($i*$width/$num) + rand(2,5);
         $y     = rand(18,28);
         imagettftext($canvas, $fontSize, 0, $x, $y, $fontColor, $fontStyle, $letter);
     }

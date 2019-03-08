@@ -8,24 +8,30 @@ class SignFilter implements Filter{
 
 	/**
 	 * 检查签名信息
-	 * @param token 用户token
+	 * @param sign 接入方签名
 	 */
 	public function check(){
-
-		$signature = \PhalApi\DI()->request->get('signature');
-    $timestamp = \PhalApi\DI()->request->get('timestamp');
-		$nonce = \PhalApi\DI()->request->get('nonce');
+		$allParams = \PhalApi\DI()->request->getAll();
+		$sign = \PhalApi\DI()->request->get('sign');
 		
-		$token = new Token();
-		$token = $token;
 
-		$tmpArr = array($token, $timestamp, $nonce);
-    sort($tmpArr, SORT_STRING);
-    $tmpStr = implode( $tmpArr );
-    $tmpStr = sha1( $tmpStr );
+		$sign = isset($allParams['sign']) ? $allParams['sign'] : '';
+    unset($allParams['sign']);
 
-    if ($tmpStr != $signature) {
-        throw new BadRequestException('wrong sign', 1);
+		// 将所有参数排序并接成字符串
+		ksort($params);
+    $paramsStrExceptSign = '';
+    foreach ($params as $val) {
+        $paramsStrExceptSign .= $val; 
+		}
+		$str = strtoupper('soq'.$paramsStrExceptSign.'soq');
+		$pubSign = md5($str);
+		// 
+		
+    $serverSign = md5($str);
+
+    if ($sign != $serverSign) {
+        throw new BadRequestException('签名失败', 1);
     }
 	}
 }

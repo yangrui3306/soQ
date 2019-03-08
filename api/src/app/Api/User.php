@@ -37,7 +37,8 @@ class User extends Api {
 				'uid'  => array('name' => 'uid',  'desc' => '用户id'),
 				'ncnt'  => array('name' => 'notenumber', 'default'=>3, 'desc' => '显示笔记数量'),
 				'qcnt'=>array('name'=> 'questionnumber',  'default'=>6,'desc' => '每页显示题目数量'),
-			)
+			),
+			'getCode' => array(),
 		);
 	}
 
@@ -51,7 +52,7 @@ class User extends Api {
 			$img = $gd -> getUserVerificationCodeRandom(4);
 			$logo = $gd -> getUserDefaultAvatarByName("Dpso");
 			$return = new MyStandard();
-			$res = $return -> getReturn(1,"获取成功",$logo);
+			$res = $return -> getReturn(1,"获取成功",$img);
 			return $res;
 	}
 
@@ -71,11 +72,13 @@ class User extends Api {
 		$domain = new Domain();
 		$res = $domain -> login($username, $pass);
 	
+		$gd = new GD();
+		$code = $gd -> getUserVerificationCodeRandom(5);
 		$returnRule = new MyStandard();
 		if($res['code'] == 0){
 			return $returnRule -> getReturn(1, $res['msg']);
 		}
-		return $returnRule -> getReturn(0, $res, 'token');
+		return $returnRule -> getReturn(0, $res, $code['pic']);
 	}
 
 	/**
@@ -157,5 +160,16 @@ class User extends Api {
 		$uid = $domain -> getUid();
 		$returnRule = new MyStandard();
 		return $returnRule -> getReturn(0, '', $uid);
+	}
+
+
+	/**
+	 * 获取验证码
+	 */
+	public function getCode(){
+		$gd = new GD();
+		$returnRule = new MyStandard();
+		$code = $gd -> getUserVerificationCodeRandom(5);
+		return $returnRule -> getReturn(0, '', $code);
 	}
 } 

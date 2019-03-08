@@ -19,7 +19,7 @@ use App\Domain\Behavior\Statistics as ModelStatistics;
  * @author goodtimp 20190306
  */
 
-class CURD extends Api
+class Question extends Api
 {
 
     public function getRules()

@@ -43,7 +43,7 @@ class Note extends NotORM
         return $this->getORM()
             ->select('*')
             ->where('Id', $id)
-            ->fetchAll();
+            ->fetchOne();
     }
 
     /**
@@ -51,11 +51,13 @@ class Note extends NotORM
 		 * @param cateid 分类id
      * @param num 获取前几个
      */
-    public function getNotesByCateId($cateid, $start = 0, $num = 0)
+    public function getNotesByCateId($cateid,$uid, $start = 0, $num = 0)
     {
         $res = $this->getORM()
-            ->select('*')
-            ->where('NoteCategoryId', $cateid)->order('Id DESC');
+                ->select('*')->where("UserId",$uid);
+        if($cateid!=0)
+            $res = $res->where('NoteCategoryId', $cateid);
+        $res=$res->order('Id DESC');
         if ($num == 0) return $res->fetchAll();
         else return $res->limit($start, $num)->fetchAll();
     }
@@ -64,16 +66,17 @@ class Note extends NotORM
     public function getNotesByKeywords($uid, $keys)
     {
         $s = Match::AllWordMatch($keys);
-       
+
         $re = $this->getORM()->where("UserId", $uid);
-       
-        return $re->where("Content LIKE ? or Headline LIKE ?", $s,$s)
-        ->order("Id DESC")->fetchAll();
+
+        return $re->where("Content LIKE ? or Headline LIKE ?", $s, $s)
+            ->order("Id DESC")->fetchAll();
     }
     /**统计用户笔记数量 */
-    public function getCountByUserId($uid){
+    public function getCountByUserId($uid)
+    {
         $model = $this->getORM();
-        return $model->where("UserId",$uid)->count("Id");
+        return $model->where("UserId", $uid)->count("Id");
     }
     /**
 		 * 获取笔记数量
@@ -103,7 +106,7 @@ class Note extends NotORM
         $orm = $this->getORM();
         $data["DateTime"] = date('Y-m-d h:i:s', time());
         $orm->insert($data);
-      
+
         // 返回新增的ID（注意，这里不能使用连贯操作，因为要保持同一个ORM实例）
         return $orm->insert_id();
     }

@@ -43,6 +43,11 @@ class Collection extends NotORM
 		return $re->fetchAll();
 	}
 
+		/**判断用户是否收藏过某题目 */
+		public function judgeUserCollectionQuestion($uid,$qid){
+			$re=$this->getORM()->where("UserId",$uid)->where("QuestionId",$qid)->count();
+			return $re==0?false:true;
+		}
 	/* --------------   数据库插入   ---------------- */
 
 	public function insertOne($data)

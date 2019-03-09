@@ -56,7 +56,8 @@ class GD {
     /* 验证码设计 */
     $codeArr   = []; // 保存验证码，用来与用户验证码对比
     $code      = "";
-    $fontStyle = 'font/Exo-ExtraBold.ttf';
+    $fontStyle = 'font/Exo-ExtraBold.ttf'; 
+    //$fontStyle = 'soQ/api/public/font/Exo-ExtraBold.ttf';
     for($i = 0; $i < $num; $i++){
         $fontSize  = 20;
         $fontColor = ImageColorAllocate($canvas,10,10,10);

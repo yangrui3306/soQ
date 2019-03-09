@@ -35,9 +35,10 @@ class Basic
   /**
    * 根据Id查找题目
    */
-  public static function findQuestionById($id)
+  public static function findQuestionById($id,$uid=0)
   {
-    $q=QTools::getQuestionViewById($id);
+    $q=QTools::getQuestionViewById($id,$uid);
+  
     return $q;
   }
 }

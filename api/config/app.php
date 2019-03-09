@@ -22,6 +22,7 @@ return array(
      */
     'service_whitelist' => array(
 				'Collection.*',
+				'Question.*',
 				'Focus.*',
 				'Like.*',
 				'Mistake.*',

@@ -7,7 +7,7 @@ use App\Domain\Like as DomainLike;
 use App\Common\MyStandard;
 
 /**
- * 点赞 测试未通过
+ * 点赞
  * @author: goodtimp 2019-03-07
  */
 class Like extends Api
@@ -35,6 +35,7 @@ class Like extends Api
       'QuestionId' => $this->QuestionId,
       'MistakeId' => $this->MistakeId
     );
+    
     $dm = new DomainLike();
     $re = $dm->add($data, $this->StandTime);
     return MyStandard::gReturn(0, $re);

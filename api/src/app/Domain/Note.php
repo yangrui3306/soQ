@@ -13,14 +13,23 @@ class Note {
 		 * @param cateid 分类id
      * @param num 获取前几个
      */
-    public function getNotesByCateId($cateid,$page=0, $num = 0)
+    public function getNotesByCateId($cateid,$uid,$page=0, $num = 0)
     {
       $m=new ModelNote();
 		
 			$min=Tools::getPageRange($page,$num);
 			
-		  return $m->getNotesByCateId($cateid,$min,$num);
-    }
+		  return $m->getNotesByCateId($cateid,$uid,$min,$num);
+		}
+		/**根据Id得到某个笔记 */
+		public function getNoteById($id)
+		{
+			$m=new ModelNote();
+			$cm=new ModelCate();
+			$data=$m->getNoteById($id);
+			$data["Category"]=$cm->getNameById($data["NoteCategoryId"]);
+			return $data;
+		}
 
     /**根据关键字查找用户笔记 */
     public function getNotesByKeywords($uid, $keys)

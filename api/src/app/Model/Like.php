@@ -17,7 +17,7 @@ class Like extends NotORM
 
     protected function getTableName($id)
     {
-        return 'like';
+        return "`like`";//表名与关键字冲突已修改
     }
 
     /**
@@ -32,7 +32,11 @@ class Like extends NotORM
             ->fetchAll();
 		}
 		
-
+		/**判断用户是否点赞过某题目 */
+		public function judgeUserLikeQuestion($uid,$qid){
+			$re=$this->getORM()->where("UserId",$uid)->where("QuestionId",$qid)->count();
+			return $re==0?false:true;
+		}
 
 		/* --------------   数据库插入   ---------------- */
     

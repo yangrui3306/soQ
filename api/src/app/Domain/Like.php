@@ -10,7 +10,8 @@ class Like
 	public function add($data,$StandTime)
 	{
 		$lm=new ModelLike();
-		$id=$lm->insertOne($data);//添加收藏记录
+		$id=$lm->insertOne($data);//添加点赞记录
+		return $id;
 		if(!($id>0)) return 0;
 
 		if($data["MistakeId"]>0)// 增加相应点赞数量
@@ -24,7 +25,7 @@ class Like
 			$mm->likeQuestion($data["QuestionId"]);
 		}
 
-		$bm=new ModelBehavior();//添加收藏行为
+		$bm=new ModelBehavior();//添加点赞行为
 		$bd=array(
 			"UserId"=>$data["UserId"],
 			"Type"=>2,

@@ -15,11 +15,11 @@ use App\Model\Question\Search as ModelSearchQ;
 use App\Domain\Behavior\Statistics as ModelStatistics;
 
 /**
- * 题目的CURD基本操作示例
+ * 题目的基本操作示例
  * @author goodtimp 20190306
  */
 
-class CURD extends Api
+class Question extends Api
 {
 
     public function getRules()
@@ -37,6 +37,7 @@ class CURD extends Api
                 'Num' => array('name' => 'Num', 'desc' => '匹配n个')
             ),
             'getById'=>array(
+                'UserId'=>array('name'=>'UserId','default'=>0,'require'=>false,'desc'=>"用户id"),
                 'Id'=>array('name' => 'Id', 'require' => true,'min='=>1,'desc' => '题目Id'),
             )
 
@@ -85,7 +86,8 @@ class CURD extends Api
     public function getById()
     {
         $mq=new DomainBasic();
-        $re=$mq::findQuestionById($this->Id);
+
+        $re=$mq::findQuestionById($this->Id,$this->UserId);
         return MyStandard::gReturn(0,$re);
     }
 }

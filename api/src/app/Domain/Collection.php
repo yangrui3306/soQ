@@ -11,18 +11,27 @@ class Collection
 	{
 		$cm=new ModelCollection();
 		$id=$cm->insertOne($data);//添加收藏记录
-		if(!($id>0)) return 0;
+
+		$zan=true;
+		if($id==-1)
+			{
+				$cm->deleteOne($data);
+				$zan=false;//修改为减少收藏
+			}
+		if($id==0) return $id;
 
 		if($data["MistakeId"]>0)// 增加相应点赞数量
 		{
 			$mm=new ModelMistake();
-			$mm->collectionMistake($data["MistakeId"]);
+			$mm->collectionMistake($data["MistakeId"],$zan);
 		}
 		else if($data["QuestionId"]>0)
 		{
 			$mm=new ModelQuestion;
-			$mm->collectionQuestion($data["QuestionId"]);
+			$mm->collectionQuestion($data["QuestionId"],$zan);
 		}
+		if($id==-1) return $id;
+
 
 		$bm=new ModelBehavior();//添加收藏行为
 		$bd=array(

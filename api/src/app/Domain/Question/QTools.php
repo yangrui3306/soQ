@@ -10,6 +10,8 @@ use App\Model\Question\Search as ModelSearchQ;
 use App\Model\Category as ModelCategory;
 use App\Model\KeyWord as ModelKeyWords;
 use PhalApi\Exception;
+use App\Model\Collection as ModelCollection;
+use App\Model\Like as ModelLike;
 
 class QTools
 {
@@ -50,16 +52,26 @@ class QTools
     return $questions;
   }
   /**获取可显示的题目信息(将categoryId换成name等) */
-  public static function getQuestionViewById($id)
+  public static function getQuestionViewById($id,$uid=0)
   {
     $mq=new ModelSearchQ();
     $mc=new ModelCategory();
     $mk=new ModelKeyWords();
-
+   
     $q=$mq->getQuestionById($id);
     $q["Category"]=$mc->getCategoryById($q["CategoryId"]);
-
     $q["Words"]=$mk->gesKeyWordsByIds($q["KeyWords"]);
+    
+    $q["Like"]=false;
+    $q["Collection"]=false;
+    if($uid>0)
+    {
+      $ml=new ModelLike();
+      $mc=new ModelCollection();
+      $q["Like"]=$ml->judgeUserLikeQuestion($uid,$id);
+      $q["Collection"]=$mc->judgeUserCollectionQuestion($uid,$id);
+    }
+   
     return $q;
   }
 }

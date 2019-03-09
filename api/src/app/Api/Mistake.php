@@ -44,10 +44,19 @@ class Mistake extends Api
         'Number'  => array('name' => 'Number', 'default' => 5, 'desc' => '需要的数量'),
         'Page'=>array('name' => 'Page', 'default' => 1, 'desc' => '题目页数')
       ),
-      'getByUserId' => array(
-        'uid'  => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => '题目id'),
+      'getByCateId' => array(
+        'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
+        'MistakeCateId'  => array('name' => 'MistakeCateId', 'require' => true, 'min' => 1, 'desc' => '题目id'),
         'Number'  => array('name' => 'Number', 'desc' => '需要的数量'),
         'Page'=>array('name' => 'Page', 'default' => 1, 'desc' => '题目页数')
+      ),
+      'getMistake'=>array(
+        'Id' => array('name' => 'Id', 'require' => true, 'min' => 1, 'desc' => 'id'),
+      ),
+      'getByKeys'=>array(
+        'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
+				'MistakeCateId'   => array('name' => 'MistakeCateId', 'default'=>0, 'desc' => '分类Id'),
+				'key' => array('name' => 'keys', 'require' => true, 'min' => 1, 'max' => 50, 'desc' => '关键字'),
       ),
 
       //弃用 相应接口在Like与Collection文件中
@@ -67,6 +76,10 @@ class Mistake extends Api
       'getcate' => array(
         'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
       ),
+      'delete'=>array(
+        'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
+        'Id' => array('name' => 'Id', 'require' => true, 'min' => 1, 'desc' => 'id'),
+      )
     );
   }
   /**
@@ -127,12 +140,12 @@ class Mistake extends Api
      * @return 返回題目列表
      */
 
-  public function getByUserId()
+  public function getByCateId()
   {
     $num = $this->Number;
     $page=$this->Page;
     $dm = new DomainMistake();
-    $re = $dm->getMistakeByUserId($this->uid,$page, $num);
+    $re = $dm->getMistakeByUserId($this->UserId,$this->MistakeCateId,$page, $num);
     return MyStandard::gReturn(0, $re);
   }
 
@@ -165,6 +178,37 @@ class Mistake extends Api
     $userId = $this->UserId;
     $dm = new DomainMistake();
     $re = $dm->getCategory($userId);
+    return MyStandard::gReturn(0, $re);
+  }
+
+  /**
+   * 错题详情
+   */
+  public function getMistake()
+  {
+    $dm=new DomainMistake();
+    $re=$dm->getById($this->Id);
+    return MyStandard::gReturn(0, $re);
+  }
+  /**
+   * 根据关键字查找错题
+   */
+  public function getByKeys()
+	{
+		$dn = new DomainMistake();
+		$uid=$this->UserId;
+		$re = $dn->getByKeywords($uid, $this->MistakeCateId,$this->key);
+
+		return MyStandard::gReturn(0, $re);
+  }
+  
+  /**
+   * 错题删除
+   */
+  public function delete()
+  {
+    $dn = new DomainMistake();
+    $re=$dn->deleteMistake($this->UserId,$this->Id);
     return MyStandard::gReturn(0, $re);
   }
 }

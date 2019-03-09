@@ -77,11 +77,15 @@ class User extends NotORM {
 		/**
 		 * 增加一条用户记录
 		 * @param data 用户信息数组
+		 * @return 插入Id
 		 */
 		public function insertOne($data){
-			$model = $this -> getORM();
-			$sql = $model -> insert($data);
-			return $sql;
+			$orm = $this->getORM();
+        $data["DateTime"] = date('Y-m-d h:i:s', time());
+        $orm->insert($data);
+
+        // 返回新增的ID（注意，这里不能使用连贯操作，因为要保持同一个ORM实例）
+        return $orm->insert_id();
 		}
 
 		/* -----------------   数据库更新操作  -------------------- */

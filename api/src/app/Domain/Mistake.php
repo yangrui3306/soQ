@@ -4,9 +4,18 @@ namespace App\Domain;
 use App\Model\Behavior\Basic as ModelBehavior;
 use App\Model\Mistake as ModelMistake;
 use App\Model\MistakeCategory as ModelMCategory;
+use App\Model\Question\Basic as ModelQBasic;
 use App\Common\Tools;
+use App\Model\User as ModelUser;
 class Mistake {
   
+
+  /**根据错题关键字查找错题 */
+  public function getByKeywords($uid,$cid,$keys){
+    $mm=new ModelMistake();
+    return $mm->getMistakesByKeywords($uid,$cid,$keys);
+  }
+
   /**得到用户所有分类信息 */
   public function getCategory($uid)
   {
@@ -37,6 +46,24 @@ class Mistake {
     return $mm->updateMistake($data);
   }
 
+  /**错题Id */
+  public function getById($id)
+  {
+    $mm=new ModelMistake();
+    $data=$mm->getMistakeById($id);
+    
+    if($data["QuestionId"]>0)
+    {
+      $qm=new ModelQBasic();
+      $data["Question"]=$qm->getQuestionById($data["QuestionId"]);
+    }
+    if($data["UserId"]>0)
+    {
+      $qm=new ModelUser;
+      $data["User"]=$qm->getUserById($data["UserId"]);
+    }
+    return $data;
+  }
 
   /**根据题目Id查找错题（按热度排序）
    * @param num 数量
@@ -51,11 +78,11 @@ class Mistake {
   /**根据用户Id查找所有错题（按时间排序）
    * @param num 数量
    */
-  public function getMistakeByUserId($uid,$page=1,$num=5)
+  public function getMistakeByUserId($uid,$cateid=0,$page=1,$num=5)
   {
     $mm=new ModelMistake();
     $min=Tools::getPageRange($page,$num);
-    return $mm->getMistakeByUId($uid,$min,$num);
+    return $mm->getMistakeByCId($uid,$cateid,$min,$num);
   }
 /**点赞
  * @param data {"MistakeId","UserId","QuestionId"}
@@ -83,6 +110,13 @@ class Mistake {
       return 1;
     }
     return 0;
-     
+  }
+  /**删除错题
+   * 
+   */
+  public function deleteMistake($uid,$mid)
+  {
+    $mm=new ModelMistake();
+    return $mm->deleteMistake($uid,$mid);
   }
 }

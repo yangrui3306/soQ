@@ -19,7 +19,5 @@
 
 
 
-## 接口整理
-1. ?s=QCategory.getcates 得到所有题目分类信息
-2. ?s=User.getRecommend&uid=1 得到题目主页推荐 get请求，uid可为空
-3. 
+## 3-9需修改 
+1. 用户注册年级为必选

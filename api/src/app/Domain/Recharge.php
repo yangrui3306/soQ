@@ -4,7 +4,6 @@ namespace App\Domain;
 use App\Model\Recharge as Model;
 
 class Recharge {
-
 	/**
 	 * 获取用户金币
 	 * @param UserId 用户ID

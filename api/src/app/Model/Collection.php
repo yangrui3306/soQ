@@ -43,12 +43,31 @@ class Collection extends NotORM
 		return $re->fetchAll();
 	}
 
+		/**判断用户是否收藏过某题目 */
+		public function judgeUserCollectionQuestion($uid,$qid){
+			$re=$this->getORM()->where("UserId",$uid)->where("QuestionId",$qid)->count();
+			return $re==0?false:true;
+		}
 	/* --------------   数据库插入   ---------------- */
-
-	public function insertOne($data)
+/** -1为已经收藏 */
+	public function insertOne(&$data)
 	{
+		$orm = $this->getORM()->where("UserId",$data["UserId"]);
+		if($data["QuestionId"]>0)
+		{
+			$orm=$orm->where("QuestionId",$data["QuestionId"]);
+		}
 
-		$orm = $this->getORM();
+		if($data["MistakeId"]>0)
+		{
+			$orm=$orm->where("MistakeId",$data["MistakeId"]);
+		}
+		
+		if($orm->count()!=0)
+		{
+			$data["Id"]=$orm->fetchOne()["Id"];
+			return -1;
+		}
 		$orm->insert($data);
 
 		// 返回新增的ID（注意，这里不能使用连贯操作，因为要保持同一个ORM实例）

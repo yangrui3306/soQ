@@ -15,7 +15,7 @@ use App\Model\Question\Search as ModelSearchQ;
 use App\Domain\Behavior\Statistics as ModelStatistics;
 
 /**
- * 题目的CURD基本操作示例
+ * 弃用
  * @author goodtimp 20190306
  */
 

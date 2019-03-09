@@ -23,11 +23,10 @@ class User extends Api {
 				'Sex'           => array('name' => 'sex', 'enum', 'range' => array('female', 'male'), 'source' => 'post'),
 				'Phone'         => array('name' => 'phone', 'require' => true, 'desc' => '用户电话', 'source' => 'post'),
 				'MClass'         => array('name' => 'class', 'desc' => '用户年级', 'source' => 'post'),
-				'School'        => array('name' => 'school', 'desc' => '用户学校', 'source' => 'post'),
+				'School'        => array('name' => 'schoolid', 'desc' => '用户学校', 'source' => 'post'),
 				'Address'       => array('name' => 'address', 'desc' => '用户地址', 'source' => 'post'),
 				'Intro'         => array('name' => 'intro', 'desc' => '用户简介', 'source' => 'post'),
 				'Occupation'    => array('name' => 'occupation', 'desc' => '用户职业', 'type' => 'int', 'max' => 1, 'source' => 'post'),
-				'Avatar'        => array('name' => 'avatar', 'desc' => '用户头像', 'source' => 'post'),
 			),
 			'getUser' => array(
 				'Name' => array('name' => 'name', 'require' => true, 'min' => 1, 'max' => 50, 'desc' => '用户名'),
@@ -39,6 +38,17 @@ class User extends Api {
 				'qcnt'=>array('name'=> 'questionnumber',  'default'=>6,'desc' => '每页显示题目数量'),
 			),
 			'getCode' => array(),
+			'update'=>array(
+				'Id' =>array('name' => 'userid', 'require' => true, 'min' => 1,'desc' => '用户Id', 'source' => 'post'),
+				'Password'      => array('name' => 'password', 'require' => true, 'min' => 8, 'max' => 50, 'desc' => '用户密码', 'source' => 'post'),
+				// 'Age'      => array('name' => 'age', 'type' => 'int', 'desc' => '年龄', 'source' => 'post'),
+				'Sex'           => array('name' => 'sex', 'enum', 'range' => array('female', 'male'), 'source' => 'post'),
+				'MClass'         => array('name' => 'class', 'desc' => '用户年级', 'source' => 'post'),
+				'School'        => array('name' => 'school', 'desc' => '用户学校', 'source' => 'post'),
+				'Address'       => array('name' => 'address', 'desc' => '用户地址', 'source' => 'post'),
+				'Intro'         => array('name' => 'intro', 'desc' => '用户简介', 'source' => 'post'),
+				'Occupation'    => array('name' => 'occupation', 'desc' => '用户职业', 'type' => 'int', 'max' => 1, 'source' => 'post'),
+			)
 		);
 	}
 
@@ -72,8 +82,6 @@ class User extends Api {
 		$domain = new Domain();
 		$res = $domain -> login($username, $pass);
 	
-		$gd = new GD();
-		$code = $gd -> getUserVerificationCodeRandom(5);
 		$returnRule = new MyStandard();
 		if($res['code'] == 0){
 			return $returnRule -> getReturn(1, $res['msg']);
@@ -93,11 +101,10 @@ class User extends Api {
 			'Sex'           => $this -> Sex,
 			'Phone'         => $this -> Phone,
 			'Class'         => $this -> MClass,
-			'School'        => $this -> School,
+			'SchoolId'        => $this -> School,
 			'Address'       => $this -> Address,
 			'Intro'         => $this -> Intro,
 			'Occupation'    => $this -> Occupation,
-			'Avatar'        => $this -> Avatar,
 		);
 
 		$returnRule = new MyStandard();
@@ -107,6 +114,25 @@ class User extends Api {
 			return $returnRule -> getReturn(1, $res['msg']);
 		}
 		return $returnRule -> getReturn(0, $res['msg'], 'token');
+	}
+	/**
+	 * 用户修改
+	 * @desc 用户资料更新
+	 */
+	public function update(){
+		$data=array(
+			'Id'=>$this->Id,
+			'Password'      => md5($this -> Password),
+			'Sex'           => $this -> Sex,
+			'Class'         => $this -> MClass,
+			'School'        => $this -> School,
+			'Address'       => $this -> Address,
+			'Intro'         => $this -> Intro,
+			'Occupation'    => $this -> Occupation,
+		);
+		$domain=new Domain();
+		$re=$domain->updateUser($data);
+		return MyStandard::gReturn(0,$re);
 	}
 
 	 /**

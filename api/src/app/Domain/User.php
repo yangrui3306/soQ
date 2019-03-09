@@ -3,8 +3,10 @@ namespace App\Domain;
 
 use App\Model\User as Model;
 use App\Model\School;
+use App\Model\MistakeCategory as ModelMistakeCategory;
 use App\Domain\Question\Recommend;
 use App\Model\Note as ModelNote;
+use App\Model\Notecategory as ModelNoteCategory;
 use PhalApi\Exception;
 use App\Domain\Question\Basic as QBasic;
 
@@ -29,7 +31,6 @@ class User
 	 */
 	public function login($username, $pass)
 	{
-
 		$model = new Model();
 		// 判断是用户名还是电话登录  
 		$isPhone = preg_match('/^0?(13|14|15|17|18|19)[0-9]{9}$/', $username, $str);
@@ -66,7 +67,7 @@ class User
 		$model = new Model();
 		// 用户名查重
 		$name = $model->getByName($data['Name']);
-		if ($res != null) {
+		if ($name != null) {
 			return array(
 				'code' => 0,
 				'msg'  => '用户名已存在!',
@@ -91,21 +92,29 @@ class User
 				'data' => '',
 			);
 		}
-		// 通过学校名称获取学校id
-		$schoolModel = new School();
-		$school = $schoolModel->getByName($data['School']);
-		if ($school == null) {
-			return array(
-				'code' => 0,
-				'msg'  => '学校不存在!',
-				'data' => '',
-			);
-		}
-		$data['SchoolId'] = $school['Id'];
-		unset($data['School']);
+
 		// 写入数据库
-		$sql = $model->insertOne($data);
-		if (!$sql) {
+		$id = $model->insertOne($data);
+//	添加笔记分类
+		$mn=new ModelNoteCategory();
+		$data=array(
+			"Name"=>"爱笔记",
+			"UserId"=>$id,
+			"Into"=>"如果你是一个好学生，你应该有分类名明确的很多笔记！"
+		);
+		$mn->addCategory($data);
+
+		// 添加错题分类
+		$mn=new ModelMistakeCategory();
+		$data=array(
+			"Name"=>"爱错题",
+			"UserId"=>$id,
+			"Into"=>"错题当然可以使你进步啦！"
+		);
+		$mn->addCategory($data);
+
+
+		if ($id<=0) {
 			return array(
 				'code' => 0,
 				'msg'  => '注册操作异常!',
@@ -186,6 +195,12 @@ class User
 		{
 			return array("Notes"=>[],"Questions"=>[]);
 		}
+	}
+
+	public function updateUser($data)
+	{
+		$um=new Model();
+		return $um->updateOne($data);
 	}
 }
 

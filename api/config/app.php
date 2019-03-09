@@ -28,16 +28,14 @@ return array(
 				'Mistake.*',
 				'Note.*',
 				'QCategory.*',
+				'Recharge.*',
 				'School.*',
 				'Site.*',
+				'Question.*',
 				'User.getCode',
 				'User.add',
 				'User.getUser',
 				'User.getUid',
 				'User.getRecommend',
-				// 以命名空间名称为key
-        // 'App' => array(
-        //     'app.service_whitelist.{"App\Api\Question"}'
-        // ),
     ),
 );

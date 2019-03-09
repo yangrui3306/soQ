@@ -32,10 +32,10 @@ class Note {
 		}
 
     /**根据关键字查找用户笔记 */
-    public function getNotesByKeywords($uid, $keys)
+    public function getNotesByKeywords($uid,$cid=0, $keys)
     {
       $m=new ModelNote;
-      return $m->getNotesByKeywords($uid,$keys);
+      return $m->getNotesByKeywords($uid,$cid,$keys);
 		}
 		
 		/**

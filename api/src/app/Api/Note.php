@@ -31,6 +31,7 @@ class Note extends Api
 			),
 			'notesByKeys' => array(
 				'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
+				'NoteCategoryId'   => array('name' => 'NoteCategoryId', 'default'=>0, 'desc' => '分类Id'),
 				'key' => array('name' => 'keys', 'require' => true, 'min' => 1, 'max' => 50, 'desc' => '关键字'),
 			),
 			'notesByCate' => array(
@@ -88,7 +89,7 @@ class Note extends Api
 	{
 		$dn = new DomainNote();
 		$uid=$this->UserId;
-		$re = $dn->getNotesByKeywords($uid, $this->key);
+		$re = $dn->getNotesByKeywords($uid, $this->NoteCategoryId,$this->key);
 
 		return MyStandard::gReturn(0, $re);
 	}

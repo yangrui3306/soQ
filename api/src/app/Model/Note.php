@@ -63,12 +63,13 @@ class Note extends NotORM
     }
 
     /**根据关键字查找用户笔记 */
-    public function getNotesByKeywords($uid, $keys)
+    public function getNotesByKeywords($uid,$cid=0, $keys)
     {
         $s = Match::AllWordMatch($keys);
 
         $re = $this->getORM()->where("UserId", $uid);
-
+        if($cid!=0) $re=$re->where("NoteCategoryId");
+        
         return $re->where("Content LIKE ? or Headline LIKE ?", $s, $s)
             ->order("Id DESC")->fetchAll();
     }

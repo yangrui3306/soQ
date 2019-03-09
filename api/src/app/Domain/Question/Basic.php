@@ -11,6 +11,7 @@ use App\Common\ModelCommon as ModelCommon;
 use App\Model\KeyWord as ModelKeyWord;
 use App\Common\Tools as Tools;
 use App\Common\Match as CommonMatch;
+use App\Model\Question\Basic as ModelQBasic;
 use PhalApi\Exception;
 
 class Basic
@@ -40,5 +41,13 @@ class Basic
     $q=QTools::getQuestionViewById($id,$uid);
   
     return $q;
+  }
+  /**根据关键字进行匹配 */
+  public function getByKeys($keys,$cid=0,$page=0,$num=0)
+  {
+    $min=Tools::getPageRange($page,$num);
+    $keys=CommonMatch::AllWordMatch($keys);
+    $qm=new ModelQBasic();
+    return $qm->getQuestionsByKeys($keys,$cid,$min,$num);
   }
 }

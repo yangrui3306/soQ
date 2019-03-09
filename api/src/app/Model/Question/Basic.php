@@ -68,4 +68,16 @@ class Basic extends NotORM
     }
     return $data;
   }
+
+  /**根据关键字搜索题目 */
+  public function getQuestionsByKeys($keys,$cid=0,$start=0,$num=0)
+  {
+    $re = $this->getORM();
+    if($cid>0)
+     $re=$re->where("CategoryId", $cid);
+    
+    return $re->where("Text LIKE ?", $keys)->limit($start,$num)
+        ->order("Id DESC")->fetchAll();
+    
+  }
 }

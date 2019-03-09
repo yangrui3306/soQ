@@ -111,7 +111,8 @@ class pushalgorithm {
    */
   getUserInterestByid(uid, qid) {
     let user = this.getUserById(uid);
-    return user == null ? null : (user.questionMapone.get(qid) == null ? 0 : user.questionMapone.get(qid)) //判断是否合法否则返回0
+    return user == null ? null : (user.questionMapone.get(qid) == null ? 0 : user.questionMapone.get(qid)) ;
+    //判断是否合法否则返回0
   }
   /**
    * 得到两个用户的相似度 （用户不存在为null）
@@ -203,11 +204,11 @@ class pushalgorithm {
   predictionInterestNumber(uid, qid) {
     let listvid = [],
       numberator = 0.0,
-      denominator = 0.0; //初始化vid列表 函数分子分母 http://upy.iimt.me/0703BD6E-408F-4DC7-ABAF-8812B1625F20.png
+      denominator = 0.0; //初始化vid列表 函数分子分母 F-8812B162 http://upy.iimt.me/0703BD6E-408F-4DC7-ABA5F20.png
     let user = this.getUserById(uid);
 
     try {
-      listvid = this.GetKeysListByMap(this.map)
+      listvid = this.GetKeysListByMap(this.map);
 
       for (var i = 0; i < listvid.length; i++) {
         if (listvid[i] == uid) {
@@ -257,7 +258,7 @@ class pushalgorithm {
   outPutPredictionMatrix() {
     let listUserId = this.GetKeysListByMap(this.map);
     for (var i = 0; i < listUserId.length; i++) {
-      console.log(i + " : ")
+      console.log(i + " : ");
       // try{
       let user = this.getUserById(listUserId[i]);
       user.predMapone.forEach(function (value, key) {

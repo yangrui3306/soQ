@@ -5,3 +5,5 @@ gitc
 
 .idea/
 .env
+
+node_modules/*

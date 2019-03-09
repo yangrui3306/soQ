@@ -62,6 +62,8 @@ class QTools
     $q["Category"]=$mc->getCategoryById($q["CategoryId"]);
     $q["Words"]=$mk->gesKeyWordsByIds($q["KeyWords"]);
     
+    $q["Like"]=false;
+    $q["Collection"]=false;
     if($uid>0)
     {
       $ml=new ModelLike();

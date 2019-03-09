@@ -8,7 +8,7 @@
 namespace App\Model;
 
 use PhalApi\Model\NotORMModel as NotORM;
-
+use App\Common\Match;
 
 class Mistake extends NotORM
 {
@@ -36,7 +36,7 @@ class Mistake extends NotORM
     return $this->getORM()
       ->select('*')
       ->where('Id', $id)
-      ->fetchAll();
+      ->fetchOne();
   }
 
   /**
@@ -69,6 +69,20 @@ class Mistake extends NotORM
     if ($num > 0) return $re->limit($start,$num)->fetchAll();
     return $re->fetchAll();
   }
+    /**
+			* 根据用户Id,分类查找所有错题（分类Id为0则查找所有）
+			* @param uid 用户id
+      */
+      public function getMistakeByCId($uid,$cid=0,$start, $num = 0)
+      {
+        $re = $this->getORM()
+          ->select('*')
+          ->where('UserId', $uid)
+          ->order("Id DESC");
+        if($cid>0) $re=$re->where("MistakeCateId",$cid);
+        if ($num > 0) return $re->limit($start,$num)->fetchAll();
+        return $re->fetchAll();
+      }
 
   /**根据错题Id修改整理 
    * @param data {"Id".....}
@@ -103,4 +117,22 @@ class Mistake extends NotORM
     where('Id',$misid)
     ->update(array('CollectNumber'=>new \NotORM_Literal("CollectNumber ".($f?"+":"-")." 1")));
   }
+
+
+    /**根据关键字查找用户错题 */
+    public function getMistakesByKeywords($uid,$cid=0, $keys)
+    {
+     $keys= Match::AllWordMatch($keys);
+        $re = $this->getORM()->where("UserId", $uid);
+        if($cid!=0) $re=$re->where("MistakeCateId",$cid);
+        
+        return $re->where("Correct LIKE ? or QuestionContent LIKE ?", $keys, $keys)
+            ->order("Id DESC")->fetchAll();
+    }
+
+    /**删除错题整理 */
+    public function deleteMistake($uid,$mid)
+    {
+      return $this->getORM()->where("UserId",$uid)->where("Id",$mid)->delete();
+    }
 }

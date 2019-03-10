@@ -23,9 +23,12 @@ class SignFilter implements Filter{
 		// 将所有参数排序并接成字符串
 		ksort($allParam);
     $paramsStrExceptSign = '';
-    foreach ($allParam as $val) {
-        $paramsStrExceptSign .= $val; 
-		}
+    // foreach ($allParam as $val) {
+    //     $paramsStrExceptSign .= $val; 
+	// 	}仅仅将password与username结合
+		$paramsStrExceptSign=$paramsStrExceptSign.$allParam["password"].$allParam['username'].date('Y-m-d', time());
+		
+
 		$str     = strtoupper('soq'.$paramsStrExceptSign.'soq');
 		$pubSign = md5($str);
 		
@@ -34,7 +37,7 @@ class SignFilter implements Filter{
 		$userSign   = md5('api_'.$sign.'_api');
 
     if ($userSign != $serverSign) {
-        throw new BadRequestException($paramsStrExceptSign, 1);
+        throw new BadRequestException($str, 1);
     }
 	}
 }

@@ -52,6 +52,7 @@ class Mistake extends Api
       ),
       'getMistake'=>array(
         'Id' => array('name' => 'Id', 'require' => true, 'min' => 1, 'desc' => 'id'),
+        'UserId' => array('name' => 'UserId', 'default'=>0, 'desc' => 'user id'),
       ),
       'getByKeys'=>array(
         'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
@@ -187,7 +188,7 @@ class Mistake extends Api
   public function getMistake()
   {
     $dm=new DomainMistake();
-    $re=$dm->getById($this->Id);
+    $re=$dm->getById($this->Id,$this->UserId);
     return MyStandard::gReturn(0, $re);
   }
   /**

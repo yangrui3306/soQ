@@ -4,6 +4,7 @@ use App\Domain\User as Domain;
 use PhalApi\Api;
 use App\Common\MyStandard;
 use App\Common\GD;
+use App\Common\Match;
 
 /**
  * 用户
@@ -17,13 +18,13 @@ class User extends Api {
 				'Password' => array('name' => 'password', 'require' => true, 'min' => 6, 'desc' => '用户密码'),
 			),
 			'add' => array(
-				'Name'          => array('name' => 'username', 'require' => true, 'min' => 4, 'max' => 50, 'desc' => '用户名', 'source' => 'post'),
-				'Password'      => array('name' => 'password', 'require' => true, 'min' => 8, 'max' => 50, 'desc' => '用户密码', 'source' => 'post'),
+				'Name'          => array('name' => 'username', 'require' => true, 'min' => 3, 'max' => 50, 'desc' => '用户名', 'source' => 'post'),
+				'Password'      => array('name' => 'password', 'require' => true, 'min' => 6, 'max'=>100,'desc' => '用户密码', 'source' => 'post'),
 				// 'Age'      => array('name' => 'age', 'type' => 'int', 'desc' => '年龄', 'source' => 'post'),
 				'Sex'           => array('name' => 'sex', 'enum', 'range' => array('female', 'male'), 'source' => 'post'),
 				'Phone'         => array('name' => 'phone', 'require' => true, 'desc' => '用户电话', 'source' => 'post'),
 				'MClass'         => array('name' => 'class', 'desc' => '用户年级', 'source' => 'post'),
-				'School'        => array('name' => 'schoolid', 'desc' => '用户学校', 'source' => 'post'),
+				'SchoolId'        => array('name' => 'schoolId', 'desc' => '用户学校', 'source' => 'post'),
 				'Address'       => array('name' => 'address', 'desc' => '用户地址', 'source' => 'post'),
 				'Intro'         => array('name' => 'intro', 'desc' => '用户简介', 'source' => 'post'),
 				'Occupation'    => array('name' => 'occupation', 'desc' => '用户职业', 'type' => 'int', 'max' => 1, 'source' => 'post'),
@@ -33,18 +34,17 @@ class User extends Api {
 			),
 			'getUid' => array(),
 			'getRecommend'=>array(
-				'uid'  => array('name' => 'uid',  'desc' => '用户id'),
+				'uid'  => array('name' => 'uid', 'default'=>0, 'desc' => '用户id'),
 				'ncnt'  => array('name' => 'notenumber', 'default'=>3, 'desc' => '显示笔记数量'),
 				'qcnt'=>array('name'=> 'questionnumber',  'default'=>6,'desc' => '每页显示题目数量'),
 			),
 			'getCode' => array(),
 			'update'=>array(
 				'Id' =>array('name' => 'userid', 'require' => true, 'min' => 1,'desc' => '用户Id', 'source' => 'post'),
-				'Password'      => array('name' => 'password', 'require' => true, 'min' => 8, 'max' => 50, 'desc' => '用户密码', 'source' => 'post'),
 				// 'Age'      => array('name' => 'age', 'type' => 'int', 'desc' => '年龄', 'source' => 'post'),
 				'Sex'           => array('name' => 'sex', 'enum', 'range' => array('female', 'male'), 'source' => 'post'),
 				'MClass'         => array('name' => 'class', 'desc' => '用户年级', 'source' => 'post'),
-				'School'        => array('name' => 'school', 'desc' => '用户学校', 'source' => 'post'),
+				'SchoolId'        => array('name' => 'schoolId', 'desc' => '用户学校', 'source' => 'post'),
 				'Address'       => array('name' => 'address', 'desc' => '用户地址', 'source' => 'post'),
 				'Intro'         => array('name' => 'intro', 'desc' => '用户简介', 'source' => 'post'),
 				'Occupation'    => array('name' => 'occupation', 'desc' => '用户职业', 'type' => 'int', 'max' => 1, 'source' => 'post'),
@@ -79,11 +79,12 @@ class User extends Api {
 	public function login(){
 		$username = $this -> Name;
 		$pass = $this -> Password;
+		$pass= $pass;
 		$domain = new Domain();
 		$res = $domain -> login($username, $pass);
-	
+		
 		$returnRule = new MyStandard();
-		if($res['code'] == 0){
+		if($res['code'] == 1){
 			return $returnRule -> getReturn(1, $res['msg']);
 		}
 		return $returnRule -> getReturn(0, '登录成功',$res['data']);
@@ -97,11 +98,11 @@ class User extends Api {
 	public function add(){
 		$user = array(
 			'Name'          => $this -> Name,
-			'Password'      => md5($this -> Password),
+			'Password'      => $this -> Password,
 			'Sex'           => $this -> Sex,
 			'Phone'         => $this -> Phone,
 			'Class'         => $this -> MClass,
-			'SchoolId'        => $this -> School,
+			'SchoolId'        => $this -> SchoolId,
 			'Address'       => $this -> Address,
 			'Intro'         => $this -> Intro,
 			'Occupation'    => $this -> Occupation,
@@ -109,11 +110,12 @@ class User extends Api {
 
 		$returnRule = new MyStandard();
 		$domain = new Domain();
+
 		$res = $domain -> add($user);
-		if($res['code'] == 0){
+		if($res == 1){
 			return $returnRule -> getReturn(1, $res['msg']);
 		}
-		return $returnRule -> getReturn(0, $res['msg'], 'token');
+		return $returnRule -> getReturn(0, 'token',$res['data'] );
 	}
 	/**
 	 * 用户修改
@@ -121,17 +123,19 @@ class User extends Api {
 	 */
 	public function update(){
 		$data=array(
-			'Id'=>$this->Id,
-			'Password'      => md5($this -> Password),
+			'Id'						=> $this->Id,
+			// 'Password'      => $this -> Password,
 			'Sex'           => $this -> Sex,
 			'Class'         => $this -> MClass,
-			'School'        => $this -> School,
+			'SchoolId'        => $this -> SchoolId,
 			'Address'       => $this -> Address,
 			'Intro'         => $this -> Intro,
 			'Occupation'    => $this -> Occupation,
 		);
+		
 		$domain=new Domain();
 		$re=$domain->updateUser($data);
+		if($re==0) return MyStandard::gReturn(1,$re);
 		return MyStandard::gReturn(0,$re);
 	}
 
@@ -145,7 +149,7 @@ class User extends Api {
 		$domain = new Domain();
 		$returnRule = new MyStandard();
 		$res = $domain -> getUserByName($name);
-		if($res['code'] == 0){
+		if($res['code'] == 1){
 			return $returnRule -> getReturn(1, $res['msg']);
 		}
 		return $returnRule -> getReturn(0, $res['msg'], $res['data']);

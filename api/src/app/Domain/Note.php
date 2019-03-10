@@ -7,7 +7,12 @@ use App\Common\Tools;
 
 
 class Note {
-	
+	/**用户笔记数量 */
+	public function getUserNotesNumber($uid)
+	{
+		$m=new ModelNote();
+		return $m->getNotesCountByUserId($uid);
+	}
     /**
      * 根据分类Id查找笔记
 		 * @param cateid 分类id

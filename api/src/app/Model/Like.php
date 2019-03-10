@@ -37,6 +37,11 @@ class Like extends NotORM
 			$re=$this->getORM()->where("UserId",$uid)->where("QuestionId",$qid)->count();
 			return $re==0?false:true;
 		}
+			/**判断用户是否点赞过某错题 */
+			public function judgeUserLikeMistake($uid,$mid){
+				$re=$this->getORM()->where("UserId",$uid)->where("MistakeId",$mid)->count();
+				return $re==0?false:true;
+			}
 
 		/* --------------   数据库插入   ---------------- */
     /** -1为已经点赞 */

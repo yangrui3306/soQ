@@ -20,7 +20,7 @@ class Focus
     $min=Tools::getPageRange($page,$num);
     $re=$fm->gesFansByUserId($uid,$min,$num);
     $um=new ModelUser();
-    $um->replaceUserId($re);
+    $um->replaceUserId($re,'FanId');
     return $re;
   }
 	

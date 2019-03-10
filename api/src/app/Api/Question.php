@@ -2,17 +2,10 @@
 namespace App\Api;
 
 use PhalApi\Api;
-use App\Domain\Examples\CURD as DomainCURD;
+
 use App\Domain\Question\Upload as DomainUpload;
 use App\Common\MyStandard;
-
-use App\Common\Tools as Tools;
-use App\Model\KeyWord as KeyWord;
-
-use App\Domain\Question\Recommend as DomainRecommend;
 use App\Domain\Question\Basic as DomainBasic;
-use App\Model\Question\Search as ModelSearchQ;
-use App\Domain\Behavior\Statistics as ModelStatistics;
 
 /**
  * 题目的基本操作示例

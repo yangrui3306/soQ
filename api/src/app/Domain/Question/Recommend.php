@@ -50,7 +50,7 @@ class Recommend
     $keys=$ds->getStatisticsBehavior($uid,$date,$num);
 
     $mquestion = new ModelSearchQ();
-    $qs=QTools::deleteQuestionsForUser($uid);//去除用户操作部分
+    $qs=QTools::deleteQuestionsForUser($uid);//去除用户已经操作（收藏、错题整理等）部分
 
     $questions = $mquestion->mGetQuestionsByKeyWord($keys,$num,$qs); //关键字匹配相应题目
     return $questions;

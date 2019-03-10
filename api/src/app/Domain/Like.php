@@ -31,6 +31,11 @@ class Like
 		}
 		if($id==-1) return $id;
 
+		// if($data["QuestionId"]>0)
+		// {
+		// 	$
+		// }
+
 		$bm=new ModelBehavior();//添加点赞行为
 		$bd=array(
 			"UserId"=>$data["UserId"],

@@ -18,6 +18,10 @@ class Note extends NotORM
         return 'note';
     }
 
+    public function getNotesCountByUserId($uid)
+    {
+        return $this->getORM()->where("UserId",$uid)->count();
+    }
     /**
      * 根据用户id查找笔记
 		 * @param userid 用户id

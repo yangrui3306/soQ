@@ -57,15 +57,15 @@ class User extends NotORM {
           ->fetchOne();
 		}
 		/**将数组中UserId字段更改为User
-		 * 
+		 * @param $keys 默认替换UserId，可传入
 		 */
-		public function replaceUserId(&$data)
+		public function replaceUserId(&$data,$keys="UserId")
 		{
 			for($i=0;$i<count($data);$i++)
 			{
-				if(array_key_exists("UserId",$data[$i]))
+				if(array_key_exists($keys,$data[$i]))
 				{
-					$data[$i]["User"]=$this->getUserById($data[$i]["UserId"]);
+					$data[$i]["User"]=$this->getUserById($data[$i][$keys]);
 				}
 			}
 			return $data;
@@ -81,7 +81,7 @@ class User extends NotORM {
 		 */
 		public function insertOne($data){
 			$orm = $this->getORM();
-        $data["DateTime"] = date('Y-m-d h:i:s', time());
+				$data["DateTime"] = date('Y-m-d h:i:s', time());
         $orm->insert($data);
 
         // 返回新增的ID（注意，这里不能使用连贯操作，因为要保持同一个ORM实例）
@@ -93,6 +93,10 @@ class User extends NotORM {
 		public function updateOne($data){
 			$model = $this -> getORM();
 			$sql = $model -> where('Id', $data['Id']) -> update($data);
+			if($sql>0)
+			{
+				$sql=$model->where('Id',$data['Id'])->fetchOne();
+			}
 			return $sql;
 		}
 

@@ -3,6 +3,7 @@ namespace App\Domain;
 
 use App\Model\User as Model;
 use App\Model\School;
+use App\Model\Question\Search as ModelQSearch;
 use App\Model\MistakeCategory as ModelMistakeCategory;
 use App\Domain\Question\Recommend;
 use App\Model\Note as ModelNote;
@@ -12,7 +13,7 @@ use App\Domain\Question\Basic as QBasic;
 
 class User
 {
-	const recommendDate=30;// 推荐算法中行为分析天数
+	const recommendDate=10;// 推荐算法中行为分析天数
 	/**
 	 * 获取用户性别(测试)
 	 * @param  name 用户名
@@ -41,18 +42,18 @@ class User
 		}
 		if (!$user)
 			return array(
-				'code' => 0,
+				'code' => 1,
 				'msg'  => '用户名或手机号码不存在!',
 				'data' => '',
 			);
 		if ($user['Password'] != $pass)
 			return array(
-				'code' => 0,
+				'code' => 1,
 				'msg'  => "用户密码不正确!",
 				'data' => '',
 			);
 		return array(
-			'code' => 1,
+			'code' => 0,
 			'msg'  => "登录数据库验证成功!",
 			'data' => $user,
 		);
@@ -69,27 +70,27 @@ class User
 		$name = $model->getByName($data['Name']);
 		if ($name != null) {
 			return array(
-				'code' => 0,
+				'code' => 1,
 				'msg'  => '用户名已存在!',
-				'data' => '',
+				'data' => '用户名已存在',
 			);
 		}
 		// 手机正则匹配
 		$phone = preg_match('/^0?(13|14|15|17|18|19)[0-9]{9}$/', $data['Phone']);
 		if ($phone != 1) {
 			return array(
-				'code' => 0,
+				'code' => 1,
 				'msg'  => '手机号码格式不正确!',
-				'data' => '',
+				'data' => '手机号码格式不正确',
 			);
 		}
 		// 手机号码查重
 		$isPhone = $model->getByPhone($data['Phone']);
 		if ($isPhone != null) {
 			return array(
-				'code' => 0,
+				'code' => 1,
 				'msg'  => '手机号码已注册!',
-				'data' => '',
+				'data' => '手机号码已注册',
 			);
 		}
 
@@ -100,7 +101,7 @@ class User
 		$data=array(
 			"Name"=>"爱笔记",
 			"UserId"=>$id,
-			"Into"=>"如果你是一个好学生，你应该有分类名明确的很多笔记！"
+			"Intro"=>"如果你是一个好学生，你应该有分类名明确的很多笔记！"
 		);
 		$mn->addCategory($data);
 
@@ -109,22 +110,22 @@ class User
 		$data=array(
 			"Name"=>"爱错题",
 			"UserId"=>$id,
-			"Into"=>"错题当然可以使你进步啦！"
+			"Intro"=>"错题当然可以使你进步啦！"
 		);
 		$mn->addCategory($data);
 
 
 		if ($id<=0) {
 			return array(
-				'code' => 0,
+				'code' => 1,
 				'msg'  => '注册操作异常!',
-				'data' => '',
+				'data' => '注册操作异常',
 			);
 		}
 		return array(
-			'code' => 1,
-			'msg'  => '用户注册成功!',
-			'data' => '',
+			'code' => 0,
+			'msg'  => '用户注册成功',
+			'data' => $model->getUserById($id),
 		);
 	}
 
@@ -139,13 +140,13 @@ class User
 		$sql = $model->getByName($name);
 		if (!$sql) {
 			return array(
-				'code' => 0,
+				'code' => 1,
 				'msg'  => '用户名不存在!',
 				'data' => '',
 			);
 		}
 		return array(
-			'code' => 1,
+			'code' => 0,
 			'msg'  => '获取用户信息成功!',
 			'data' => $sql,
 		);
@@ -176,17 +177,24 @@ class User
 	 * 根据用户最近30天的行为记录推荐题目(默认5道)，和最近三条笔记内容。
 	 */
 
-	public function getIndexRecommend($uid,$notesNum=3,$qnum=5)
+	public function getIndexRecommend($uid,$notesNum=3,$qnum=6)
 	{
+	
 		try{
 			$dq=new Recommend();
+
+			if($uid==0) 
+			{
+				$mq=new ModelQSearch();
+				return $mq->getHotQuesion(5);
+			}
 			$questions=$dq->recommendByUId($uid,User::recommendDate,$qnum);
 		
 			if(count($questions)<=0)
 			{
 				$questions=QBasic::hotQuestion($qnum);
 			}
-
+		
 			$mn=new ModelNote();
 			$notes=$mn->getNotesByUserId($uid,$notesNum);
 			return array("Notes"=>$notes,"Questions"=>$questions);

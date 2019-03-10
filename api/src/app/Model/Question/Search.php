@@ -39,7 +39,7 @@ class Search extends NotORM
 /**查找最热门的几道题目 */
 public function getHotQuesion($num)
 {
-  $q=$this->getORM()
+  return $this->getORM()
   ->order("CollectNumber DESC")->limit($num)->fetchAll();
 }
   /**根据题目Id的数组，得到question的数组 */
@@ -112,7 +112,8 @@ public function getHotQuesion($num)
         $questions = $temp;
       }
     }
-    return $questions;
+    
+    return $questions->limit($num);
   }
 
   /**

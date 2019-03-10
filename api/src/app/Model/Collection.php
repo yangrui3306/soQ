@@ -48,6 +48,12 @@ class Collection extends NotORM
 			$re=$this->getORM()->where("UserId",$uid)->where("QuestionId",$qid)->count();
 			return $re==0?false:true;
 		}
+		/**判断用户是否收藏过某错题 */
+		public function judgeUserCollectionMistake($uid,$mid){
+			$re=$this->getORM()->where("UserId",$uid)->where("MistakeId",$mid)->count();
+			return $re==0?false:true;
+		}
+		
 	/* --------------   数据库插入   ---------------- */
 /** -1为已经收藏 */
 	public function insertOne(&$data)

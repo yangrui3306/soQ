@@ -5,6 +5,9 @@ use App\Model\Behavior\Basic as ModelBehavior;
 use App\Model\Mistake as ModelMistake;
 use App\Model\MistakeCategory as ModelMCategory;
 use App\Model\Question\Basic as ModelQBasic;
+use App\Model\Collection as ModelCollection;
+use App\Model\Like as ModelLike;
+
 use App\Common\Tools;
 use App\Model\User as ModelUser;
 class Mistake {
@@ -47,11 +50,18 @@ class Mistake {
   }
 
   /**错题Id */
-  public function getById($id)
+  public function getById($id,$uid)
   {
     $mm=new ModelMistake();
     $data=$mm->getMistakeById($id);
-    
+
+    if($data["UserId"]==$uid)
+    {
+      $mc=new ModelCollection();
+      $ml=new ModelLike();
+      $data["Like"]=$ml->judgeUserLikeMistake($uid,$id);
+      $data["Collection"]=$mc->judgeUserCollectionMistake($uid,$id);
+    }
     if($data["QuestionId"]>0)
     {
       $qm=new ModelQBasic();
@@ -82,7 +92,10 @@ class Mistake {
   {
     $mm=new ModelMistake();
     $min=Tools::getPageRange($page,$num);
-    return $mm->getMistakeByCId($uid,$cateid,$min,$num);
+    $re=$mm->getMistakeByCId($uid,$cateid,$min,$num);
+    $qm=new ModelQBasic;
+    $qm->replaceQuestionId($re);
+    return $re;
   }
 /**点赞
  * @param data {"MistakeId","UserId","QuestionId"}

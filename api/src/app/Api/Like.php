@@ -40,4 +40,5 @@ class Like extends Api
     $re = $dm->add($data, $this->StandTime);
     return MyStandard::gReturn(0, $re);
   }
+
 }

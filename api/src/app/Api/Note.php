@@ -55,10 +55,20 @@ class Note extends Api
 			'delete' => array(
 				'Nid'  => array('name' => 'Id', 'require' => true,'desc' => '笔记id'),
 			),
+			'count'=>array(
+				'UserId'=>array('name'=>'UserId','require'=>true,'desc'=>'用户Id')
+			)
 			
 		);
 	}
-
+  /** 得到用户笔记数量
+   * 
+   */
+  public function count(){
+		$kk=new DomainNote();
+		$re=$kk->getCountByUserId($this->UserId);
+		return MyStandard::gReturn(0,$re);
+	}
 	/**
      * 得到所有笔记分类信息
      */

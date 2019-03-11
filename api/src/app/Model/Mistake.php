@@ -133,6 +133,13 @@ class Mistake extends NotORM
     /**删除错题整理 */
     public function deleteMistake($uid,$mid)
     {
-      return $this->getORM()->where("UserId",$uid)->where("Id",$mid)->delete();
+      $data=0;
+      $re=$this->getORM()->where("UserId",$uid)->where("Id",$mid);
+      if($re->count()>0)
+      {
+        $data=$re->fetchOne();
+      }
+      $re->delete();
+      return $data;
     }
 }

@@ -5,6 +5,8 @@ use App\Model\Mistake as ModelMistake;
 use App\Model\Behavior\Basic as ModelBehavior;
 use App\Model\Question\Basic as ModelQuestion;
 use App\Common\Tools;
+use App\Model\Interest as ModelInterest;
+
 class Collection
 {
 	public function add($data,$StandTime)
@@ -12,25 +14,24 @@ class Collection
 		$cm=new ModelCollection();
 		$id=$cm->insertOne($data);//添加收藏记录
 
-		$zan=true;
+	
 		if($id==-1)
 			{
-				$cm->deleteOne($data);
-				$zan=false;//修改为减少收藏
+				return $this->delete($data);
 			}
 		if($id==0) return $id;
 
 		if($data["MistakeId"]>0)// 增加相应点赞数量
 		{
 			$mm=new ModelMistake();
-			$mm->collectionMistake($data["MistakeId"],$zan);
+			$mm->collectionMistake($data["MistakeId"]);
 		}
 		else if($data["QuestionId"]>0)
 		{
 			$mm=new ModelQuestion;
-			$mm->collectionQuestion($data["QuestionId"],$zan);
+			$mm->collectionQuestion($data["QuestionId"]);
 		}
-		if($id==-1) return $id;
+	
 
 
 		$bm=new ModelBehavior();//添加收藏行为
@@ -42,6 +43,20 @@ class Collection
 			"StandTime"=>$StandTime
 		);
 		$bm->addBehavior($bd);
+
+
+		//添加感兴趣度
+    if($data["QuestionId"]>0)
+		{
+			$qd=array(
+				"UserId"=>$data["UserId"],
+				"Behavior"=>"Collection", 
+				"QuestionId"=>$data["QuestionId"],
+			);
+			$im=new ModelInterest();
+			$im->addInterest($qd);
+		}
+
 
 		return $id;
 	}
@@ -60,8 +75,18 @@ class Collection
 		{
 			$qm=new ModelQuestion;
 			$qm->collectionQuestion($data["QuestionId"],false);
+
+			//减少某题兴趣度
+			$qd=array(
+				"UserId"=>$data["UserId"],
+				"Behavior"=>"Collection", 
+				"QuestionId"=>$data["QuestionId"],
+			);
+			$im=new ModelInterest();
+			$im->reduceInterest($qd);
+			
 		}		
-		return 1;
+		return $data;
 	}
 	/**查找用户所有收藏（并生成可显示方式） */
 	public function getAllByUserId($uid,$page=1,$num=5)

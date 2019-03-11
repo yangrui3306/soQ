@@ -31,20 +31,20 @@ class pushalgorithm {
    * @param {包含用户id对qid感兴趣为weight} data 
    */
   addData(data) {
-    this.handleQuestrionMap(data.qid);
-    if (this.getUserById(data.id) == null) {
+    this.handleQuestrionMap(data.QuestionId);
+    if (this.getUserById(data.UserId) == null) {
       let questionMapone = new HashMap();
-      questionMapone.set(data.qid, data.weight);
+      questionMapone.set(data.QuestionId, data.Interestingness);
       let dataone = {
-        uid: data.qid,
+        uid: data.QuestionId,
         questionMapone: questionMapone,
-        totalweight: data.weight
+        totalweight: data.Interestingness
       }
-      this.map.set(data.id, dataone);
+      this.map.set(data.UserId, dataone);
     } else {
-      let dataone = this.getUserById(data.id);
-      dataone.questionMapone.set(data.qid, data.weight);
-      dataone.totalweight += data.weight;
+      let dataone = this.getUserById(data.UserId);
+      dataone.questionMapone.set(data.QuestionId, data.Interestingness);
+      dataone.totalweight += data.Interestingness;
     }
     return this;
   }
@@ -296,10 +296,11 @@ class pushalgorithm {
 datalist = [];
 for (var i = 1; i < 1000; i++) {
   data = {
-    id: Math.floor(Math.random() * 20 + 1),
-    qid: Math.floor(Math.random() * 50 + 1),
-    weight: Math.floor(Math.random() * 5 + 1)
+    UserId: Math.floor(Math.random() * 20 + 1),
+    QuestionId: Math.floor(Math.random() * 50 + 1),
+    Interestingness: Math.floor(Math.random() * 5 + 1)
   };
+  //console.log(data);
   datalist.push(data);
 }
 let algorithm = new pushalgorithm();

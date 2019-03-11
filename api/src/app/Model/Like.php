@@ -81,7 +81,14 @@ class Like extends NotORM
 		/* --------------   数据库删除   ---------------- */
 
 		public function deleteOne($uid){
+			$data=0;
 			$model = $this -> getORM();
-			return $model -> where('Id', $uid) -> delete();
+			$re=$model -> where('Id', $uid);
+			if($re->count()>0)
+			{
+				$data=$re->fetchOne();
+			} 
+			$re->delete();
+			return $data;
 		}
 }

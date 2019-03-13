@@ -22,7 +22,9 @@ class Basic
    */
   public static function searchQuestion($q,$num=3)
   {
+   
     $keys=Tools::ExtractKeyWords($q["Text"]);
+    
     $mq=new ModelSearchQ();
     $qs=$mq->mGetQuestionsByKeyWord($keys,$num*2);
     return CommonMatch::qLevenShtein($q,$qs,$num);

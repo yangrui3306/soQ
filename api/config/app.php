@@ -40,5 +40,6 @@ return array(
 				'User.getTest',
 				'User.getByName',
 				'User.getById',
+				'Keyword.*'
     ),
 );

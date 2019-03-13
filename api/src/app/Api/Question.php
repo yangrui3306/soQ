@@ -24,6 +24,7 @@ class Question extends Api
                 'KeyWords' => array('name' => 'KeyWords',  'default' => "", 'desc' => '关键字'),
                 'Analysis' => array('name' => 'Analysis',  'desc' => '解析'),
                 'Text' => array('name' => 'Text',  'max' => 2000, 'desc' => '文本'),
+                'Type' => array('name' => 'Type',  'max' => 50, 'desc' => '题目类型'),
             ),
             'search' => array(
                 'Text' => array('name' => 'Text', 'require' => true, 'max' => 2000, 'desc' => '文本'),
@@ -58,6 +59,7 @@ class Question extends Api
             'KeyWords' => $this->KeyWords,
             'Analysis' => $this->Analysis,
             'Text' => $this->Text,
+            'Type'=>$this->Type
         );
 
         $domain = new DomainUpload();

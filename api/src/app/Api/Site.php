@@ -32,21 +32,12 @@ class Site extends Api {
      * @exception 400 非法请求，参数传递错误
      */
     public function index() {
-        $a=new ModelStatistics();
+
         $b= new ModelSearchQ();
-        $c=new Upload();
-        $qs=$b->getQuestionsByCategoryId(1);
-        $q=array("CategoryId"=>"1",
-            "Content"=>"　二元一次 编辑删除 3 全等三角形 编辑删除 4 相反数 编辑删除5 倒数       ",
-            "Analysis"=>" 当然是1 ",
-            "Type"=>"2",
-            "KeyWords"=>"",
-            "Schools"=>"1",
-            "Text"=>" 二元一次 编辑删除 3 全等三角形 编辑删除 4 相反数 编辑删除5 倒数     ");
         return array(
             //'title' => $a->getStatisticsBehavior(1)
             //'title'=>Basic::searchQuestion(array("Text"=>"二元一次 编辑删除 3 全等三角形 编辑删除"))
-            'title' => $c->upQuestion($q)           
+            'title' => $b->test()           
         );
     }
 }

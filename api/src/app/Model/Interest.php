@@ -67,7 +67,7 @@ class Interest extends NotORM
      * @param uid 用户id
      * @param date 从某段时间以内
      * @param num 记录数量大于num
-     * @return {UserId,QuestionId,Interestingness}
+     * @return {UserId,QuestionId,Interestingness} 
      */
     public function getInterestByUserId($uid,$date,$num=0)
     {

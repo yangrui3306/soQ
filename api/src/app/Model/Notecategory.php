@@ -69,5 +69,21 @@ class Notecategory extends NotORM {
 		public function getNameById($id){
 			$model = $this -> getORM();
 			return $model -> where('Id', $id) -> select("Name") -> fetchOne()["Name"];
-		}
+        }
+        /**
+         * 删除分类
+         */
+        public function deleteCategory($data)
+        {
+            return $this->getORM()->where("UserId",$data["UserId"])
+            ->where("Id",$data["Id"])->delete();
+        }
+        /**
+         * 更新分类
+         */
+        public function updateCategory($data)
+        {
+            return $this->getORM()->where("UserId",$data["UserId"])
+            ->where("Id",$data["Id"])->update($data);
+        }
 }

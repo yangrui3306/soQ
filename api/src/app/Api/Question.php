@@ -29,18 +29,17 @@ class Question extends Api
                 'Text' => array('name' => 'Text', 'require' => true, 'max' => 2000, 'desc' => '文本'),
                 'Num' => array('name' => 'Num', 'desc' => '匹配n个')
             ),
-            'getById'=>array(
-                'UserId'=>array('name'=>'UserId','default'=>0,'require'=>false,'desc'=>"用户id"),
-                'Id'=>array('name' => 'Id', 'require' => true,'min='=>1,'desc' => '题目Id'),
+            'getById' => array(
+                'UserId' => array('name' => 'UserId', 'default' => 0, 'require' => false, 'desc' => "用户id"),
+                'Id' => array('name' => 'Id', 'require' => true, 'min=' => 1, 'desc' => '题目Id'),
             ),
-            'getByKeys'=>array(
-                'Keys' => array('name' => 'Keys', 'require' => true, 'max' => 20, 'desc' => '关键字'),
-                'CategoryId'=>array('name' => 'CategoryId', 'default' => 0, 'desc' => '分类Id'),
+            'getByKeys' => array(
+                'Keys' => array('name' => 'Keys', 'require' => true, 'max' => 200, 'desc' => '关键字'),
+                'CategoryId' => array('name' => 'CategoryId', 'default' => 0, 'desc' => '分类Id'),
                 'Number'  => array('name' => 'Number', 'default' => 10, 'desc' => '需要的数量'),
-                'Page'=>array('name' => 'Page', 'default' => 1, 'desc' => '题目页数'),
-                
-            )
-
+                'Page' => array('name' => 'Page', 'default' => 1, 'desc' => '题目页数'),
+            ),
+            
         );
     }
 
@@ -68,12 +67,15 @@ class Question extends Api
         return MyStandard::gReturn(0, $rs);
     }
 
-    /**文字搜索题目 */
+    /**
+     * 文字搜索题目
+     * 
+     */
     public function getByKeys()
     {
         $domain = new DomainBasic();
-        $re=$domain->getByKeys($this->Keys,$this->CategoryId,$this->Page,$this->Number);
-        return MyStandard::gReturn(0,$re);
+        $re = $domain->getByKeys($this->Keys, $this->CategoryId, $this->Page, $this->Number);
+        return MyStandard::gReturn(0, $re);
     }
     /**
      * 拍照搜索题目
@@ -92,9 +94,9 @@ class Question extends Api
      */
     public function getById()
     {
-        $mq=new DomainBasic();
+        $mq = new DomainBasic();
 
-        $re=$mq::findQuestionById($this->Id,$this->UserId);
-        return MyStandard::gReturn(0,$re);
+        $re = $mq::findQuestionById($this->Id, $this->UserId);
+        return MyStandard::gReturn(0, $re);
     }
 }

@@ -37,5 +37,8 @@ return array(
 				'User.getUser',
 				'User.getUid',
 				'User.getRecommend',
+				'User.getTest',
+				'User.getByName',
+				'User.getById',
     ),
 );

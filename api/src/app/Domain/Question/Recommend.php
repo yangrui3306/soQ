@@ -9,7 +9,7 @@ namespace App\Domain\Question;
 use App\Model\Question\Search as ModelSearchQ;
 use App\Domain\Behavior\Statistics;
 use App\Common\Match as CommonMatch;
-
+use App\Domain\Question\GeneratieTest;
 class Recommend
 {
   /**
@@ -32,7 +32,9 @@ class Recommend
     $keys=QTools::mergeQuestionKeys($question["KeyWords"],$question["KeysWeight"]);
    
     $questions = $mquestion->mGetNotQuestionById($id, $questions);
-    $questions = $mquestion->mGetQuestionsByKeyWord($keys, $num, $questions); //需修改
+
+    $dg=new GeneratieTest();//余弦定理获取，需修改
+    $questions = $dg->GetQuestionsByKeyWord($keys, $num, $questions); //需修改
 
     return CommonMatch::qLevenShtein($question, $questions, $num);
   }
@@ -44,15 +46,16 @@ class Recommend
      * @param int $num 指定数量，默认为最大数量
      * @return 题目数组
    */
-  public function recommendByUId($uid,$date=-1,$num=0)
+
+  public function recommendByUId($uid,$cid=0,$date=30,$num=10)
   {
     $ds=new Statistics();
-    $keys=$ds->getStatisticsBehavior($uid,$date,$num);
+    $keys=$ds->getStatisticsBehavior($uid,$cid,$date,$num);
 
     $mquestion = new ModelSearchQ();
     $qs=QTools::deleteQuestionsForUser($uid);//去除用户已经操作（收藏、错题整理等）部分
-
+    
     $questions = $mquestion->mGetQuestionsByKeyWord($keys,$num,$qs); //关键字匹配相应题目
     return $questions;
-   }
+  } 
 }

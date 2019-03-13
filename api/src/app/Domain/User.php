@@ -10,6 +10,7 @@ use App\Model\Note as ModelNote;
 use App\Model\Notecategory as ModelNoteCategory;
 use PhalApi\Exception;
 use App\Domain\Question\Basic as QBasic;
+use App\Model\Focus as ModelFocus;
 
 class User
 {
@@ -209,6 +210,22 @@ class User
 	{
 		$um=new Model();
 		return $um->updateOne($data);
+	}
+
+	/**
+	 *  通过用户id获取用户信息，可以存在请求者id
+	 */
+	public function getByUserId($id,$rid)
+	{
+		$um=new Model();
+		$re=$um->getUserById($id);
+		if($rid>0)
+		{
+			$mf=new ModelFocus();
+			$re["Focus"]=$mf->judgeUserFocusUser($rid,$id);
+			$re["Fans"]=$mf->judgeUserFocusUser($id,$rid);
+		}
+		return $re;
 	}
 }
 

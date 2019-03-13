@@ -14,13 +14,14 @@ use App\Model\User as ModelUser;
 
 class Mistake
 {
-
-
   /**根据错题关键字查找错题 */
   public function getByKeywords($uid, $cid, $keys)
   {
     $mm = new ModelMistake();
-    return $mm->getMistakesByKeywords($uid, $cid, $keys);
+    $re=$mm->getMistakesByKeywords($uid, $cid, $keys);
+    $qm = new ModelQBasic;
+    $qm->replaceQuestionId($re);
+    return $re;
   }
 
   /**得到用户所有分类信息 */
@@ -159,5 +160,32 @@ class Mistake
       }
     return $data;
   }
+
+  /**
+   * 添加错题分类 
+   */
+  public function addCategory($data)
+  {
+    $mmc=new ModelMCategory();
+    return $mmc->addCategory($data);
+  }
+
+  /**
+   * 更新错题分类
+   */
+  public function updateCategory($data){
+    $mmc=new ModelMCategory();
+    return $mmc->updateCategory($data);
+  }
+
+  public function deleteCategory($data)
+  {
+    $mmc=new ModelMCategory();
+    $mmc->deleteCategory($data);
+    $mm=new ModelMistake();
+    
+    return $mm->deleteMistakeByCid($data["UserId"],$data["Id"]);
+  }
+
 }
 

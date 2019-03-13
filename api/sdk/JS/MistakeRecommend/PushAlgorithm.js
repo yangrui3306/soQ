@@ -263,7 +263,7 @@ class pushalgorithm {
       let user = this.getUserById(listUserId[i]);
       user.predMapone.forEach(function (value, key) {
         console.log("对问题 " + key + " 的感兴趣度为：" + value);
-      })
+      });
       //}
       //catch(error){
       //  continue

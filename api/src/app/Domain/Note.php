@@ -122,4 +122,23 @@ class Note {
 			$sql = $model -> getByLimit($begin,$length);
 			return $sql;
 		}
+
+		/**
+		 * 更新
+		 */
+		public function updateCategory($data)
+		{
+			$model=new ModelCate();
+			return $sql=$model->updateCategory($data);
+		}
+		/**
+		 * 删除分类，以及分类笔记
+		 */
+		public function deleteCategory($data)
+		{
+			$model=new ModelCate();
+			$model->deleteCategory($data);
+			$mn=new ModelNote();
+			return $mn->deleteCate($data["UserId"],$data["Id"]);
+		}
 }

@@ -57,29 +57,32 @@ class Mistake extends Api
       'getByKeys'=>array(
         'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
 				'MistakeCateId'   => array('name' => 'MistakeCateId', 'default'=>0, 'desc' => '分类Id'),
-				'key' => array('name' => 'keys', 'require' => true, 'min' => 1, 'max' => 50, 'desc' => '关键字'),
-      ),
-
-      //弃用 相应接口在Like与Collection文件中
-      // 'like' => array(
-      //   'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
-      //   'MistakeId' => array('name' => 'MistakeId', 'require' => true, 'min' => 1, 'desc' => 'MistakeId'),
-      //   'QuestionId' => array('name' => 'QuestionId', 'default' => 0, 'desc' => 'question id'),
-      //   'StandTime' => array('name' => 'StandTime', 'default' => 0, 'desc' => '停留时间')
-      // ),
-      // 'collection' => array(
-      //   'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
-      //   'MistakeId' => array('name' => 'MistakeId', 'require' => true, 'min' => 1, 'desc' => 'MistakeId'),
-      //   'QuestionId' => array('name' => 'QuestionId', 'default' => 0, 'desc' => 'question id'),
-      //   'StandTime' => array('name' => 'StandTime', 'default' => 0, 'desc' => '停留时间')
-      // ),
-      
+        'key' => array('name' => 'keys', 'require' => true, 'min' => 1, 'max' => 50, 'desc' => '关键字'),
+      ),     
       'getcate' => array(
         'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
       ),
       'delete'=>array(
         'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
         'Id' => array('name' => 'Id', 'require' => true, 'min' => 1, 'desc' => 'id'),
+      ),
+      'getByUserId'=>array(
+        'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
+      ),
+      'addCate'=>array(
+        'Name'=>array('name'=>'Name','require' => true, 'min' => 1, 'max'=>20,'desc'=>'分类名称'),
+        'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
+        'Intro'=>array('name'=>'Intro','default'=>"",'desc'=>'分类名称'),
+      ),
+      'updateCate'=>array(
+        'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
+				'MistakeCateId'   => array('name' => 'MistakeCateId','require' => true, 'default'=>0, 'desc' => '分类Id'),
+        'Name'=>array('name'=>'Name','desc'=>'分类名称'),
+        'Intro'=>array('name'=>'Intro','desc'=>'分类名称'),
+      ), 
+      'deleteCate'=>array(
+        'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
+				'MistakeCateId'   => array('name' => 'MistakeCateId','require' => true, 'default'=>0, 'desc' => '分类Id'),
       )
     );
   }
@@ -136,7 +139,7 @@ class Mistake extends Api
     return MyStandard::gReturn(0, $re);
   }
   /**
-     * 通过用户Id查找最近几道错题整理
+     * 通过分类Id，分类为0得到用户所有错题查找最近几道错题整理
      * @desc 通过用户Id查找最近几道错题整理
      * @return 返回題目列表
      */
@@ -149,26 +152,6 @@ class Mistake extends Api
     $re = $dm->getMistakeByUserId($this->UserId,$this->MistakeCateId,$page, $num);
     return MyStandard::gReturn(0, $re);
   }
-
-  // /**
-  //    * 添加点赞行为
-  //    * @desc 点赞
-  //    * @return 返回受影响行数
-  //    */
-  // public function like()
-  // {
-  //   $data = array(
-  //     "MistakeId" => $this->MistakeId,
-  //     "UserId" => $this->UserId,
-  //     "QuestionId" => $this->QuestionId
-  //   );
-  //   $dm = new DomainMistake();
-  //   $re = $dm->addLike($data, $this->StandTime);
-  //   return Mystandard::gReturn(0, $re);
-  // }
-//弃用
-
-
   /**
      * 得到用户所有的错题分类
      * @desc 用户所有错题分类
@@ -211,5 +194,45 @@ class Mistake extends Api
     $dn = new DomainMistake();
     $re=$dn->deleteMistake($this->UserId,$this->Id);
     return MyStandard::gReturn(0, $re);
+  }
+
+  /**
+   * 添加错题分类
+   */
+  public function addCate(){
+    $data=array(
+      "Name"=>$this->Name,
+      "UserId"=>$this->UserId,
+      "Intro"=>$this->Intro,
+    );
+    $mm=new DomainMistake();
+    $re=$mm->addCategory($data);
+    return MyStandard::gReturn(0,$re,($re==-1?"该分类已经存在":"添加成功"));
+  }
+  /**
+   * 修改错题分类
+   */
+  public function updateCate(){
+    $data=array(
+      "UserId"=>$this->UserId,
+      "Id"=>$this->MistakeCateId
+    );
+    if($this->Name)  $data["Name"]=$this->Name;
+    if($this->Intro) $data["Intro"]=$this->Intro;
+    $mm=new DomainMistake();
+    $re=$mm->updateCategory($data);
+    return MyStandard::gReturn(0,$re,($re==-1?"该分类不存在":"修改成功"));
+  }
+  /**
+   * 删除分类，并将所有错题删除
+   */
+  public function deleteCate(){
+    $data=array(
+      "UserId"=>$this->UserId,
+      "Id"=>$this->MistakeCateId,
+    );
+    $mm=new DomainMistake();
+    $re=$mm->deleteCategory($data);
+    return MyStandard::gReturn(0,$re);
   }
 }

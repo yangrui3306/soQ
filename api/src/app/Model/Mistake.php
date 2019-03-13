@@ -142,4 +142,28 @@ class Mistake extends NotORM
       $re->delete();
       return $data;
     }
+
+    /**
+     * 删除一个分类的错题整理
+     * @return 返回删除行数
+     */
+    public function deleteMistakeByCid($uid,$cid)
+    {
+      $re=$this->getORM()->where("UserId",$uid)->where("MistakeCateId",$cid);
+      $data=$re->count();
+      $re->delete();
+      return  $data;
+    }
+    /**
+     * 将mistakeid 改成mistake
+     */
+    public function replaceMistakeId(&$arr){
+      for($i=0;$i<count($arr);$i++)
+      {
+        if($arr[$i]["MistakeId"]>0)
+        {
+          $arr[$i]["Mistake"]=$this->getMistakeById($arr[$i]["MistakeId"]);
+        }
+      }
+    }
 }

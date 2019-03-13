@@ -122,4 +122,6 @@ class  Tools
       $array[] = mb_substr($str, $i, 1, 'utf-8');
     return $array;
   }
+
+
 }

@@ -86,17 +86,19 @@ class Collection
 			$im->reduceInterest($qd);
 			
 		}		
-		return $data;
+		return -1;
 	}
 	/**查找用户所有收藏（并生成可显示方式） */
 	public function getAllByUserId($uid,$page=1,$num=5)
 	{
 		$cm=new ModelCollection();
 		$qm=new ModelQuestion;
+		$mm=new ModelMistake();
 		$min=Tools::getPageRange($page,$num);
 
 		$cs=$cm->getCollectionsByUserId($uid,$min,$num);
 		$qm->replaceQuestionId($cs);
+		$mm->replaceMistakeId($cs);
 		return $cs;
 	}
 }

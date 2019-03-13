@@ -33,11 +33,11 @@ class Site extends Api {
      */
     public function index() {
 
-        $b= new ModelSearchQ();
+        $b= "欢迎使用VNote!";
         return array(
             //'title' => $a->getStatisticsBehavior(1)
             //'title'=>Basic::searchQuestion(array("Text"=>"二元一次 编辑删除 3 全等三角形 编辑删除"))
-            'title' => $b->test()           
+            'title' => $b        
         );
     }
 }

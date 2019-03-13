@@ -33,56 +33,67 @@ class Search extends NotORM
      * @param $bs 数据库可操作的Behavior表
      * @return 返回数据库可操作类型
      */
-    public function mGetCollectionsByUserId($uid,$data=-1,$num=0,$bs=null)
+    public function mGetCollectionsByUserId($uid,$date=-1,$num=0,$bs=null)
     {
-        return $this->mGetType($uid,$data,$num,$bs)->where('Type',3);
+        return $this->mGetType($uid,$date,$num,$bs)->where('Type',3);
     }
     /**
      * 根据用户ID查找所有点赞操作
      * @return 返回数据库可操作类型
      */
-    public function mGetLikeByUserId($uid,$data=-1,$num=0,$bs=null)
+    public function mGetLikeByUserId($uid,$date=-1,$num=0,$bs=null)
     {
-        return $this->mGetType($uid,$data,$num,$bs)->where("Type",2);
+        return $this->mGetType($uid,$date,$num,$bs)->where("Type",2);
     }
     /**
      * 根据用户ID查找所有搜索操作
      * @return 返回数据库可操作类型
      */
-    public function mGetSearchByUserId($uid,$data=-1,$num=0,$bs=null)
+    public function mGetSearchByUserId($uid,$date=-1,$num=0,$bs=null)
     {
-        return $this->mGetType($uid,$data,$num,$bs)->where('Type',1);
+        return $this->mGetType($uid,$date,$num,$bs)->where('Type',1);
     }
 
     /**
      * 根据用户ID查找所有错题整理操作
      * @return 返回数据库可操作类型
      */
-    public function mGetMistakeByUserId($uid,$data=-1,$num=0,$bs=null)
+    public function mGetMistakeByUserId($uid,$date=-1,$num=0,$bs=null)
     {
         
-        return $this->mGetType($uid,$data,$num,$bs)->where('Type',4);
+        return $this->mGetType($uid,$date,$num,$bs)->where('Type',4);
+    }
+    /**
+     * 根据题目的分类获取行为表中的数据
+     */
+    public function mGetByQuestionCategory($cid,$bs=null)
+    {
+        if($bs==null) $bs=$this->getORM();
+        $sql = "SELECT QuestionId FROM `behavior`,`question` where behavior.QuestionId=question.Id and question.CategoryId=:cid";
+        $params=array(':cid'=>$cid);
+
+        return $bs->queryRows($sql,$params);
     }
     /**
      * Common 得到某一个类型的操作
      * @param uid 用户Id
-     * @param data 几天前
+     * @param date 几天前
      * @param num 前n条数据
      * @return 返回数据库可操作类型
      */
-    private function mGetType($uid,$data=-1,$num=0,$bs=null)
+    private function mGetType($uid,$date=-1,$num=0,$bs=null)
     {
         if($bs==null) $bs=$this->getORM()->where('UserId',$uid);
-        
-        if($data!=-1) 
+       
+        if($date!=-1) 
         {
-            $chuo=strtotime("-".$data." Days");//得到前$data天时间戳
+            $chuo=strtotime("-".$date." Days");//得到前$date天时间戳
             $time=date("Y-m-d",$chuo);//时间戳转换
             $time=$time." 00:00:00";
             $bs=$bs->where("Date >= ?" ,$time);
         }
         $bs=$bs->order('Id DESC');//降序排序,获取最新的数据
-        if($num!=1)
+        if($num>0)
         {
             $bs=$bs->limit($num);
         }

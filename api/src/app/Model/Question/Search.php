@@ -42,10 +42,15 @@ public function getHotQuesion($num)
   return $this->getORM()
   ->order("CollectNumber DESC")->limit($num)->fetchAll();
 }
-  /**根据题目Id的数组，得到question的数组 */
-  public function getQuestionsByIdarr($idarr)
+  /**
+   * 根据题目Id的数组，得到question的数组,
+   * @param cid 分类id 默认不处理 */
+  
+  public function getQuestionsByIdarr($idarr,$cid=0)
   {
-    return $this->getORM()->where("Id", $idarr)->fetchAll();
+    $re=$this->getORM()->where("Id", $idarr);
+    if($cid>0) $re=$re->where("CategoryId",$cid);
+    return $re->fetchAll();
   }
   /**
    * 查找除题目Id以外的其他题目
@@ -103,12 +108,15 @@ public function getHotQuesion($num)
   public function mGetQuestionsByKeyWord($keywords, $num = 0, $questions = null)
   {
     if ($num == null || $num < 1) $num = 3;
-    if ($questions == null) $questions = $this->getORM();
+    if ($questions == null) $questions = $this->getORM()->select("*");
     if ($keywords != null) {
       $keyarr = $keywords;
+      
       for ($i = 0; $i < count($keyarr); $i++) {
-        $temp = $questions->where('KeyWords LIKE ?', '%' . $keyarr[$i]["Id"] . '%');
-        if (count($questions) <= $num) break;
+        $temp = $questions;
+        $temp->where('KeyWords LIKE ?', '%' . $keyarr[$i]["Id"] . '%');    
+        
+        if (count($temp) < $num) break;
         $questions = $temp;
       }
     }

@@ -83,7 +83,7 @@ class Like
 				$im = new ModelInterest();
 				$im->reduceInterest($qd);
 			}
-		return $data;
+		return -1;
 	}
 }
 

@@ -4,7 +4,7 @@ use App\Domain\User as Domain;
 use PhalApi\Api;
 use App\Common\MyStandard;
 use App\Common\GD;
-use App\Common\Match;
+use App\Domain\Question\GeneratieTest as ModelQGeneratie;
 
 /**
  * 用户
@@ -29,7 +29,7 @@ class User extends Api {
 				'Intro'         => array('name' => 'intro', 'desc' => '用户简介', 'source' => 'post'),
 				'Occupation'    => array('name' => 'occupation', 'desc' => '用户职业', 'type' => 'int', 'max' => 1, 'source' => 'post'),
 			),
-			'getUser' => array(
+			'getByName' => array(
 				'Name' => array('name' => 'name', 'require' => true, 'min' => 1, 'max' => 50, 'desc' => '用户名'),
 			),
 			'getUid' => array(),
@@ -48,25 +48,19 @@ class User extends Api {
 				'Address'       => array('name' => 'address', 'desc' => '用户地址', 'source' => 'post'),
 				'Intro'         => array('name' => 'intro', 'desc' => '用户简介', 'source' => 'post'),
 				'Occupation'    => array('name' => 'occupation', 'desc' => '用户职业', 'type' => 'int', 'max' => 1, 'source' => 'post'),
+			),
+			'getTest'=>array(
+				'UserId' => array('name' => 'UserId', 'require' => true, 'desc' => "用户id"),
+				'CategoryId' => array('name' => 'CategoryId',  'type' => 'int',  'desc' => '题目分类id'),
+				'Date'=>array('name'=>'Date','default'=>30 ,'desc'=>'根据近Date天生成，默认30'),
+				'Number'=>array('name'=>'Number','default'=>10,'type'=>'int','desc'=>'生成的题目,默认10')
+			),
+			'getById'=>array(
+				'UserId' => array('name' => 'UserId', 'require' => true, 'desc' => "用户id"),
+				'RequesterId'=>array('name' => 'RequesterId', 'default' => 0,  'desc' => "请求者id")
 			)
 		);
 	}
-
-  /**
-   * ipso测试接口
-   * @desc 根据账号和密码进行登录操作
-   * @return 测试数据
-   */
-  public function test() {
-			$gd = new GD();
-			$img = $gd -> getUserVerificationCodeRandom(4);
-			$logo = $gd -> getUserDefaultAvatarByName("Dpso");
-			$return = new MyStandard();
-			$res = $return -> getReturn(1,"获取成功",$img);
-			return $res;
-	}
-
-
 	/**
 	 * 用户登录
 	 * @desc 用户登录
@@ -138,17 +132,30 @@ class User extends Api {
 		if($re==0) return MyStandard::gReturn(1,$re);
 		return MyStandard::gReturn(0,$re);
 	}
-
+ /**
+   * 通过用户id获取用户信息，可以存在请求者id
+	 * 
+   * @desc 通过用户id获取用户信息
+   */
+	public function getById(){
+		$UserId = $this -> UserId;
+		$domain = new Domain();
+		
+		$res = $domain -> getByUserId($UserId,$this->RequesterId);
+		
+		if(array_key_exists("Password",$res)) unset($res["Password"]);
+		return MyStandard::gReturn(0,$res);
+	}
 	 /**
    * 通过用户名获取用户信息
    * @desc 通过用户名获取用户信息
    */
-	
-	public function getUser(){
+	public function getByName(){
 		$name = $this -> Name;
 		$domain = new Domain();
 		$returnRule = new MyStandard();
 		$res = $domain -> getUserByName($name);
+		$this->unsetUserPassword($res);
 		if($res['code'] == 1){
 			return $returnRule -> getReturn(1, $res['msg']);
 		}
@@ -159,7 +166,6 @@ class User extends Api {
    * @desc 用户主页推荐,笔记和题目
 	 * @return ["Notes"=>[···],"Questions"=>[···]]
    */
-
 	public function getRecommend()
 	{
 		$uid=$this->uid;
@@ -191,8 +197,6 @@ class User extends Api {
 		$returnRule = new MyStandard();
 		return $returnRule -> getReturn(0, '', $uid);
 	}
-
-
 	/**
 	 * 获取验证码
 	 */
@@ -201,5 +205,22 @@ class User extends Api {
 		$returnRule = new MyStandard();
 		$code = $gd -> getUserVerificationCodeRandom(5);
 		return $returnRule -> getReturn(0, '', $code);
+	}
+	/** 
+  * 得到测试题目
+  */
+  public function getTest()
+  {
+		$mqg=new ModelQGeneratie();
+		$re=$mqg->getTest($this->UserId,$this->CategoryId,$this->Date,$this->Number);
+		return MyStandard::gReturn(0,$re);
+	}
+
+	private function unsetUserPassword(&$arr)
+	{
+		for($i=0;$i<count($arr);$i++)
+		{
+			if(array_key_exists("Password",$arr[$i])) unset($arr[$i]["Password"]);
+		}
 	}
 } 

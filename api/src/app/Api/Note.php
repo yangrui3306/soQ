@@ -21,27 +21,27 @@ class Note extends Api
 			'cates' => array(
 				'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
 			),
-			'addCate'=>array(
-				'Name'=>array('name' => 'Name', 'require' => true,  'desc' => '分类名'),
-				'UserId'=>array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
-				'Intro'=>array('name' => 'Intro', 'require' => true,  'desc' => '介绍'),
+			'addCate' => array(
+				'Name' => array('name' => 'Name', 'require' => true,  'desc' => '分类名'),
+				'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
+				'Intro' => array('name' => 'Intro',  'desc' => '介绍'),
 			),
-			'getOne'=>array(
-				'Id'=>array('name'=>"Id",'require'=>true,'min'=>1,'decs'=>"笔记Id")
+			'getOne' => array(
+				'Id' => array('name' => "Id", 'require' => true, 'min' => 1, 'decs' => "笔记Id")
 			),
 			'notesByKeys' => array(
 				'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
-				'NoteCategoryId'   => array('name' => 'NoteCategoryId', 'default'=>0, 'desc' => '分类Id'),
+				'NoteCategoryId'   => array('name' => 'NoteCategoryId', 'default' => 0, 'desc' => '分类Id'),
 				'key' => array('name' => 'keys', 'require' => true, 'min' => 1, 'max' => 50, 'desc' => '关键字'),
 			),
 			'notesByCate' => array(
 				'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
 				'NoteCategoryId'   => array('name' => 'NoteCategoryId', 'require' => true, 'desc' => '分类Id'),
 				'Number'  => array('name' => 'Number', 'default' => 5, 'desc' => '需要的数量'),
-        'Page'=>array('name' => 'Page', 'default' => 1, 'desc' => '题目页数')
-      ),
+				'Page' => array('name' => 'Page', 'default' => 1, 'desc' => '题目页数')
+			),
 			'add' => array(
-				'UserId'=>array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
+				'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
 				'Headline'     => array('name' => 'Headline', 'desc' => '笔记标题'),
 				'NoteCategoryId' => array('name' => 'NoteCategoryId', 'desc' => '笔记分类id'),
 				'Content'      => array('name' => 'Content', 'desc' => '笔记内容'),
@@ -53,28 +53,39 @@ class Note extends Api
 				'Content'      => array('name' => 'Content', 'desc' => '笔记内容'),
 			),
 			'delete' => array(
-				'Nid'  => array('name' => 'Id', 'require' => true,'desc' => '笔记id'),
+				'Nid'  => array('name' => 'Id', 'require' => true, 'desc' => '笔记id'),
 			),
-			'count'=>array(
-				'UserId'=>array('name'=>'UserId','require'=>true,'desc'=>'用户Id')
-			)
-			
+			'count' => array(
+				'UserId' => array('name' => 'UserId', 'require' => true, 'desc' => '用户Id')
+			),
+			'deleteCategory' => array(
+				'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
+				'NoteCategoryId'   => array('name' => 'NoteCategoryId', 'require' => true, 'desc' => '分类Id'),
+			),
+			'updateCategory' => array(
+				'NoteCategoryId'   => array('name' => 'NoteCategoryId', 'require' => true, 'desc' => '分类Id'),
+				'Name' => array('name' => 'Name',  'default' => null, 'desc' => '分类名'),
+				'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
+				'Intro' => array('name' => 'Intro',   'default' => null, 'desc' => '介绍'),
+			),
+
 		);
 	}
-  /** 得到用户笔记数量
+	/** 得到用户笔记数量
    * 
    */
-  public function count(){
-		$kk=new DomainNote();
-		$re=$kk->getCountByUserId($this->UserId);
-		return MyStandard::gReturn(0,$re);
+	public function count()
+	{
+		$kk = new DomainNote();
+		$re = $kk->getCountByUserId($this->UserId);
+		return MyStandard::gReturn(0, $re);
 	}
 	/**
      * 得到所有笔记分类信息
      */
 	public function cates()
 	{
-		$uid=$this->UserId;
+		$uid = $this->UserId;
 		$mc = new ModelNoteCategory();
 		$re = $mc->getNotesCategoryByUserId($uid); //用户Id 需修改
 		return MyStandard::gReturn(0, $re);
@@ -82,14 +93,15 @@ class Note extends Api
 	/**
 	 * 添加笔记分类
 	 */
-	public function addCate(){
-		$data=array(
-			'Name'=>$this->Name,
-			'UserId'=>$this->UserId,
-			'Intro'=>$this->Intro
+	public function addCate()
+	{
+		$data = array(
+			'Name' => $this->Name,
+			'UserId' => $this->UserId,
+			'Intro' => $this->Intro
 		);
 		$mc = new ModelNoteCategory();
-		$re=$mc->addCategory($data);
+		$re = $mc->addCategory($data);
 		return MyStandard::gReturn(0, $re);
 	}
 	/**
@@ -98,69 +110,33 @@ class Note extends Api
 	public function notesByKeys()
 	{
 		$dn = new DomainNote();
-		$uid=$this->UserId;
-		$re = $dn->getNotesByKeywords($uid, $this->NoteCategoryId,$this->key);
+		$uid = $this->UserId;
+		$re = $dn->getNotesByKeywords($uid, $this->NoteCategoryId, $this->key);
 
 		return MyStandard::gReturn(0, $re);
 	}
 
 
-// /**
-	//  * 根据用户分类得到所有notes
-	//  * 
-	//  * @return data(
-	//  * 	notes  当前页笔记
-	//  * 	pages  当前界面分页的下标显示格式数组
-	//  * )
-	//  */
-// public function notesByCate()
-	// {
-	// 	$dn = new DomainNote();
-	// 	$uid=$this->UserId;
-	// 	$singlePage = $this->num;
-	// 	//分页
-	// 	$re = $dn->getNotesByCateId($uid, $this->cateid);
-
-	// 	/* ------  获取当前界面页标  ------ */
-	// 	$currpages = array(); // 当前展示在界面中的页标
-	// 	$count = count($re); // 数据库中查询的总记录数
-	// 	$pages = ceil($count * (1.0) / $singlePage); // 获得向上取整的分页总数量
-	// 	$curr  = $this->currPage; // 当前页
-	// 	$currpages = MyStandard::getPage($pages, $curr); // 第三个参数可不用
-
-	// 	/* ------  获取当前页的数据  ------ */
-	// 	$beginNote = $singlePage * ($curr - 1) + 1;  // 开始查询的记录的逻辑位置
-	// 	$length   = $singlePage;  // 查询的长度
-	// 	$notes = $dn->getByLimit($beginNote, $length);
-
-	// 	$data = array(
-	// 		'notes' => $notes,
-	// 		'pages' => $currpages,
-	// 	);
-
-	// 	return MyStandard::gReturn(0, $data);
-// }
-
-	
 	/**
 	 * 根据用户分类得到所有notes
 	 */
 	public function notesByCate()
 	{
 		$dn = new DomainNote();
-	
+
 		$num = $this->Number;
-		$page=$this->Page;
+		$page = $this->Page;
 		//分页
-		$re = $dn->getNotesByCateId($this->NoteCategoryId,$this->UserId,$page,$num);
+		$re = $dn->getNotesByCateId($this->NoteCategoryId, $this->UserId, $page, $num);
 
 		return MyStandard::gReturn(0, $re);
 	}
 
 	/**得到某个笔记 */
-	public function getOne(){
-		$dn=new DomainNote();
-		$re=$dn->getNoteById($this->Id);
+	public function getOne()
+	{
+		$dn = new DomainNote();
+		$re = $dn->getNoteById($this->Id);
 		return MyStandard::gReturn(0, $re);
 	}
 	/**
@@ -169,7 +145,7 @@ class Note extends Api
 	public function add()
 	{
 		$data = array(
-			'UserId'=>$this->UserId,
+			'UserId' => $this->UserId,
 			'Headline'     => $this->Headline,
 			'NoteCategoryId' => $this->NoteCategoryId,
 			'Content'      => $this->Content,
@@ -177,7 +153,7 @@ class Note extends Api
 
 		$domain = new DomainNote();
 		$result = $domain->add($data);
-		return MyStandard::gReturn(0, $result,'添加成功');
+		return MyStandard::gReturn(0, $result, '添加成功');
 	}
 
 	/**
@@ -194,17 +170,47 @@ class Note extends Api
 
 		$domain = new DomainNote();
 		$result = $domain->update($data);
-		return MyStandard::gReturn(0, $result,'更新成功');
+		return MyStandard::gReturn(0, $result, '更新成功');
 	}
 	/**
 	 * 删除一条笔记
 	 */
 	public function delete()
 	{
-	
+
 		$nid = $this->Nid;
 		$domain = new DomainNote();
 		$result = $domain->delete($nid);
-		return MyStandard::gReturn(0, $result,'删除成功');
+		return MyStandard::gReturn(0, $result, '删除成功');
+	}
+
+	/**
+ * 更新笔记分类
+ */
+	public function updateCategory()
+	{
+		$data = array(
+			"UserId" => $this->UserId,
+			"Id" => $this->NoteCategoryId
+		);
+		if ($this->Intro) $data["Intro"] = $this->Intro;
+		if ($this->Name) $data["Name"] = $this->Name;
+		$domain = new DomainNote();
+		$re = $domain->updateCategory($data);
+		return MyStandard::gReturn(0, $re);
+	}
+	/**
+ * 删除笔记分类和其中内容
+ */
+	public function deleteCategory()
+	{
+		$data = array(
+			"UserId" => $this->UserId,
+
+			"Id" => $this->NoteCategoryId
+		);
+		$domain = new DomainNote();
+		$re = $domain->deleteCategory($data);
+		return MyStandard::gReturn(0, $re);
 	}
 }

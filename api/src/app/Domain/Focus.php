@@ -8,9 +8,12 @@ class Focus
 {
   public function add($uid,$fid)
   {
-  
     $fm=new ModelFocus();
     $id=$fm->insertOne($uid,$fid);
+    if($id==-1)
+    {
+      $fm->deleteOne($uid,$fid);
+    }
     return $id;
   }
   /**得到用户的粉丝 */

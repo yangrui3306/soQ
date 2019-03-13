@@ -134,4 +134,14 @@ class Note extends NotORM
         $model = $this->getORM();
         return $model->where('Id', $id)->delete();
     }
+    /**
+     * 删除相同分类的笔记，返回删除行数
+     */
+    public function deleteCate($uid,$cid)
+    {
+        $data=$this->getORM()->where("UserId",$uid)->where("NoteCategoryId",$cid);
+        $re=$data->count();
+        $data->delete();
+        return $re;
+    }
 }

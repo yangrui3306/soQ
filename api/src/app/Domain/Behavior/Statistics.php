@@ -17,20 +17,19 @@ class Statistics
   /**
      * 得到指定用户的最近几天内行为统计返回相应数组
      * @param int $uid 用户Id
-     * @param int $data 指定前几天(0为当天)，默认从创建开始
+     * @param int $date 指定前几天(0为当天)，默认从创建开始
      * @param int $num 指定数量，默认为最大数量
      * @return 用户关键字数组
      */
-    public function getStatisticsBehavior($uid, $data = -1, $num = 0)
+    public function getStatisticsBehavior($uid, $cid=0,$date = -1, $num = 0)
     {
-      $sbh = new ModelSearch();
-      $mq = new ModelSearchQ();
+      $cs=$this->getStatisticsCollection($uid,$cid,$date,$num);
+      $ls=$this->getStatisticsLike($uid,$cid,$date,$num);
+      $ms=$this->getStatisticsMistake($uid,$cid,$date,$num);
       
-      $cs=$this->getStatisticsCollection($uid,$data,$num);
-      $ls=$this->getStatisticsLike($uid,$data,$num);
-      $ms=$this->getStatisticsMistake($uid,$data,$num);
-      $ss=$this->getStatisticsSearch($uid,$data,$num);
-      $keys = array_merge($cs,$ls,$ms,$ss);
+      //$ss=$this->getStatisticsSearch($uid,$cid,$date,$num);//去除搜索行为
+      
+      $keys = array_merge($cs,$ls,$ms);
       Tools::mergeKeyWeight($keys);
       Tools::SortByKey($keys,"Weight",false);
       return $keys;
@@ -40,18 +39,20 @@ class Statistics
   /**
      * 得到指定用户的最近几天内内或最近几道收藏题目统计返回相应数组
      * @param int $uid 用户Id
+     * @param int cid 题目分类id
      * @param int $data 指定前几天(0为当天)，默认从创建开始
      * @param int $num 指定数量，默认为最大数量
      * @return 用户关键字数组
      */
-  public function getStatisticsCollection($uid, $data = -1, $num = 0)
+  public function getStatisticsCollection($uid,$cid=0, $data = -1, $num = 0)
   {
     $sbh = new ModelSearch();
     $mq = new ModelSearchQ();
 
     $bhs = $sbh->mGetCollectionsByUserId($uid, $data, $num)->where("NOT QuestionId", array(null, 0)); //剔除未上传题库的题目
+      
     $idarr = Tools::GetValueByKey($bhs, "QuestionId");
-    $qs = $mq->getQuestionsByIdarr($idarr);
+    $qs = $mq->getQuestionsByIdarr($idarr,$cid);
    
     $keys=$this->getKeyWrodsByQs($qs);
     return $this->AddWeightForKeys($keys,Statistics::collectionWeight);
@@ -64,14 +65,15 @@ class Statistics
      * @param int $num 指定数量，默认为最大数量
      * @return 
      */
-  public function getStatisticsSearch($uid, $data = -1, $num = 0)
+  public function getStatisticsSearch($uid,$cid=0, $data = -1, $num = 0)
   {
     $sbh = new ModelSearch();
     $mq = new ModelSearchQ();
 
     $bhs = $sbh->mGetSearchByUserId($uid, $data, $num)->where("NOT QuestionId", array(null, 0)); //剔除未上传题库的题目
+   
     $idarr = Tools::GetValueByKey($bhs, "QuestionId");
-    $qs = $mq->getQuestionsByIdarr($idarr);
+    $qs = $mq->getQuestionsByIdarr($idarr,$cid);
     $keys=$this->getKeyWrodsByQs($qs);
     return $this->AddWeightForKeys($keys,Statistics::searchWeight);
   }
@@ -82,14 +84,15 @@ class Statistics
      * @param int $num 指定数量，默认为最大数量
      * @return 
      */
-  public function getStatisticsMistake($uid, $data = -1, $num = 0)
+  public function getStatisticsMistake($uid, $cid=0,$data = -1, $num = 0)
   {
     $sbh = new ModelSearch();
     $mq = new ModelSearchQ();
 
     $bhs = $sbh->mGetMistakeByUserId($uid, $data, $num)->where("NOT QuestionId", array(null, 0)); //剔除未上传题库的题目
+    
     $idarr = Tools::GetValueByKey($bhs, "QuestionId");
-    $qs = $mq->getQuestionsByIdarr($idarr);
+    $qs = $mq->getQuestionsByIdarr($idarr,$cid);
     $keys=$this->getKeyWrodsByQs($qs);
     return $this->AddWeightForKeys($keys,Statistics::mistakeWeight);
   }
@@ -102,14 +105,15 @@ class Statistics
      * @param int $num 指定数量，默认为最大数量
      * @return 
      */
-  public function getStatisticsLike($uid, $data = -1, $num = 0)
+  public function getStatisticsLike($uid, $cid=0,$data = -1, $num = 0)
   {
     $sbh = new ModelSearch();
     $mq = new ModelSearchQ();
 
     $bhs = $sbh->mGetLikeByUserId($uid, $data, $num)->where("NOT QuestionId", array(null, 0)); //剔除未上传题库的题目
+
     $idarr = Tools::GetValueByKey($bhs, "QuestionId");
-    $qs = $mq->getQuestionsByIdarr($idarr);
+    $qs = $mq->getQuestionsByIdarr($idarr,$cid);
     $keys=$this->getKeyWrodsByQs($qs);
     return $this->AddWeightForKeys($keys,Statistics::likeWeight);
   }

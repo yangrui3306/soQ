@@ -12,13 +12,7 @@
             "type": "zip",
             "url": "https://api.github.com/repos/phalapi/cli/zipball/8aedab4231a7089672d02f7b9e59447b3dc787ea",
             "reference": "8aedab4231a7089672d02f7b9e59447b3dc787ea",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
+            "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
@@ -64,13 +58,7 @@
             "type": "zip",
             "url": "https://api.github.com/repos/phalapi/kernal/zipball/75f10dd95930721d7959d5f058ba1c8d2f4d1c14",
             "reference": "75f10dd95930721d7959d5f058ba1c8d2f4d1c14",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
+            "shasum": ""
         },
         "require": {
             "phalapi/notorm": "2.3.0",
@@ -126,13 +114,7 @@
             "type": "zip",
             "url": "https://api.github.com/repos/phalapi/notorm/zipball/a35e6ce3557b1c4559fefc1de366f28d866f2776",
             "reference": "a35e6ce3557b1c4559fefc1de366f28d866f2776",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
+            "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
@@ -178,13 +160,7 @@
             "type": "zip",
             "url": "https://api.github.com/repos/phalapi/qrcode/zipball/cbb3c5f3f95a7902b0a72786a77495ada0c006b7",
             "reference": "cbb3c5f3f95a7902b0a72786a77495ada0c006b7",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
+            "shasum": ""
         },
         "time": "2017-12-29T12:03:03+00:00",
         "type": "library",
@@ -200,7 +176,7 @@
         ],
         "authors": [
             {
-                "name": "dogstar huang",
+                "name": "Dogstar Huang",
                 "email": "chanzonghuang@gmail.com",
                 "homepage": "http://my.oschina.net/dogstar",
                 "role": "Developer"
@@ -228,13 +204,7 @@
             "type": "zip",
             "url": "https://api.github.com/repos/phalapi/task/zipball/552421219a3097a81c576fc2607d96894d489def",
             "reference": "552421219a3097a81c576fc2607d96894d489def",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
+            "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
@@ -265,6 +235,52 @@
             "phalapi",
             "phalapi-task",
             "task"
+        ]
+    },
+    {
+        "name": "phalapi/ucloud",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/gongshunkai/phalapi-ucloud.git",
+            "reference": "6b6f0bc91f8729906175e37641612b8ec232cfa7"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/gongshunkai/phalapi-ucloud/zipball/6b6f0bc91f8729906175e37641612b8ec232cfa7",
+            "reference": "6b6f0bc91f8729906175e37641612b8ec232cfa7",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "time": "2017-11-25T07:22:56+00:00",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "PhalApi\\UCloud\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-3.0+"
+        ],
+        "authors": [
+            {
+                "name": "Dogstar Huang",
+                "email": "chanzonghuang@gmail.com",
+                "homepage": "http://my.oschina.net/dogstar",
+                "role": "Developer"
+            }
+        ],
+        "description": "PhalApi 2.x 扩展类库 - 图片上传",
+        "homepage": "https://www.phalapi.net/",
+        "keywords": [
+            "phalapi",
+            "phalapi-ucloud",
+            "ucloud"
         ]
     }
 ]

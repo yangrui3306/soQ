@@ -87,7 +87,7 @@ class FileLogger extends Logger {
         }
 
         $content = implode('|', $msgArr) . PHP_EOL;
-
+        // $content=PHP_EOL;
         file_put_contents($this->logFile, $content, FILE_APPEND);
     }
 }

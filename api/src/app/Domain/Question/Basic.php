@@ -24,9 +24,9 @@ class Basic
   {
    
     $keys=Tools::ExtractKeyWords($q["Text"]);
+
+    $qs=CommonMatch::GetQuestionsByKeyWord($keys,$num*2);
     
-    $mq=new ModelSearchQ();
-    $qs=$mq->mGetQuestionsByKeyWord($keys,$num*2);
     return CommonMatch::qLevenShtein($q,$qs,$num);
   }
   /**推荐热门的题目 */
@@ -49,6 +49,7 @@ class Basic
   {
     $min=Tools::getPageRange($page,$num);
     $keys=CommonMatch::AllWordMatch($keys);
+ 
     $qm=new ModelQBasic();
     return $qm->getQuestionsByKeys($keys,$cid,$min,$num);
   }

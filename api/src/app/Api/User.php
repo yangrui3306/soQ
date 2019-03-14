@@ -51,7 +51,7 @@ class User extends Api {
 			),
 			'getTest'=>array(
 				'UserId' => array('name' => 'UserId', 'require' => true, 'desc' => "用户id"),
-				'CategoryId' => array('name' => 'CategoryId',  'type' => 'int',  'desc' => '题目分类id'),
+				'CategoryId' => array('name' => 'CategoryId','require' => true ,'type' => 'int',  'desc' => '题目分类id'),
 				'Date'=>array('name'=>'Date','default'=>30 ,'desc'=>'根据近Date天生成，默认30'),
 				'Number'=>array('name'=>'Number','default'=>10,'type'=>'int','desc'=>'生成的题目,默认10')
 			),

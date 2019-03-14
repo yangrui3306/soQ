@@ -47,8 +47,7 @@ class Cosines
         $temp["Weight"][$i] = 0;
       }
     } ////合并b
-    $arryb = $temp;
-    return [$arrya, $arryb];
+    return [$arrya, $temp];
   }
 
   /**
@@ -79,9 +78,9 @@ class Cosines
  */
   public function run($a, $b)
   {
-    if(count($a["Keys"])==0||count($b["Keys"])==0) return 0;
+    // if(count($a["Keys"])==0||count($b["Keys"])==0) return 0;
     $arry = $this->getWordSet($a, $b);
-    
+   
     return $this->calculate($arry[0],$arry[1]);
   }
 }

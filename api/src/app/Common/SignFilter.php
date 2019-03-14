@@ -39,7 +39,7 @@ class SignFilter implements Filter{
 		$userSign   = md5('api_'.$sign.'_api');
 
     if ($userSign != $serverSign) {
-        throw new BadRequestException($allParam["intro"], 1);
+        throw new BadRequestException($str, 1);
     }
 	}
 

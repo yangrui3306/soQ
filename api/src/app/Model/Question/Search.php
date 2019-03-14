@@ -124,6 +124,8 @@ public function getHotQuesion($num)
     return $questions->limit($num);
   }
 
+  
+
   /**
    * 题目判重
    * @param $q 题目
@@ -147,4 +149,7 @@ public function getHotQuesion($num)
     }
     return null;
   }
+
+
+
 }

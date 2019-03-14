@@ -10,6 +10,8 @@ use App\Model\Question\Search as ModelSearchQ;
 use App\Domain\Behavior\Statistics;
 use App\Common\Cosines;
 use App\Common\Tools;
+use App\Common\Match;
+
 class GeneratieTest
 {
 
@@ -35,8 +37,9 @@ class GeneratieTest
      * @param questions 经过处理的数据库可直接操作的题目
      * @return 数据库可操作类型
      */
-  public function GetQuestionsByKeyWord($keywords, $num = 0, $questions = [])
+  public function GetQuestionsByKeyWord($keywords, $num = 0, $questions = null)
   {
+    if($questions==null) return [];
     if ($num == null || $num < 1) $num = 3;
     if ($keywords) {
       $keyarr = $this->merageArray($keywords);
@@ -70,7 +73,7 @@ class GeneratieTest
 
     $mquestion = new ModelSearchQ();
     $qs = QTools::deleteQuestionsForUser($uid); //去除用户已经操作（收藏、错题整理等）部分
-    $questions = $this->GetQuestionsByKeyWord($keys, $num, $qs); //关键字匹配相应题目
+    $questions = Match::GetQuestionsByKeyWord($keys, $num, $qs); //关键字匹配相应题目
     return $questions;
   }
 }

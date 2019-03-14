@@ -15,6 +15,7 @@ class ComposerStaticInit6835957bc29912b8a4cd2dd758af2e80
     public static $prefixLengthsPsr4 = array (
         'P' => 
         array (
+            'PhalApi\\UCloud\\' => 15,
             'PhalApi\\Task\\' => 13,
             'PhalApi\\QrCode\\' => 15,
             'PhalApi\\NotORM\\' => 15,
@@ -28,6 +29,10 @@ class ComposerStaticInit6835957bc29912b8a4cd2dd758af2e80
     );
 
     public static $prefixDirsPsr4 = array (
+        'PhalApi\\UCloud\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phalapi/ucloud/src',
+        ),
         'PhalApi\\Task\\' => 
         array (
             0 => __DIR__ . '/..' . '/phalapi/task/src',

@@ -6,7 +6,9 @@
  */
 namespace App\Common;
 
+use App\Common\Cosines;
 use App\Common\Tools as Tools;
+use App\Model\Question\Search as ModelSearchQ;
 
 class Match
 {
@@ -73,13 +75,108 @@ class Match
    */
   public static function AllWordMatch($keys)
   {
-    $s = "%";
-    $arr=Tools::chToArray($keys);
+    // $s = "%";
    
-    for ($i = 0; $i < count($arr); $i++) {
-        $s = $s . $arr[$i] . "%";
+  
+    $keywords=Tools::ExtractKeyWords($keys);
+    foreach($keywords as $word)
+    {
+      $pos=0;
+      while($pos!==false&&strlen($keys)>$pos)
+      {
+        $pos=strpos($keys,$word["Word"],$pos);//下面加了
+        if($pos===false) break;
+        $keys=substr_replace($keys, "%", $pos+strlen($word["Word"]), 0);//需要+
+      
+        $keys=substr_replace($keys, "%", $pos, 0);
+        $pos=$pos+strlen($word["Word"])+2;
       }
-    return $s;
+    }
+    $arr = Tools::chToArray($keys);
+    $reslut="";
+    if($arr[0]!="%") $reslut="%";
+    $f=false;
+    for ($i = 0; $i < count($arr); $i++) {
+      $reslut .=  $arr[$i];
+      if($arr[$i]=="%")
+      {
+        $f=!$f;
+        continue;
+      }
+      if($f) continue;
+
+      $reslut.="%";
+    }
+    $temp="";
+    while($reslut!=$temp)
+    {
+      $temp=$reslut;
+      $reslut=str_replace("%%","%",$reslut);
+    }
+    return $reslut;
   }
 
+
+  /**
+     * 根据关键字匹配指定大于某数量的题目（优先匹配关键字最多的 需修改按大小匹配！！）
+		 * @param array keywords [{"Id":"2","Weight":"3"}...} 降序
+		 * @param num 题目数量
+     * @param questions 经过处理的数据库可直接操作的题目
+     * @return 数据库可操作类型
+     */
+  public static function GetQuestionsByKeyWord($keywords, $num = 0, $questions = null)
+  {
+    $msq=new ModelSearchQ();
+    if ($questions == null) $questions = $msq->getAllQuestion();
+    if ($num == null || $num < 1) $num = 3;
+    
+    if ($keywords) {
+      $keyarr = Match::merageArray($keywords);
+      $questions = $questions->fetchAll(); //抓取所有
+      for ($i = 0; $i < count($questions); $i++) {
+      
+        $temp = array(
+          "Keys" => $questions[$i]["KeyWords"]==""?[]:explode(",", $questions[$i]["KeyWords"]),
+          "Weight" => $questions[$i]["KeysWeight"]==""?[]:explode(",", $questions[$i]["KeysWeight"])
+        );
+        
+        $cos = new Cosines();
+        
+        $questions[$i]["Similarity"] = $cos->run($keyarr, $temp);
+        // return $questions[$i]["Similarity"];
+      }
+      
+      Tools::SortByKey($questions, "Similarity", false);
+      return array_slice($questions, 0, $num); //获取前n个记录
+    }
+    else {//如果传入文字未提取到关键字
+      $reslut=[];
+      $questions = $questions->fetchAll(); //抓取所有
+      for ($i = 0; $i < count($questions); $i++) {
+
+        if($questions[$i]["KeyWords"]==""){ 
+          $questions[$i]["Similarity"] = 1;
+          array_push($reslut,$questions[$i]);
+        }       
+        // return $questions[$i]["Similarity"];
+      }
+      return $reslut;
+    }
+  }
+  /**
+   * 工具类
+   * [{Id:1,Weight:1},{Id:2,Weight:2}]=>{Keys:[1,2],Weight:[1,2]}
+   */
+  private static function merageArray($arr)
+  {
+    $re = array(
+      "Keys" => [],
+      "Weight" => []
+    );
+    for ($i = 0; $i < count($arr); $i++) {
+      $re["Keys"][$i] = $arr[$i]["Id"];
+      $re["Weight"][$i] = $arr[$i]["Weight"];
+    }
+    return $re;
+  }
 }

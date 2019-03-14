@@ -23,6 +23,16 @@ $di->config = new FileConfig(API_ROOT . '/config');
 // 调试模式，$_GET['__debug__']可自行改名
 $di->debug = !empty($_GET['__debug__']) ? true : $di->config->get('sys.debug');
 
+// // 七牛云上传图片
+// $di->qiniu = function() {
+//     return new \PhalApi\Qiniu\Lite();
+// };
+
+//文件上传
+$di->ucloud = function() {
+    return new \PhalApi\UCloud\Lite();
+};
+
 // 日记纪录
 $di->logger = new FileLogger(API_ROOT . '/runtime', Logger::LOG_LEVEL_DEBUG | Logger::LOG_LEVEL_INFO | Logger::LOG_LEVEL_ERROR);
 

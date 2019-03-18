@@ -6,6 +6,7 @@ use PhalApi\Api;
 use App\Domain\Question\Upload as DomainUpload;
 use App\Common\MyStandard;
 use App\Domain\Question\Basic as DomainBasic;
+use App\Domain\Question\Recommend as DomainRecommend;
 
 /**
  * 题目的基本操作示例
@@ -32,7 +33,7 @@ class Question extends Api
             ),
             'getById' => array(
                 'UserId' => array('name' => 'UserId', 'default' => 0, 'require' => false, 'desc' => "用户id"),
-                'Id' => array('name' => 'Id', 'require' => true, 'min=' => 1, 'desc' => '题目Id'),
+                'Id' => array('name' => 'Id', 'require' => true, 'min' => 1, 'desc' => '题目Id'),
             ),
             'getByKeys' => array(
                 'Keys' => array('name' => 'Keys', 'require' => true, 'max' => 200, 'desc' => '关键字'),
@@ -40,7 +41,11 @@ class Question extends Api
                 'Number'  => array('name' => 'Number', 'default' => 10, 'desc' => '需要的数量'),
                 'Page' => array('name' => 'Page', 'default' => 1, 'desc' => '题目页数'),
             ),
-            
+            'getRecommendByQId'=>array(
+                'UserId' => array('name' => 'UserId', 'default' => 0, 'desc' => "用户id"),
+                'Id' => array('name' => 'Id', 'require' => true, 'min' => 1, 'desc' => '题目Id'),
+                'Number'=>array('name'=>'Number','default'=>3,'min'=>1,'desc'=>"题目数量")
+            )
         );
     }
 
@@ -100,5 +105,13 @@ class Question extends Api
 
         $re = $mq::findQuestionById($this->Id, $this->UserId);
         return MyStandard::gReturn(0, $re);
+    }
+    /**
+     * 通过Id得到相似题目推荐
+     */
+    public function getRecommendByQId(){
+        $dq=new DomainRecommend();
+        $re=$dq->recommendByQId($this->Id,$this->UserId,$this->Number);
+        return MyStandard::gReturn(0,$re);
     }
 }

@@ -5,6 +5,7 @@ use PhalApi\Api;
 use App\Common\MyStandard;
 use App\Common\GD;
 use App\Domain\Question\GeneratieTest as ModelQGeneratie;
+use PhalApi\Exception;
 
 /**
  * 用户
@@ -58,7 +59,8 @@ class User extends Api {
 			'getById'=>array(
 				'UserId' => array('name' => 'UserId', 'require' => true, 'desc' => "用户id"),
 				'RequesterId'=>array('name' => 'RequesterId', 'default' => 0,  'desc' => "请求者id")
-			)
+			),
+			'changeUserAvatar'
 		);
 	}
 	/**
@@ -155,7 +157,9 @@ class User extends Api {
 		$domain = new Domain();
 		$returnRule = new MyStandard();
 		$res = $domain -> getUserByName($name);
-		$this->unsetUserPassword($res);
+		return $res;
+		$this->unsetUserPassword($res["data"]);
+	
 		if($res['code'] == 1){
 			return $returnRule -> getReturn(1, $res['msg']);
 		}
@@ -218,9 +222,15 @@ class User extends Api {
 
 	private function unsetUserPassword(&$arr)
 	{
-		for($i=0;$i<count($arr);$i++)
+		try{
+			for($i=0;$i<count($arr);$i++)
+			{
+				if(is_array($arr[$i]) && array_key_exists("Password",$arr[$i])) unset($arr[$i]["Password"]);
+			}
+		}
+		catch(Exception $e)
 		{
-			if(array_key_exists("Password",$arr[$i])) unset($arr[$i]["Password"]);
+			return [];
 		}
 	}
 } 

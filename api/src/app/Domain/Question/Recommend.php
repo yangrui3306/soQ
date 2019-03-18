@@ -18,24 +18,25 @@ class Recommend
    * @param $num 需要推荐的数量，默认为3
    * @return 题目信息
    */
-  public function recommendByQId($id, $uid, $num = 3)
+  public function recommendByQId($id, $uid=0, $num = 3)
   {
     $mquestion = new ModelSearchQ();
 
-    $question = $mquestion->getQuestionById($id, $num);
-
+    $question = $mquestion->getQuestionById($id);
+    
     $questions = $mquestion->mGetQuestionsByCategoryId($question['CategoryId']); //查找分类相同的题目
-    //需要cookie传入用户Id
-    $questions = QTools::deleteQuestionsForUser($uid); //剔除用户已经操作的题目
+  
+    $questions = $mquestion->mGetNotQuestionById($id, $questions);//去除本题
+
+    if($uid!=0) $questions = QTools::deleteQuestionsForUser($uid); //剔除用户已经操作的题目
+   
 
     //$keys = explode(",", $question["KeyWords"]); //转数组
     $keys=QTools::mergeQuestionKeys($question["KeyWords"],$question["KeysWeight"]);
+  
+  
+    $questions = CommonMatch::GetQuestionsByKeyWord($keys, $num, $questions); //已修改
    
-    $questions = $mquestion->mGetNotQuestionById($id, $questions);
-
-    $dg=new GeneratieTest();//余弦定理获取，需修改
-    $questions = $dg->GetQuestionsByKeyWord($keys, $num, $questions); //需修改
-
     return CommonMatch::qLevenShtein($question, $questions, $num);
   }
 

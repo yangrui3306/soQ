@@ -21,7 +21,7 @@ class  Tools
 
     // 数据库查询语句，判断题目中存在的关键字
     $keyarr = $kw->gesKeyWordsByWords($text);
-    return $keyarr;
+ 
     for ($i = 0; $i < count($keyarr); $i++) {
       $cnt = substr_count($text, $keyarr[$i]['Word']);
       $keyarr[$i]["Weight"] = $keyarr[$i]["Weight"] * $cnt;

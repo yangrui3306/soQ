@@ -62,9 +62,12 @@ class Cosines
     $tempa = 0;
     $tempb = 0;
     for ($i = 0; $i < count($a["Weight"]); $i++) {
-      $molecule += ($a["Weight"][$i] * $b["Weight"][$i]);
-      $tempa += ($a["Weight"][$i] * $a["Weight"][$i]);
-      $tempb += ($b["Weight"][$i] * $b["Weight"][$i]);
+      if(is_numeric($a["Weight"][$i])&&is_numeric($b["Weight"][$i]))
+        $molecule += ($a["Weight"][$i] * $b["Weight"][$i]);
+      if(is_numeric($a["Weight"][$i]))
+        $tempa += ($a["Weight"][$i] * $a["Weight"][$i]);
+      if(is_numeric($b["Weight"][$i]))
+        $tempb += ($b["Weight"][$i] * $b["Weight"][$i]);
     }
     $denominator = sqrt($tempa) * sqrt($tempb);
     
@@ -78,9 +81,12 @@ class Cosines
  */
   public function run($a, $b)
   {
-    // if(count($a["Keys"])==0||count($b["Keys"])==0) return 0;
+    $lena = count($a["Keys"]);
+    $lenb = count($b["Keys"]);
     $arry = $this->getWordSet($a, $b);
    
+    if((count($arry[0]["Keys"])==$lena+$lenb)) return 0;
+ 
     return $this->calculate($arry[0],$arry[1]);
   }
 }

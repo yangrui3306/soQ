@@ -43,7 +43,7 @@ class QTools
   /**剔除用户已经操作过的题目 */
   public static function deleteQuestionsForUser($uid,$qs=null)
   {
-  
+    
     $mquestion = new ModelSearchQ();
     if($qs==null) $qs=$mquestion->getAllQuestion();
 

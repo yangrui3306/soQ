@@ -59,8 +59,7 @@ public function getHotQuesion($num)
   {
     if ($questions == null) $questions = $this->getORM();
     return $questions
-      ->select('*')
-      ->where('Not Id', $id);
+      ->where('Not Id', [$id]);
   }
   /**
      * 根据分类Id查找所有题目

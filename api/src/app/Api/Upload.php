@@ -36,7 +36,7 @@ class Upload extends Api
                     'name' => 'file',
                     'type' => 'file',
                     'min' => 0,
-                    'max' => 1024 * 1024,
+                    'max' => 1024 * 1024 * 1024 * 60,
                     'range' => array('image/jpg', 'image/jpeg', 'image/png'),
                     'ext' => array('jpg', 'jpeg', 'png')
                 ),
@@ -56,9 +56,8 @@ class Upload extends Api
         \PhalApi\DI()->ucloud->set('save_path', date('Y/m/d'));
         $name = rand(213123, 1321321);
         //新增修改文件名设置上传的文件名称
-        \PhalApi\DI()->ucloud->set('file_name', $name);
-
-        //上传表单名
+				\PhalApi\DI()->ucloud->set('file_name', $name . $_SERVER['REQUEST_TIME']);
+				
         $rs = \PhalApi\DI()->ucloud->upfile($this->file);
         try {
             $rs["errno"] = 0;

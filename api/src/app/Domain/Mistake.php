@@ -100,7 +100,10 @@ class Mistake
     $mm = new ModelMistake();
     $min = Tools::getPageRange($page, $num);
 
-    return $mm->getMistakeByQId($qid, $min, $num);
+    $re=$mm->getMistakeByQId($qid, $min, $num);
+    $um=new ModelUser();
+    $um->replaceUserId($re);
+    return $re;
   }
   /**根据用户Id查找所有错题（按时间排序）
    * @param num 数量

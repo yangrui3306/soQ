@@ -189,15 +189,16 @@ class User
 				$mq=new ModelQSearch();
 				return $mq->getHotQuesion(5);
 			}
-			$questions=$dq->recommendByUId($uid,User::recommendDate,$qnum);
 		
+			$questions=$dq->recommendByUId($uid,0,User::recommendDate,$qnum);
+	
 			if(count($questions)<=0)
 			{
 				$questions=QBasic::hotQuestion($qnum);
 			}
 		
 			$mn=new ModelNote();
-			$notes=$mn->getNotesByUserId($uid,$notesNum);
+			$notes=$mn->getNotesByUserId($uid,$notesNum); //笔记
 			return array("Notes"=>$notes,"Questions"=>$questions);
 		}
 		catch (Exception $e)

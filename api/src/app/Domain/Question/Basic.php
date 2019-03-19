@@ -24,11 +24,26 @@ class Basic
   {
    
     $keys=Tools::ExtractKeyWords($q["Text"]);
-
+   
     $qs=CommonMatch::GetQuestionsByKeyWord($keys,$num*2);
-    
+ 
     return CommonMatch::qLevenShtein($q,$qs,$num);
   }
+
+  /**
+   * 根据text模糊匹配题目
+   */
+  public static function matchQuestion($text,$uid,$num=4)
+  {
+   
+    $keys=Tools::ExtractKeyWords($text);
+    $qs=QTools::deleteQuestionsForUser($uid);//去除用户已经操作（收藏、错题整理等）部分
+
+    $qs=CommonMatch::GetQuestionsByKeyWord($keys,$num*2,$qs);
+    $q=array("Text"=>$text);
+    return CommonMatch::qLevenShtein($q,$qs,$num);
+  }
+
   /**推荐热门的题目 */
   public static function hotQuestion($num=5)
   {
@@ -48,9 +63,15 @@ class Basic
   public function getByKeys($keys,$cid=0,$page=0,$num=0)
   {
     $min=Tools::getPageRange($page,$num);
+    $qm=new ModelQBasic();
+    $qms=new ModelSearchQ();
+    if($keys=="") 
+    {
+      return $qms->getAllQuestion($min,$num);
+    }
     $keys=CommonMatch::AllWordMatch($keys);
  
-    $qm=new ModelQBasic();
+  
     return $qm->getQuestionsByKeys($keys,$cid,$min,$num);
   }
 }

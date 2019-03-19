@@ -62,17 +62,17 @@ class Cosines
     $tempa = 0;
     $tempb = 0;
     for ($i = 0; $i < count($a["Weight"]); $i++) {
-      if(is_numeric($a["Weight"][$i])&&is_numeric($b["Weight"][$i]))
+      // if(is_numeric($a["Weight"][$i])&&is_numeric($b["Weight"][$i]))
         $molecule += ($a["Weight"][$i] * $b["Weight"][$i]);
-      if(is_numeric($a["Weight"][$i]))
+      // if(is_numeric($a["Weight"][$i]))
         $tempa += ($a["Weight"][$i] * $a["Weight"][$i]);
-      if(is_numeric($b["Weight"][$i]))
+      // if(is_numeric($b["Weight"][$i]))
         $tempb += ($b["Weight"][$i] * $b["Weight"][$i]);
     }
     $denominator = sqrt($tempa) * sqrt($tempb);
-    
+
     if ($denominator == 0) return 0;
-    return sqrt($molecule) / $denominator;
+    return $molecule / $denominator;
   }
   /**
  * 运行入口,传入两个数组，数组内keys元素不能重复
@@ -84,8 +84,7 @@ class Cosines
     $lena = count($a["Keys"]);
     $lenb = count($b["Keys"]);
     $arry = $this->getWordSet($a, $b);
-   
-    if((count($arry[0]["Keys"])==$lena+$lenb)) return 0;
+    if((count($arry[0]["Keys"])==$lena+$lenb)) return 0; //剪枝 去掉无相同关键字的
  
     return $this->calculate($arry[0],$arry[1]);
   }

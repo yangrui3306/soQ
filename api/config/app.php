@@ -67,7 +67,8 @@ return array(
 		'User.getByName',
 		'User.getById',
 		'Keyword.*',
-		'Upload.*'
+		'Upload.*',
+		'User.changeUserAvatar'
 		// 'Qiniu'=>array(
 		// 	'Qiniu.*'
 		// )

@@ -4,13 +4,6 @@ namespace App\Api;
 use PhalApi\Api;
 use App\Common\Match as Match;
 
-use App\Common\Tools as Tools;
-use App\Model\KeyWord as KeyWord;
-use App\Domain\Question\Upload;
-use App\Domain\Question\Recommend;
-use App\Domain\Question\Basic;
-use App\Model\Question\Search as ModelSearchQ;
-use App\Domain\Behavior\Statistics as ModelStatistics;
 use App\Domain\Mistake as DomainMistake;
 use App\Common\MyStandard;
 

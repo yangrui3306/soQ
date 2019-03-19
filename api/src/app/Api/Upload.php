@@ -51,7 +51,6 @@ class Upload extends Api
      */
     public function upload()
     {
-
         //设置上传路径 设置方法参考3.2
         \PhalApi\DI()->ucloud->set('save_path', date('Y/m/d'));
         $name = rand(213123, 1321321);
@@ -63,7 +62,7 @@ class Upload extends Api
         try {
             $rs["errno"] = 0;
             $rs["data"] = [];
-            $rs["data"][0] = $rs["file"];
+            $rs["data"][0] = "http://1975386453.38haotyhn.duihuanche.com/upload/".$rs["file"];
             unset($rs["file"]);
          
             return MyStandard::gReturn(0, $rs);

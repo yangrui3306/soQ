@@ -45,7 +45,7 @@ class QTools
   {
     
     $mquestion = new ModelSearchQ();
-    if($qs==null) $qs=$mquestion->getAllQuestion();
+    if($qs==null) $qs=$mquestion->mgetAllQuestion();
 
 
     $questions=$mquestion->mGetNotUserCollect($uid,$qs);

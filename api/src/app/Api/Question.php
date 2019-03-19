@@ -7,7 +7,7 @@ use App\Domain\Question\Upload as DomainUpload;
 use App\Common\MyStandard;
 use App\Domain\Question\Basic as DomainBasic;
 use App\Domain\Question\Recommend as DomainRecommend;
-
+use App\Common\Tools;
 /**
  * 题目的基本操作示例
  * @author goodtimp 20190313
@@ -29,14 +29,14 @@ class Question extends Api
             ),
             'search' => array(
                 'Text' => array('name' => 'Text', 'require' => true, 'max' => 2000, 'desc' => '文本'),
-                'Num' => array('name' => 'Num', 'desc' => '匹配n个')
+                'Num' => array('name' => 'Num', 'default'=>3,'desc' => '匹配n个')
             ),
             'getById' => array(
                 'UserId' => array('name' => 'UserId', 'default' => 0, 'require' => false, 'desc' => "用户id"),
                 'Id' => array('name' => 'Id', 'require' => true, 'min' => 1, 'desc' => '题目Id'),
             ),
             'getByKeys' => array(
-                'Keys' => array('name' => 'Keys', 'require' => true, 'max' => 200, 'desc' => '关键字'),
+                'Keys' => array('name' => 'Keys', 'max' => 200, 'desc' => '关键字'),
                 'CategoryId' => array('name' => 'CategoryId', 'default' => 0, 'desc' => '分类Id'),
                 'Number'  => array('name' => 'Number', 'default' => 10, 'desc' => '需要的数量'),
                 'Page' => array('name' => 'Page', 'default' => 1, 'desc' => '题目页数'),
@@ -45,6 +45,11 @@ class Question extends Api
                 'UserId' => array('name' => 'UserId', 'default' => 0, 'desc' => "用户id"),
                 'Id' => array('name' => 'Id', 'require' => true, 'min' => 1, 'desc' => '题目Id'),
                 'Number'=>array('name'=>'Number','default'=>3,'min'=>1,'desc'=>"题目数量")
+            ),
+            'getQuestionsByText'=>array(
+                'UserId' => array('name' => 'UserId','require' => true, 'desc' => "用户id"),
+                'Text' => array('name' => 'Text', 'require' => true, 'max' => 2000, 'desc' => '文本'),
+                'Number'  => array('name' => 'Number', 'default' => 4, 'desc' => '需要的数量'),
             )
         );
     }
@@ -92,7 +97,7 @@ class Question extends Api
     public function search()
     {
         $q = array('Text' => $this->Text);
-        $reslut = DomainBasic::searchQuestion($q, 3); //查找前三个
+        $reslut = DomainBasic::searchQuestion($q, $this->Num); //查找前三个
         return MyStandard::gReturn(0, $reslut);
     }
     /**
@@ -113,5 +118,13 @@ class Question extends Api
         $dq=new DomainRecommend();
         $re=$dq->recommendByQId($this->Id,$this->UserId,$this->Number);
         return MyStandard::gReturn(0,$re);
+    }
+    /**
+     * 根据文字信息模糊匹配，用户笔记、错题匹配
+     */
+    public function getQuestionsByText()
+    {
+        $reslut = DomainBasic::matchQuestion($this->Text,$this->UserId ,$this->Number); //查找前三个
+        return MyStandard::gReturn(0, $reslut);
     }
 }

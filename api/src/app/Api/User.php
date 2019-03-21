@@ -60,7 +60,14 @@ class User extends Api {
 				'UserId' => array('name' => 'UserId', 'require' => true, 'desc' => "用户id"),
 				'RequesterId'=>array('name' => 'RequesterId', 'default' => 0,  'desc' => "请求者id")
 			),
-			'changeUserAvatar'
+			'changeUserAvatar'=>array(
+				'file' => array('name' => 'file','type' => 'file',
+					'min' => 0,
+					'max' => 1024 * 1024,
+					'range' => array('image/jpg', 'image/jpeg', 'image/png'),
+					'ext' => array('jpg', 'jpeg', 'png'),),
+				'UserId'=>array('name' => 'UserId', 'require' => true, 'desc' => "用户id")
+			)
 		);
 	}
 	/**
@@ -216,9 +223,46 @@ class User extends Api {
   public function getTest()
   {
 		$mqg=new ModelQGeneratie();
+
 		$re=$mqg->getTest($this->UserId,$this->CategoryId,$this->Date,$this->Number);
 		return MyStandard::gReturn(0,$re);
 	}
+	/**
+	 * 修改用户头像
+	 */
+	public function changeUserAvatar(){
+
+		$data=array(
+			"Id"=>$this->UserId,
+		);
+
+		//设置上传路径 设置方法参考3.2
+		\PhalApi\DI()->ucloud->set('save_path', date('Y/m/d'));
+		$name = rand(213123, 1321321);
+		//新增修改文件名设置上传的文件名称
+		\PhalApi\DI()->ucloud->set('file_name', $name);
+
+		//上传表单名
+		$rs = \PhalApi\DI()->ucloud->upfile($this->file);
+		try {
+				$rs["errno"] = 0;
+				$rs["data"] = [];
+				$rs["data"][0] = "http://1975386453.38haotyhn.duihuanche.com/upload/". $rs["file"];
+				unset($rs["file"]);
+				$data["Avatar"]=	"http://1975386453.38haotyhn.duihuanche.com/upload/".$rs["data"][0]; //修改地址
+				$domain=new Domain();
+				$re=$domain->updateUser($data);//更新
+
+				return MyStandard::gReturn(0, $rs);
+		} catch (Exception $e) {
+				$rs["data"] = [];
+				$rs["errno"] = 1;
+				$rs["data"] = [];
+				return MyStandard::gReturn(1, $rs);
+		}
+	}
+
+
 
 	private function unsetUserPassword(&$arr)
 	{

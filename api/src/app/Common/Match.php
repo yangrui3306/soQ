@@ -127,31 +127,30 @@ class Match
   public static function GetQuestionsByKeyWord($keywords, $num = 0, $questions = null)
   {
     $msq=new ModelSearchQ();
-    if ($questions == null) $questions = $msq->getAllQuestion();
+    if ($questions == null) $questions = $msq->mgetAllQuestion();
     if ($num == null || $num < 1) $num = 3;
-    
+
     if ($keywords) {
       $keyarr = Match::merageArray($keywords);
-      $questions = $questions->fetchAll(); //抓取所有
-      for ($i = 0; $i < count($questions); $i++) {
-      
+      $questions = $questions->where("NOT KeyWords","")->fetchAll(); //抓取所有
+      $cos = new Cosines();
+      $len=count($questions);
+      for ($i = 0; $i < $len; $i++) {
         $temp = array(
           "Keys" => $questions[$i]["KeyWords"]==""?[]:explode(",", $questions[$i]["KeyWords"]),
           "Weight" => $questions[$i]["KeysWeight"]==""?[]:explode(",", $questions[$i]["KeysWeight"])
         );
-        
-        $cos = new Cosines();
+        if(count($temp["Keys"])<=0) continue; //剪枝 去掉keys为空
         
         $questions[$i]["Similarity"] = $cos->run($keyarr, $temp);
-        // return $questions[$i]["Similarity"];
+        if($questions[$i]["Similarity"]<0.1) unset($questions[$i]);
       }
-      
-      Tools::SortByKey($questions, "Similarity", false);
-      return array_slice($questions, 0, $num); //获取前n个记录
+      $re=Tools::GetMaxArray($questions, "Similarity", $num);
+      return $re; //获取前n个记录
     }
     else {//如果传入文字未提取到关键字
       $reslut=[];
-      $questions = $questions->fetchAll(); //抓取所有
+      $questions = $questions->where("KeyWords","")->fetchAll(); //抓取所有
       for ($i = 0; $i < count($questions); $i++) {
 
         if($questions[$i]["KeyWords"]==""){ 

@@ -26,15 +26,14 @@ class Recommend
     
     $questions = $mquestion->mGetQuestionsByCategoryId($question['CategoryId']); //查找分类相同的题目
   
+    if($uid!=0) $questions = QTools::deleteQuestionsForUser($uid); //剔除用户已经操作的题目
     $questions = $mquestion->mGetNotQuestionById($id, $questions);//去除本题
 
-    if($uid!=0) $questions = QTools::deleteQuestionsForUser($uid); //剔除用户已经操作的题目
-   
 
     //$keys = explode(",", $question["KeyWords"]); //转数组
     $keys=QTools::mergeQuestionKeys($question["KeyWords"],$question["KeysWeight"]);
   
-  
+
     $questions = CommonMatch::GetQuestionsByKeyWord($keys, $num, $questions); //已修改
    
     return CommonMatch::qLevenShtein($question, $questions, $num);
@@ -56,7 +55,7 @@ class Recommend
     $mquestion = new ModelSearchQ();
     $qs=QTools::deleteQuestionsForUser($uid);//去除用户已经操作（收藏、错题整理等）部分
     
-    $questions = $mquestion->mGetQuestionsByKeyWord($keys,$num,$qs); //关键字匹配相应题目
+    $questions = CommonMatch::GetQuestionsByKeyWord($keys,$num,$qs); //关键字匹配相应题目
     return $questions;
   } 
 }

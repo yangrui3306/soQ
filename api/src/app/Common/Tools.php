@@ -52,6 +52,32 @@ class  Tools
       }
     $arr = $reslut;
   }
+
+  /**
+   * 根据某一字段获取最大前n个的数组元素
+   */
+  public static function GetMaxArray($arr,$key,$num=3)
+  {
+    $re=[];
+    foreach ($arr as $item) {
+      $len=(count($re)>$num?$num:count($re));
+    
+      if(!array_key_exists($key,$item)) continue;
+      $re[$len]=$item; 
+      for($i=$len;$i>0;$i--)
+      {
+        if($re[$i-1][$key]<$re[$i][$key])
+        {
+          $temp=$re[$i];
+          $re[$i]=$re[$i-1];
+          $re[$i-1]=$temp;
+        }
+        else break;
+      }
+    }
+    unset($re[count($re)-1]);
+    return $re;
+  }
   /**
    * 得到Array内指定的键，并生成相应的数组
    */

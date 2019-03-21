@@ -20,7 +20,17 @@ class Search extends NotORM
   {
     return 'question';
   }
-  public function getAllQuestion()
+  /**
+   * 获取所有题目
+   */
+  public function getAllQuestion($min=0,$num=10)
+  {
+    return $this->getORM()->limit($min,$num)->fetchAll();
+  }
+    /**
+   * 获取所有题目
+   */
+  public function mgetAllQuestion()
   {
     return $this->getORM();
   }
@@ -58,8 +68,9 @@ public function getHotQuesion($num)
   public function mGetNotQuestionById($id, $questions = null)
   {
     if ($questions == null) $questions = $this->getORM();
+
     return $questions
-      ->where('Not Id', [$id]);
+      ->where('Not Id', $id);
   }
   /**
      * 根据分类Id查找所有题目

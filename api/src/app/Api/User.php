@@ -249,7 +249,7 @@ class User extends Api {
 				$rs["data"] = [];
 				$rs["data"][0] = "http://1975386453.38haotyhn.duihuanche.com/upload/". $rs["file"];
 				unset($rs["file"]);
-				$data["Avatar"]=	"http://1975386453.38haotyhn.duihuanche.com/upload/".$rs["data"][0]; //修改地址
+				$data["Avatar"]=	$rs["data"][0]; //修改地址
 				$domain=new Domain();
 				$re=$domain->updateUser($data);//更新
 

@@ -54,6 +54,16 @@ class User extends NotORM {
 			return $model -> where('Occupation', 2) -> fetchAll();
 		}
 
+		public function getCount($type){  // 获取学生或教师数量
+			$model = $this -> getORM();
+			return $model -> where('Occupation', $type) -> count('Id');
+		}
+
+		public function getUserByOcc($type, $begin, $num){  // 获取老师或学生所有行
+			$model = $this -> getORM();
+			return $model -> where('Occupation', $type) -> limit($begin, $num) -> fetchAll();
+		}
+
     /**
      * 根据用户ID查找用户
      */

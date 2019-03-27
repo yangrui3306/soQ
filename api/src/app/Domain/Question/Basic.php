@@ -65,7 +65,7 @@ class Basic
     $min=Tools::getPageRange($page,$num);
     $qm=new ModelQBasic();
     $qms=new ModelSearchQ();
-    if($keys=="" || $keys == null) 
+    if($keys=="") 
     {
       return $qms->getAllQuestion($min,$num);
     }
@@ -102,5 +102,14 @@ class Basic
 			}
 			return 0;
 		}
+	}
+
+	public function updateQuestion($Id, $data){
+		$model = new ModelQBasic();
+		$sql = $model -> update($Id, $data);
+		if(!$sql){
+			return 1;
+		}
+		return 0;
 	}
 }

@@ -180,6 +180,44 @@ class User
 		return $count;
 	}
 
+	/**
+	 * 获取学生数量
+	 * @param type 用户类型：1学生，2教师
+	 */
+	public function getCount($type = 1){
+		$model = new Model();
+		$count = $model -> getCount($type);
+		return $count;
+	}
+
+	/**
+	 * 根据用户类型获取用户列表
+	 * @param type 用户类型：1学生，2教师，默认1
+	 * @param page 当前页
+	 * @param num  每页数量
+	 */
+	public function getList($type = 1, $page = 1, $num = 10){
+		$model = new Model();
+		$begin = ($page - 1) * $num + 1;
+		$user = $model -> getUserByOcc($type, $begin, $num);
+		if(!$user){
+			return "暂时没有该类型的用户";
+		}
+		return $user;
+	}
+
+	public function delete($str){
+		$model = new Model();
+		$Ids = explode(',', $str);
+		$count = count($Ids);
+		for($i = 0; $i < $count; $i++){
+			$res = $model -> deleteOne($Ids[$i]);
+		}
+	  return 0;
+	}
+
+
+	/* --------------  时光  ------------- */
 
 	/**
 	 * 用户主页推荐

@@ -100,8 +100,8 @@ class Basic extends NotORM
 		return $model -> where('Id', $data) -> delete();
 	}
 
-	public function update($data){
+	public function update($Id, $data){
 		$model = $this -> getORM();
-		return $model -> where('Id', $data['Id']) -> update($data);
+		return $model -> where('Id', $Id) -> update($data);
 	}
 }

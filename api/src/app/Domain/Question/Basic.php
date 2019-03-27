@@ -65,7 +65,7 @@ class Basic
     $min=Tools::getPageRange($page,$num);
     $qm=new ModelQBasic();
     $qms=new ModelSearchQ();
-    if($keys=="") 
+    if($keys=="" || $keys == null) 
     {
       return $qms->getAllQuestion($min,$num);
     }
@@ -73,5 +73,34 @@ class Basic
  
   
     return $qm->getQuestionsByKeys($keys,$cid,$min,$num);
-  }
+	}
+
+
+
+	/* --------------   author ipso   ----------------- */
+	
+	/**
+	 * 获取题库中的题目数量
+	 */
+	public function getCount(){
+		$model = new ModelQBasic();
+		$count = $model -> getCount();
+		return $count;
+	}
+
+	/**
+	 * 删除题目
+	 */
+	public function delete($data){
+		$model = new ModelQBasic();
+		$Ids = explode(',', $data);
+		$count = count($Ids);
+		for($i = 0; $i < $count; $i++){
+			$res = $model -> deleteOne($Ids[$i]);
+			if(!$res){
+				return 1;
+			}
+			return 0;
+		}
+	}
 }

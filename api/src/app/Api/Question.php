@@ -26,6 +26,15 @@ class Question extends Api
                 'Analysis' => array('name' => 'Analysis',  'desc' => '解析'),
                 'Text' => array('name' => 'Text',  'max' => 2000, 'desc' => '文本'),
                 'Type' => array('name' => 'Type',  'max' => 50, 'desc' => '题目类型'),
+						),
+						'update' => array(
+								'Id' => array('name' => 'Id', 'require' => true,  'desc' => '题目ID'),
+                'Content' => array('name' => 'Content', 'require' => true,  'desc' => '题目'),
+                'CategoryId' => array('name' => 'CategoryId', 'type' => 'int',  'desc' => '分类'),
+                'KeyWords' => array('name' => 'KeyWords',  'default' => "", 'desc' => '关键字'),
+                'Analysis' => array('name' => 'Analysis',  'desc' => '解析'),
+                'Text' => array('name' => 'Text',  'max' => 2000, 'desc' => '文本'),
+                'Type' => array('name' => 'Type',  'max' => 50, 'desc' => '题目类型'),
             ),
             'search' => array(
                 'Text' => array('name' => 'Text', 'require' => true, 'max' => 2000, 'desc' => '文本'),
@@ -40,6 +49,12 @@ class Question extends Api
                 'CategoryId' => array('name' => 'CategoryId', 'default' => 0, 'desc' => '分类Id'),
                 'Number'  => array('name' => 'Number', 'default' => 10, 'desc' => '需要的数量'),
                 'Page' => array('name' => 'Page', 'default' => 1, 'desc' => '题目页数'),
+						),
+						'getByKey' => array(
+                'Keys' => array('name' => 'Keys', 'max' => 200, 'desc' => '关键字'),
+                'CategoryId' => array('name' => 'CategoryId', 'default' => 0, 'desc' => '分类Id'),
+                'Number'  => array('name' => 'Number', 'default' => 10, 'desc' => '需要的数量'),
+                'Page' => array('name' => 'Page', 'default' => 1, 'desc' => '题目页数'),
             ),
             'getRecommendByQId'=>array(
                 'UserId' => array('name' => 'UserId', 'default' => 0, 'desc' => "用户id"),
@@ -50,7 +65,12 @@ class Question extends Api
                 'UserId' => array('name' => 'UserId','require' => true, 'desc' => "用户id"),
                 'Text' => array('name' => 'Text', 'require' => true, 'max' => 2000, 'desc' => '文本'),
                 'Number'  => array('name' => 'Number', 'default' => 4, 'desc' => '需要的数量'),
-            )
+						),
+						'getCount'=>array(
+						),
+						'delete'=>array(
+                'Id' => array('name' => 'Id','require' => true, 'desc' => "题目id"),
+						),
         );
     }
 
@@ -77,9 +97,9 @@ class Question extends Api
 
         $rs['Id'] = $id;
         return MyStandard::gReturn(0, $rs);
-    }
-
-    /**
+		}
+		
+		/**
      * 文字搜索题目
      * 
      */
@@ -89,6 +109,18 @@ class Question extends Api
         $re = $domain->getByKeys($this->Keys, $this->CategoryId, $this->Page, $this->Number);
         return MyStandard::gReturn(0, $re);
     }
+
+    /**
+     * 文字搜索题目
+     * @author ipso (update getByKeys)
+     */
+    public function getByKey()
+    {
+        $domain = new DomainBasic();
+        $re = $domain->getByKeys($this->Keys, $this->CategoryId, $this->Page, $this->Number);
+        return MyStandard::gReturn(0, $re);
+		}
+		
     /**
      * 拍照搜索题目
      * @desc 匹配题目
@@ -126,5 +158,53 @@ class Question extends Api
     {
         $reslut = DomainBasic::matchQuestion($this->Text,$this->UserId ,$this->Number); //查找前三个
         return MyStandard::gReturn(0, $reslut);
-    }
+		}
+		
+
+		/* -------------   ipso  -------------- */
+
+		/**
+		 * 获取题库题目数量
+		 */
+		public function getCount(){
+			$domain = new DomainBasic();
+			$count = $domain -> getCount();
+			return MyStandard::gReturn(0, $count);
+		}
+
+		/**
+		 * 删除题目
+		 */
+		public function delete(){
+			$data = $this -> Id;
+			$domain = new DomainBasic();
+			$res = $domain -> delete($data);
+			if($res == 1){
+				return MyStandard::gReturn(1, '', '删除失败');
+			}
+			return MyStandard::gReturn(0, '', '删除成功');
+		}
+
+		/**
+		 * 根据Id更新一道题目
+		 */
+		public function update(){
+			$newData = array(
+				'Id'         => $this -> Id,
+        'Content'    => $this->Content,
+        'CategoryId' => $this->CategoryId,
+        'KeyWords'   => $this->KeyWords,
+        'Analysis'   => $this->Analysis,
+        'Text'       => $this->Text,
+        'Type'       =>$this->Type
+			);
+			$domain = new DomainBasic();
+			$res = $domain -> updateQuestion($data);
+			
+			if($res == 1){
+				return MyStandard::gReturn(1, '', '更新失败');
+			}
+
+			return MyStandard::gReturn(0, '', '更新成功');
+		}
 }

@@ -76,5 +76,32 @@ class Basic extends NotORM
 
     return $re->where("Text LIKE ?", $keys)->limit($start, $num)
       ->order("Id DESC")->fetchAll();
-  }
+	}
+	
+
+
+	/* ------------  ipso  -------------- */
+
+	/**
+	 * 返回题库中题目的数量
+	 */
+	public function getCount(){
+		$model = $this -> getORM();
+		return $model -> count('Id');
+	}
+
+	public function deleteOne($id){
+		$model = $this -> getORM();
+		return $model -> where('Id', $id) -> delete();
+	}
+
+	public function deleteAll($data){
+		$model = $this -> getORM();
+		return $model -> where('Id', $data) -> delete();
+	}
+
+	public function update($data){
+		$model = $this -> getORM();
+		return $model -> where('Id', $data['Id']) -> update($data);
+	}
 }

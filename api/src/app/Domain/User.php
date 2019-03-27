@@ -95,9 +95,18 @@ class User
 			);
 		}
 
+		// 教师注册时，教师资格证不能为空
+		if($data['Occupation'] == 2 && isset($data['Certification']) == false){
+			return array(
+				'code' => 1,
+				'msg'  => '教师注册，需拥有有教师资格证',
+				'data' => '教师注册，需拥有有教师资格证',
+			);
+		}
+
 		// 写入数据库
 		$id = $model->insertOne($data);
-//	添加笔记分类
+		//	添加笔记分类
 		$mn=new ModelNoteCategory();
 		$data=array(
 			"Name"=>"爱笔记",
@@ -114,7 +123,6 @@ class User
 			"Intro"=>"错题当然可以使你进步啦！"
 		);
 		$mn->addCategory($data);
-
 
 		if ($id<=0) {
 			return array(

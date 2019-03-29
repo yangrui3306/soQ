@@ -52,6 +52,7 @@ return array(
 		'Focus.*',
 		'Like.*',
 		'Mistake.*',
+		'Manager.*',
 		'Note.*',
 		'QCategory.*',
 		'Recharge.*',

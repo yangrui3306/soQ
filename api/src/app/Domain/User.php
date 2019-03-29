@@ -198,7 +198,7 @@ class User
 	 */
 	public function getList($type = 1, $page = 1, $num = 10){
 		$model = new Model();
-		$begin = ($page - 1) * $num + 1;
+		$begin = ($page - 1) * $num;
 		$user = $model -> getUserByOcc($type, $begin, $num);
 		if(!$user){
 			return "暂时没有该类型的用户";

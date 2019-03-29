@@ -136,7 +136,7 @@ class  Tools
   */
   public static function getPageRange($pag, $num)
   {
-    return ($pag - 1) * $num + 1;
+    return ($pag - 1) * $num;
   }
   /**中文字符串转数组 */
   public static function chToArray($str)

@@ -142,10 +142,10 @@ class User extends Api {
 		$domain = new Domain();
 
 		$res = $domain -> add($user);
-		if($res == 1){
+		if($res['code'] == 1){
 			return $returnRule -> getReturn(1, $res['msg']);
 		}
-		return $returnRule -> getReturn(0, 'token',$res['data'] );
+		return $returnRule -> getReturn(0, '',$res['data'] );
 	}
 
 	/**
@@ -153,6 +153,10 @@ class User extends Api {
 	 * @desc 用户资料更新
 	 */
 	public function update(){
+		$Occ = $this -> Occupation;
+		if($Occ == null){
+			$Occ = 1;
+		}
 		$data=array(
 			'Id'						=> $this->Id,
 			// 'Password'      => $this -> Password,
@@ -161,12 +165,12 @@ class User extends Api {
 			'SchoolId'      => $this -> SchoolId,
 			'Address'       => $this -> Address,
 			'Intro'         => $this -> Intro,
-			'Occupation'    => $this -> Occupation,
-		);
+			'Occupation'    => $Occ,
+		); 
 		
 		$domain=new Domain();
 		$re=$domain->updateUser($data);
-		if($re==0) return MyStandard::gReturn(1,$re);
+		if(!$re) return MyStandard::gReturn(1,$re);
 		return MyStandard::gReturn(0,$re);
 	}
 
@@ -208,6 +212,7 @@ class User extends Api {
 	 * @param Ids 包含用户Id的字符串，每个Id以英文逗号隔开
 	 */
 	public function delete(){
+		$strId = $this -> Ids;
 		$domain = new Domain();
 		$res = $domain -> delete($strId);
 		if($res == 1){

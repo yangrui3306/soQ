@@ -40,7 +40,7 @@ class Manager extends NotORM{
 	 * @param data 用户信息数组
 	 * @return 插入Id
 	 */
-	public function insert($data){
+	public function insertOne($data){
 		$model = $this -> getORM();
     return $model -> insert($data);;
 	}

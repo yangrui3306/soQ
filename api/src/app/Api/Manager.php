@@ -11,29 +11,29 @@ class Manager extends Api{
 	public function getRules(){
 		return array(
 			'login' => array(
-				'Name' => array('name' => 'username', 'require' => true, 'min' => 4, 'max' => 50, 'desc' => '用户名'),
-				'Pass' => array('name' => 'password', 'require' => true, 'min' => 6, 'desc' => '用户密码'),
+				'Name' => array('name' => 'Name', 'require' => true, 'min' => 4, 'max' => 50, 'desc' => '用户名'),
+				'Pass' => array('name' => 'Pass', 'require' => true, 'min' => 6, 'desc' => '用户密码'),
 			),
 			'add' => array(
-				'Name'  => array('name' => 'username', 'require' => true, 'min' => 4, 'max' => 50, 'desc' => '用户名'),
-				'Pass'  => array('name' => 'password', 'require' => true, 'min' => 6, 'desc' => '用户密码'),
+				'Name'  => array('name' => 'Name', 'require' => true, 'min' => 4, 'max' => 50, 'desc' => '用户名'),
+				'Pass'  => array('name' => 'Pass', 'require' => true, 'min' => 6, 'desc' => '用户密码'),
 				'Phone' => array('name' => 'Phone', 'require' => true, 'min' => 6, 'desc' => '用户电话'),
 			),
 			'getCount' => array(
 				
 			),
 			'getList' => array(
-				'Page'  => array('name' => 'page',  'desc' => '当前页'),
-				'Number' => array('name' => 'number', 'desc' => '每页数量'),
+				'Page'  => array('name' => 'Page',  'desc' => '当前页'),
+				'Number' => array('name' => 'Number', 'desc' => '每页数量'),
 			),
 			'update' => array(
-				'Mid'  => array('name' => 'id', 'require' => true, 'desc' => '更新管理员的id'),
-				'Name'  => array('name' => 'username', 'min' => 4, 'max' => 50, 'desc' => '用户名'),
-				'Pass'  => array('name' => 'password', 'min' => 6, 'desc' => '用户密码'),
+				'Id'  => array('name' => 'Id', 'require' => true, 'desc' => '更新管理员的id'),
+				'Name'  => array('name' => 'Name', 'min' => 4, 'max' => 50, 'desc' => '用户名'),
+				'Pass'  => array('name' => 'Pass', 'min' => 6, 'desc' => '用户密码'),
 				'Phone' => array('name' => 'Phone', 'min' => 6, 'desc' => '用户电话'),
 			),
 			'delete' => array(
-				'Ids'  => array('name' => 'id',  'desc' => '当前页'),
+				'Id'  => array('name' => 'Id', 'require' => true, 'desc' => '当前页'),
 			),
 		);
 	}
@@ -117,7 +117,7 @@ class Manager extends Api{
 	 */
 	public function delete(){
 		$domain = new Domain();
-		$strId = $this -> Ids;
+		$strId = $this -> Id;
 		$res = $domain -> delete($strId);
 		return MyStandard::gReturn(0,'', '删除成功');
 	}

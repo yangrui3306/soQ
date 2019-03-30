@@ -43,7 +43,7 @@ class Manager{
 	public function add($data){
 		$model = new Model();
 		// 验证管理员账号是否已经存在
-		$isName = $model -> getByName($name);
+		$isName = $model -> getByName($data['Name']);
 		if($isName){
 			return array(
 				'code' => 1,
@@ -60,7 +60,7 @@ class Manager{
 				'msg'  => '管理员电话已被注册'
 			);
 		}
-		$sql = $model -> insert($data);
+		$sql = $model -> insertOne($data);
 		if(!$sql){
 			return array(
 				'code' => 1,

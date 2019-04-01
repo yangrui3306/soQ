@@ -22,7 +22,7 @@ class Manager{
 			);
 		}
 		// 验证用户密码是否正确
-		if($pass != $isName['Pass']){
+		if(md5($pass) != $isName['Pass']){
 			return array(
 				'code' => 1,
 				'data' => '',
@@ -60,6 +60,7 @@ class Manager{
 				'msg'  => '管理员电话已被注册'
 			);
 		}
+		$data['Pass'] = md5($data['Pass']);
 		$sql = $model -> insertOne($data);
 		if(!$sql){
 			return array(
@@ -111,7 +112,7 @@ class Manager{
 				'msg'  => '管理员电话已被注册'
 			);
 		}
-
+		$data['Pass'] = md5($data['Pass']);
 		$sql = $model -> updateOne($id, $data);
 		return array(
 			'code' => 0,

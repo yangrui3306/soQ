@@ -64,5 +64,27 @@ class KeyWord extends NotORM
     $model = $this->getORM();
     $model->insert($data);
     return $model->insert_id();
-  }
+	}
+	
+	/* ---------------  ipso  ---------------- */
+
+	public function updateKeyword($Id, $data){
+		$model = $this -> getORM();
+		return $model -> where('Id', $Id) -> update($data);
+	}
+
+	public function deleteOne($Id){
+		$model = $this -> getORM();
+		return $model -> where('Id', $Id) -> delete();
+	}
+
+	public function getCount(){
+		$model = $this -> getORM();
+		return $model -> count('Id');
+	}
+
+	public function getList($begin = 1, $num = 10){
+		$model = $this -> getORM();
+		return $model -> limit($begin, $num) -> fetchAll();
+	}
 }

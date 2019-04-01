@@ -73,8 +73,22 @@ class Basic extends NotORM
     $re = $this->getORM();
     if ($cid > 0)
       $re = $re->where("CategoryId", $cid);
-
-    return $re->where("Text LIKE ?", $keys)->limit($start, $num)
+    $re=$re->where("Text LIKE ?", $keys);
+    $cnt=$re->count();
+    $data= $re->limit($start, $num)
       ->order("Id DESC")->fetchAll();
+    $data[count($data)]=$cnt;
+    return $data;
+  }
+  /** 删除quesionts通过idarray */
+  public function deleteQuestions($idarray)
+  {
+    return $this->getORM()->where("Id",$idarray)->delete();
+  }
+  /** 获取题目数量 */
+  public function countQuestions($cid=0){
+    $re=$this->getORM();
+    if($cid>0) $re->where("CategoryId",$cid);
+    return $re->count();
   }
 }

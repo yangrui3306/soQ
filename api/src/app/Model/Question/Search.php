@@ -27,6 +27,15 @@ class Search extends NotORM
   {
     return $this->getORM()->limit($min,$num)->fetchAll();
   }
+  /**
+   * 获取题目数量
+   */
+  public function getQuestionsCount($cid=0)
+  {
+    $re=$this->getORM();
+    if($cid==0) $re->where("CategoryId",$cid);
+    return $re->count();
+  }
     /**
    * 获取所有题目
    */

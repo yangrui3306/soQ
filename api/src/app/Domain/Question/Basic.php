@@ -67,11 +67,30 @@ class Basic
     $qms=new ModelSearchQ();
     if($keys=="") 
     {
-      return $qms->getAllQuestion($min,$num);
+      $re=$qms->getAllQuestion($min,$num);
+      $re[count($re)]=$qms->getQuestionsCount($cid);
+      return $re;
     }
     $keys=CommonMatch::AllWordMatch($keys);
  
   
     return $qm->getQuestionsByKeys($keys,$cid,$min,$num);
+  }
+  /**
+   * 删除题目
+   */
+  public function deleteQuestions($idarray)
+  {
+    $qm=new ModelQBasic();
+    return $qm->deleteQuestions($idarray);
+  }
+  /**
+   * 获取题目数量
+   */
+  
+  public function countQuestions($cid=0)
+  {
+    $qm=new ModelQBasic();
+    return $qm->countQuestions($cid);
   }
 }

@@ -50,6 +50,12 @@ class Question extends Api
                 'UserId' => array('name' => 'UserId','require' => true, 'desc' => "用户id"),
                 'Text' => array('name' => 'Text', 'require' => true, 'max' => 2000, 'desc' => '文本'),
                 'Number'  => array('name' => 'Number', 'default' => 4, 'desc' => '需要的数量'),
+            ),
+            'deleteQuestionByIds'=>array(
+                'Ids'=>array('name'=>'Ids','require' => true,'desc'=>'逗号隔开的Id，例如：1,2,3')
+            ),
+            'getCount'=>array(
+                'CategoryId' => array('name' => 'CategoryId', 'default' => 0, 'desc' => '分类Id'),
             )
         );
     }
@@ -126,5 +132,25 @@ class Question extends Api
     {
         $reslut = DomainBasic::matchQuestion($this->Text,$this->UserId ,$this->Number); //查找前三个
         return MyStandard::gReturn(0, $reslut);
+    }
+    /**
+     * 根据题目Id删除题目
+     * @return 返回受影响行数
+     */
+    public function deleteQuestionByIds(){
+        $ids=explode(",",$this->Ids);
+        $domain = new DomainBasic();
+        $re=$domain->deleteQuestions($ids);
+        return MyStandard::gReturn(0,$re);
+    }
+    /**
+     * 题目数量
+     */
+    public function getCount()
+    {
+        $domain = new DomainBasic();
+    
+        $re=$domain->countQuestions($this->CategoryId);
+        return MyStandard::gReturn(0,$re);
     }
 }

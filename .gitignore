@@ -1,0 +1,10 @@
+composer.lock
+
+runtime/*
+gitc
+
+.idea/
+.env
+.zip
+
+node_modules/*

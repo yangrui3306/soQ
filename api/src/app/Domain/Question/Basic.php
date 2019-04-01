@@ -93,4 +93,42 @@ class Basic
     $qm=new ModelQBasic();
     return $qm->countQuestions($cid);
   }
+
+
+
+	/* --------------   author ipso   ----------------- */
+	
+	/**
+	 * 获取题库中的题目数量
+	 */
+	public function getCount(){
+		$model = new ModelQBasic();
+		$count = $model -> getCount();
+		return $count;
+	}
+
+	/**
+	 * 删除题目
+	 */
+	public function delete($data){
+		$model = new ModelQBasic();
+		$Ids = explode(',', $data);
+		$count = count($Ids);
+		for($i = 0; $i < $count; $i++){
+			$res = $model -> deleteOne($Ids[$i]);
+			if(!$res){
+				return 1;
+			}
+			return 0;
+		}
+	}
+
+	public function updateQuestion($Id, $data){
+		$model = new ModelQBasic();
+		$sql = $model -> update($Id, $data);
+		if(!$sql){
+			return 1;
+		}
+		return 0;
+	}
 }

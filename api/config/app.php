@@ -52,6 +52,7 @@ return array(
 		'Focus.*',
 		'Like.*',
 		'Mistake.*',
+		'Manager.*',
 		'Note.*',
 		'QCategory.*',
 		'Recharge.*',
@@ -68,9 +69,11 @@ return array(
 		'User.getById',
 		'Keyword.*',
 		'Upload.*',
-		'User.changeUserAvatar'
-		// 'Qiniu'=>array(
-		// 	'Qiniu.*'
-		// )
+		'User.changeUserAvatar',
+		'User.getStudents',
+		'User.getStudentCount',
+		'User.getTeachers',
+		'User.getTeacherCount',
+		'User.delete',
 	),
 );

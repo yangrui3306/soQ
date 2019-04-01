@@ -56,6 +56,50 @@ class Upload
     if ($s != null) return $s["Id"];
 
     return $mquestion->AddQuestion($q);
-  }
+	}
+	
+
+
+	/* -----------  ipso  -------------- */
+
+	/**
+	 * 更新一道题目
+	 */
+	public function updateQuestion($data){
+		$mquestion = new ModelAddQ();
+    $squestion = new ModelSearchQ();
+
+    /*-------提取关键字---------*/
+    if (!array_key_exists("Text", $data) || !$data["Text"]) $data["Text"] = $data["Content"]; //保证Text必须有文字，否则输入原题的富文本
+    $key=Tools::ExtractKeyWords($data["Text"]);
+    // 提取给出的关键字
+    if (array_key_exists("KeyWords", $data) && strlen($data["KeyWords"])) {
+      $key1=Tools::ExtractKeyWords($data["KeyWords"]);
+      for($i=0;$i<count($key1);$i++)
+      {
+        $key1[$i]["Weight"]=$key1[$i]["Weight"]*2;
+      }//对用户输入的关键字添加双倍权值
+      $key=array_merge($key1,$key);
+      
+      Tools::mergeKeyWeight($key);      
+    }
+    Tools::SortByKey($key,"Weight",false);
+    $idarr = Tools::GetValueByKey($key, "Id"); //生成仅有Id字段的数组
+    $weightarr=Tools::GetValueByKey($key,"Weight");
+    
+    $data["KeyWords"] = implode(",", $idarr);
+    $data["KeysWeight"] = implode(",", $weightarr);
+    
+    /*----------end for keyword------*/
+
+    $s = $squestion->checkDuplicate($data); //判重 若重复返回重复的Id
+		if ($s != null) return $s["Id"];
+		
+		if(!$mquestion->update($data)){
+			return 1;
+		}
+
+    return 0;
+	}
 
 }

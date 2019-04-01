@@ -95,9 +95,18 @@ class User
 			);
 		}
 
+		// 教师注册时，教师资格证不能为空
+		if($data['Occupation'] == 2 && isset($data['Certification']) == false){
+			return array(
+				'code' => 1,
+				'msg'  => '教师注册，需拥有有教师资格证',
+				'data' => '教师注册，需拥有有教师资格证',
+			);
+		}
+
 		// 写入数据库
 		$id = $model->insertOne($data);
-//	添加笔记分类
+		//	添加笔记分类
 		$mn=new ModelNoteCategory();
 		$data=array(
 			"Name"=>"爱笔记",
@@ -114,7 +123,6 @@ class User
 			"Intro"=>"错题当然可以使你进步啦！"
 		);
 		$mn->addCategory($data);
-
 
 		if ($id<=0) {
 			return array(
@@ -172,6 +180,44 @@ class User
 		return $count;
 	}
 
+	/**
+	 * 获取学生数量
+	 * @param type 用户类型：1学生，2教师
+	 */
+	public function getCount($type = 1){
+		$model = new Model();
+		$count = $model -> getCount($type);
+		return $count;
+	}
+
+	/**
+	 * 根据用户类型获取用户列表
+	 * @param type 用户类型：1学生，2教师，默认1
+	 * @param page 当前页
+	 * @param num  每页数量
+	 */
+	public function getList($type = 1, $page = 1, $num = 10){
+		$model = new Model();
+		$begin = ($page - 1) * $num;
+		$user = $model -> getUserByOcc($type, $begin, $num);
+		if(!$user){
+			return "暂时没有该类型的用户";
+		}
+		return $user;
+	}
+
+	public function delete($str){
+		$model = new Model();
+		$Ids = explode(',', $str);
+		$count = count($Ids);
+		for($i = 0; $i < $count; $i++){
+			$res = $model -> deleteOne($Ids[$i]);
+		}
+	  return 0;
+	}
+
+
+	/* --------------  时光  ------------- */
 
 	/**
 	 * 用户主页推荐

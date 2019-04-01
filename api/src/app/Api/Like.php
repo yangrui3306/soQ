@@ -21,9 +21,7 @@ class Like extends Api
         'MistakeId'  => array('name' => 'MistakeId', 'default' => 0, 'desc' => '错题分类'),
         'StandTime' => array('name' => 'StandTime', 'default' => 0, 'desc' => '停留时间')
       ),
-      'upImage' => array(
-        'Content' => array('name' => 'Content','type'=>'file', 'desc' => '图片'),
-      ),
+      
     );
   }
   /**
@@ -43,12 +41,5 @@ class Like extends Api
     $re = $dm->add($data, $this->StandTime);
     return MyStandard::gReturn(0, $re);
   }
-  /**
-   * 图片上传
-   */
-  public function upImage(){
-    $file=$this->Content;
-    $url=\PhalApi\DI()->qiniu->uploadFile($file);
-    return $url;
-  }
+  
 }

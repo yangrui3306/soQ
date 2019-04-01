@@ -91,4 +91,34 @@ class Basic extends NotORM
     if($cid>0) $re->where("CategoryId",$cid);
     return $re->count();
   }
+
+	
+	
+
+
+	/* ------------  ipso  -------------- */
+
+	/**
+	 * 返回题库中题目的数量
+	 */
+	public function getCount(){
+		$model = $this -> getORM();
+		return $model -> count('Id');
+	}
+
+	public function deleteOne($id){
+		$model = $this -> getORM();
+		return $model -> where('Id', $id) -> delete();
+	}
+
+	public function deleteAll($data){
+		$model = $this -> getORM();
+		return $model -> where('Id', $data) -> delete();
+	}
+
+	public function update($Id, $data){
+		$model = $this -> getORM();
+		return $model -> where('Id', $Id) -> update($data);
+	}
+
 }

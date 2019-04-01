@@ -67,9 +67,32 @@ class User extends Api {
 					'range' => array('image/jpg', 'image/jpeg', 'image/png'),
 					'ext' => array('jpg', 'jpeg', 'png'),),
 				'UserId'=>array('name' => 'UserId', 'require' => true, 'desc' => "用户id")
-			)
+			),
+			'getStudents' => array(
+				'Page'   => array('name' => 'Page', 'desc' => "当前页"),
+				'Number' =>array('name' => 'Number', 'default' => 10,  'desc' => "每页记录条数")
+			),
+			'getStudentCount' => array(
+			),
+			'getTeachers' => array(
+				'Page'   => array('name' => 'Page', 'desc' => "当前页"),
+				'Number' =>array('name' => 'Number', 'default' => 10,  'desc' => "每页记录条数")
+			),
+			'getTeacherCount' => array(
+			),
+			'delete' => array(
+				'Ids'   => array('name' => 'Ids', 'desc' => "用户ID"),
+			),
 		);
 	}
+
+
+
+	/* ---------------  ipso  ------------------- */
+
+
+	/* ------- 用户（老师和学生） ----- */
+
 	/**
 	 * 用户登录
 	 * @desc 用户登录
@@ -99,48 +122,58 @@ class User extends Api {
 	 
 	 */
 	public function add(){
+		$Occ = $this -> Occupation;
+		if($Occ == null){
+			$Occ = 1;
+		}
 		$user = array(
 			'Name'          => $this -> Name,
 			'Password'      => $this -> Password,
 			'Sex'           => $this -> Sex,
 			'Phone'         => $this -> Phone,
 			'Class'         => $this -> MClass,
-			'SchoolId'        => $this -> SchoolId,
+			'SchoolId'      => $this -> SchoolId,
 			'Address'       => $this -> Address,
 			'Intro'         => $this -> Intro,
-			'Occupation'    => $this -> Occupation,
+			'Occupation'    => $Occ,
 		);
 
 		$returnRule = new MyStandard();
 		$domain = new Domain();
 
 		$res = $domain -> add($user);
-		if($res == 1){
+		if($res['code'] == 1){
 			return $returnRule -> getReturn(1, $res['msg']);
 		}
-		return $returnRule -> getReturn(0, 'token',$res['data'] );
+		return $returnRule -> getReturn(0, '',$res['data'] );
 	}
+
 	/**
 	 * 用户修改
 	 * @desc 用户资料更新
 	 */
 	public function update(){
+		$Occ = $this -> Occupation;
+		if($Occ == null){
+			$Occ = 1;
+		}
 		$data=array(
 			'Id'						=> $this->Id,
 			// 'Password'      => $this -> Password,
 			'Sex'           => $this -> Sex,
 			'Class'         => $this -> MClass,
-			'SchoolId'        => $this -> SchoolId,
+			'SchoolId'      => $this -> SchoolId,
 			'Address'       => $this -> Address,
 			'Intro'         => $this -> Intro,
-			'Occupation'    => $this -> Occupation,
-		);
+			'Occupation'    => $Occ,
+		); 
 		
 		$domain=new Domain();
 		$re=$domain->updateUser($data);
-		if($re==0) return MyStandard::gReturn(1,$re);
+		if(!$re) return MyStandard::gReturn(1,$re);
 		return MyStandard::gReturn(0,$re);
 	}
+
  /**
    * 通过用户id获取用户信息，可以存在请求者id
 	 * 
@@ -155,6 +188,7 @@ class User extends Api {
 		if(array_key_exists("Password",$res)) unset($res["Password"]);
 		return MyStandard::gReturn(0,$res);
 	}
+
 	 /**
    * 通过用户名获取用户信息
    * @desc 通过用户名获取用户信息
@@ -172,6 +206,77 @@ class User extends Api {
 		}
 		return $returnRule -> getReturn(0, $res['msg'], $res['data']);
 	}
+
+	/**
+	 * @desc 删除一个或多个用户（学生或老师）
+	 * @param Ids 包含用户Id的字符串，每个Id以英文逗号隔开
+	 */
+	public function delete(){
+		$strId = $this -> Ids;
+		$domain = new Domain();
+		$res = $domain -> delete($strId);
+		if($res == 1){
+			return MyStandard::gReturn(1,'', '删除失败');
+		}
+		return MyStandard::gReturn(0,'', '删除成功');
+	}
+
+
+	/* ------- 学生 ----- */
+
+	/**
+	 * @desc 获取学生的数量
+	 */
+	public function getStudentCount(){
+		$domain = new Domain();
+		$type = 1; // 1代表学生
+		$count = $domain -> getCount($type);
+		return MyStandard::gReturn(0,$count);
+	}
+
+	/**
+	 * @desc 获取所有学生列表
+	 */
+	public function getStudents(){
+
+		$page = $this -> Page;
+		$num  = $this -> Number;
+
+		$domain = new Domain();
+		$type = 1; // 1代表获取学生
+		$students = $domain -> getList($type, $page, $num);
+		return MyStandard::gReturn(0, $students, '获取成功');
+	}
+
+	/* ------- 教师 ----- */
+
+	/**
+	 * @desc 获取教师的数量
+	 */
+	public function getTeacherCount(){
+		$domain = new Domain();
+		$type = 2; // 1代表学生
+		$count = $domain -> getCount($type);
+		return MyStandard::gReturn(0,$count);
+	}
+
+	/**
+	 * @desc 获取所有教师列表
+	 */
+	public function getTeachers(){
+
+		$page = $this -> Page;
+		$num  = $this -> Number;
+
+		$domain = new Domain();
+		$type = 2; // 1代表获取学生
+		$teachers = $domain -> getList($type, $page, $num);
+		return MyStandard::gReturn(0, $teachers, '获取成功');
+	}
+
+
+	/* ---------------  时光  ------------------- */
+
 	 /**
    * 用户主页推荐
    * @desc 用户主页推荐,笔记和题目

@@ -82,7 +82,7 @@ class KeyWord extends NotORM
 		$model = $this -> getORM();
 		return $model -> count('Id');
 	}
-
+	
 	public function getList($begin = 1, $num = 10){
 		$model = $this -> getORM();
 		return $model -> limit($begin, $num) -> fetchAll();

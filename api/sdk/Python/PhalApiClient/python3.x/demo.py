@@ -1,11 +1,11 @@
 #-*- coding:utf-8 -*-
 #gaoyiping (iam@gaoyiping.com) 2017-02-18
 
-import PhalApiClient
+import PhalApiClient;
 
 print('-' * 20)
 print('Request: 1')
-result = PhalApiClient.PhalApiClient('http://demo.phalapi.net/', 'Default.Index', {'username': 'dogstar'}, 3)
+result = PhalApiClient.PhalApiClient('http://127.0.0.1/', 'Default.Index', {'username': 'dogstar'}, 3)
 print('head', result['info'])
 print('state', result['state'])
 print('result', result['data'])

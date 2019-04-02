@@ -8,6 +8,7 @@ use App\Common\MyStandard;
 use App\Domain\Question\Basic as DomainBasic;
 use App\Domain\Question\Recommend as DomainRecommend;
 use App\Common\Tools;
+
 /**
  * 题目的基本操作示例
  * @author goodtimp 20190313
@@ -26,9 +27,9 @@ class Question extends Api
                 'Analysis' => array('name' => 'Analysis',  'desc' => '解析'),
                 'Text' => array('name' => 'Text',  'max' => 2000, 'desc' => '文本'),
                 'Type' => array('name' => 'Type',  'max' => 50, 'desc' => '题目类型'),
-						),
-						'update' => array(
-								'Id' => array('name' => 'Id', 'require' => true,  'desc' => '题目ID'),
+            ),
+            'update' => array(
+                'Id' => array('name' => 'Id', 'require' => true,  'desc' => '题目ID'),
                 'Content' => array('name' => 'Content', 'require' => true,  'desc' => '题目'),
                 'CategoryId' => array('name' => 'CategoryId', 'type' => 'int',  'desc' => '分类'),
                 'KeyWords' => array('name' => 'KeyWords',  'default' => "", 'desc' => '关键字'),
@@ -38,7 +39,7 @@ class Question extends Api
             ),
             'search' => array(
                 'Text' => array('name' => 'Text', 'require' => true, 'max' => 2000, 'desc' => '文本'),
-                'Num' => array('name' => 'Num', 'default'=>3,'desc' => '匹配n个')
+                'Num' => array('name' => 'Num', 'default' => 3, 'desc' => '匹配n个')
             ),
             'getById' => array(
                 'UserId' => array('name' => 'UserId', 'default' => 0, 'require' => false, 'desc' => "用户id"),
@@ -49,22 +50,34 @@ class Question extends Api
                 'CategoryId' => array('name' => 'CategoryId', 'default' => 0, 'desc' => '分类Id'),
                 'Number'  => array('name' => 'Number', 'default' => 10, 'desc' => '需要的数量'),
                 'Page' => array('name' => 'Page', 'default' => 1, 'desc' => '题目页数'),
-						),
-            'getRecommendByQId'=>array(
+            ),
+            'getRecommendByQId' => array(
                 'UserId' => array('name' => 'UserId', 'default' => 0, 'desc' => "用户id"),
                 'Id' => array('name' => 'Id', 'require' => true, 'min' => 1, 'desc' => '题目Id'),
-                'Number'=>array('name'=>'Number','default'=>3,'min'=>1,'desc'=>"题目数量")
+                'Number' => array('name' => 'Number', 'default' => 3, 'min' => 1, 'desc' => "题目数量")
             ),
-            'getQuestionsByText'=>array(
-                'UserId' => array('name' => 'UserId','require' => true, 'desc' => "用户id"),
+            'getQuestionsByText' => array(
+                'UserId' => array('name' => 'UserId', 'require' => true, 'desc' => "用户id"),
                 'Text' => array('name' => 'Text', 'require' => true, 'max' => 2000, 'desc' => '文本'),
                 'Number'  => array('name' => 'Number', 'default' => 4, 'desc' => '需要的数量'),
-						),
-						'getCount'=>array(
+            ),
+            'deleteQuestionByIds' => array(
+                'Ids' => array('name' => 'Ids', 'require' => true, 'desc' => '逗号隔开的Id，例如：1,2,3')
+            ),
+            'getCount' => array(
+                'CategoryId' => array('name' => 'CategoryId', 'default' => 0, 'desc' => '分类Id'),
+<<<<<<< HEAD
+            ),
+            'delete' => array(
+                'Id' => array('name' => 'Id', 'require' => true, 'desc' => "题目id"),
+            ),
+=======
 						),
 						'delete'=>array(
                 'Id' => array('name' => 'Id','require' => true, 'desc' => "题目id"),
 						),
+
+>>>>>>> 3ed2f37ce75c5918f704f741d1e9a608c625b694
         );
     }
 
@@ -83,7 +96,7 @@ class Question extends Api
             'KeyWords' => $this->KeyWords,
             'Analysis' => $this->Analysis,
             'Text' => $this->Text,
-            'Type'=>$this->Type
+            'Type' => $this->Type
         );
 
         $domain = new DomainUpload();
@@ -91,23 +104,23 @@ class Question extends Api
 
         $rs['Id'] = $id;
         return MyStandard::gReturn(0, $rs);
-		}
-		
-		/**
+    }
+
+    /**
      * 文字搜索题目
      * 
      */
     public function getByKeys()
     {
-			$newKey = $this -> Keys;
-			if($newKey == null){
-				$newKey = '';
-			}
-      $domain = new DomainBasic();
-      $re = $domain->getByKeys($newKey, $this->CategoryId, $this->Page, $this->Number);
-      return MyStandard::gReturn(0, $re);
+        $newKey = $this->Keys;
+        if ($newKey == null) {
+            $newKey = '';
+        }
+        $domain = new DomainBasic();
+        $re = $domain->getByKeys($newKey, $this->CategoryId, $this->Page, $this->Number);
+        return MyStandard::gReturn(0, $re);
     }
-		
+
     /**
      * 拍照搜索题目
      * @desc 匹配题目
@@ -133,19 +146,98 @@ class Question extends Api
     /**
      * 通过Id得到相似题目推荐
      */
-    public function getRecommendByQId(){
-        $dq=new DomainRecommend();
-        $re=$dq->recommendByQId($this->Id,$this->UserId,$this->Number);
-        return MyStandard::gReturn(0,$re);
+    public function getRecommendByQId()
+    {
+        $dq = new DomainRecommend();
+        $re = $dq->recommendByQId($this->Id, $this->UserId, $this->Number);
+        return MyStandard::gReturn(0, $re);
     }
     /**
      * 根据文字信息模糊匹配，用户笔记、错题匹配
      */
     public function getQuestionsByText()
     {
-        $reslut = DomainBasic::matchQuestion($this->Text,$this->UserId ,$this->Number); //查找前三个
+        $reslut = DomainBasic::matchQuestion($this->Text, $this->UserId, $this->Number); //查找前三个
         return MyStandard::gReturn(0, $reslut);
-		}
+    }
+    /**
+     * 根据题目Id删除题目
+     * @return 返回受影响行数
+     */
+<<<<<<< HEAD
+    public function deleteQuestionByIds()
+    {
+        $ids = explode(",", $this->Ids);
+        $domain = new DomainBasic();
+        $re = $domain->deleteQuestions($ids);
+        return MyStandard::gReturn(0, $re);
+=======
+    public function deleteQuestionByIds(){
+        $ids=explode(",",$this->Ids);
+        $domain = new DomainBasic();
+        $re=$domain->deleteQuestions($ids);
+        return MyStandard::gReturn(0,$re);
+>>>>>>> 3ed2f37ce75c5918f704f741d1e9a608c625b694
+    }
+    /**
+     * 题目数量
+     */
+    public function getCount()
+    {
+        $domain = new DomainBasic();
+<<<<<<< HEAD
+
+        $re = $domain->countQuestions($this->CategoryId);
+        return MyStandard::gReturn(0, $re);
+    }
+
+
+
+    /* -------------   ipso  -------------- */
+
+
+    /**
+		 * 删除题目
+		 */
+    public function delete()
+    {
+        $data = $this->Id;
+        $domain = new DomainBasic();
+        $res = $domain->delete($data);
+        if ($res == 1) {
+            return MyStandard::gReturn(1, '', '删除失败');
+        }
+        return MyStandard::gReturn(0, '', '删除成功');
+    }
+
+    /**
+		 * 根据Id更新一道题目
+		 */
+    public function update()
+    {
+        $Id = $this->Id;
+        $newData = array(
+            'Content'    => $this->Content,
+            'CategoryId' => $this->CategoryId,
+            'KeyWords'   => $this->KeyWords,
+            'Analysis'   => $this->Analysis,
+            'Text'       => $this->Text,
+            'Type'       => $this->Type
+        );
+        $domain = new DomainBasic();
+        $res = $domain->updateQuestion($Id, $newData);
+
+        if ($res == 1) {
+            return MyStandard::gReturn(1, '', '更新失败');
+        }
+
+        return MyStandard::gReturn(0, '', '更新成功');
+    }
+=======
+    
+        $re=$domain->countQuestions($this->CategoryId);
+        return MyStandard::gReturn(0,$re);
+    }
 		
 
 		/* -------------   ipso  -------------- */
@@ -194,4 +286,6 @@ class Question extends Api
 
 			return MyStandard::gReturn(0, '', '更新成功');
 		}
+
+>>>>>>> 3ed2f37ce75c5918f704f741d1e9a608c625b694
 }

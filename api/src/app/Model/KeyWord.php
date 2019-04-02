@@ -87,4 +87,14 @@ class KeyWord extends NotORM
 		$model = $this -> getORM();
 		return $model -> limit($begin, $num) -> fetchAll();
 	}
+
+	public function getCountByWord($word){
+		$model = $this -> getORM();
+		return $model -> where("Word", $word) -> count();
+	}
+
+	public function getByWord($word, $begin = 0, $num = 10){
+		$model = $this -> getORM();
+		return $model -> where('Word', $word) -> limit($begin, $num) -> fetchAll();
+	}
 }

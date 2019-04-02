@@ -35,6 +35,14 @@ class Keyword extends Api
 			),
 			'getCount' => array(
 			), 
+			'getCountByWord' => array(
+				'Word' => array('name' => 'Word', 'desc' => '关键字'),
+			), 
+			'getByWord' => array(
+				'Word' => array('name' => 'Word', 'desc' => '关键字'),
+				'Page' => array('name' => 'Page', 'desc' => ''),
+				'Number' => array('name' => 'Number', 'desc' => '关键字Id'),
+			),
     );
   }
   /**
@@ -112,7 +120,31 @@ class Keyword extends Api
 		$begin = ($this -> Page - 1) * $this -> Number;
 		$list = $dm -> getList($begin, $this -> Number);
 		if(!$list){
-			return MyStandard::gReturn(1, '', '获取异常');
+			return MyStandard::gReturn(1, '', '获取失败');
+		}
+		return MyStandard::gReturn(0, $list, '获取成功');
+	}
+
+	/**
+	 * 更具word获取数据库记录数
+	 */
+	public function getCountByWord(){
+		$dm = new ModelKeyword();
+		$word = $this -> Word;
+		$count = $dm -> getCountByWord($word);
+		return MyStandard::gReturn(0, $count, '获取成功');
+	}
+
+	/**
+	 * 根据关键字获取所有记录
+	 */
+	public function getByWord(){
+		$dm = new ModelKeyword();
+		$begin = ($this -> Page - 1) * $this -> Number;
+		$word = $this -> Word;
+		$list = $dm -> getByWord($word, $begin, $this -> Number);
+		if(!$list){
+			return MyStandard::gReturn(1, '', '获取失败');
 		}
 		return MyStandard::gReturn(0, $list, '获取成功');
 	}

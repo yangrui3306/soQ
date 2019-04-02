@@ -29,9 +29,7 @@ class User extends NotORM {
 
 		public function getByName($name){
 			$model = $this -> getORM();
-			$re=$model -> where('Name', $name);
-			if($re->count()>0) return  $re-> fetchOne();
-			return  $this -> getORM()->where('Name like ?',"%".$name."%")->fetchAll();
+			return $model -> where('Name', $name) -> fetchOne();
 		}
 
 		public function getUidByName($name){

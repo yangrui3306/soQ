@@ -27,7 +27,6 @@ class Upload
   {
     $mquestion = new ModelAddQ();
     $squestion = new ModelSearchQ();
-
     /*-------提取关键字---------*/
     if (!array_key_exists("Text", $q) || !$q["Text"]) $q["Text"] = $q["Content"]; //保证Text必须有文字，否则输入原题的富文本
     $key=Tools::ExtractKeyWords($q["Text"]);
@@ -50,8 +49,8 @@ class Upload
     $q["KeysWeight"] = implode(",", $weightarr);
     
     /*----------end for keyword------*/
+    $q["Text"]=Tools::handleQuestionText($q["Text"]);
     
-
     $s = $squestion->checkDuplicate($q); //判重 若重复返回重复的Id
     if ($s != null) return $s["Id"];
 

@@ -91,11 +91,8 @@ class Basic extends NotORM
     if($cid>0) $re->where("CategoryId",$cid);
     return $re->count();
   }
-<<<<<<< HEAD
-=======
 
 	
->>>>>>> 3ed2f37ce75c5918f704f741d1e9a608c625b694
 	
 
 
@@ -123,8 +120,4 @@ class Basic extends NotORM
 		$model = $this -> getORM();
 		return $model -> where('Id', $Id) -> update($data);
 	}
-<<<<<<< HEAD
-=======
-
->>>>>>> 3ed2f37ce75c5918f704f741d1e9a608c625b694
 }

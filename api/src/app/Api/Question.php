@@ -66,18 +66,10 @@ class Question extends Api
             ),
             'getCount' => array(
                 'CategoryId' => array('name' => 'CategoryId', 'default' => 0, 'desc' => '分类Id'),
-<<<<<<< HEAD
             ),
             'delete' => array(
                 'Id' => array('name' => 'Id', 'require' => true, 'desc' => "题目id"),
             ),
-=======
-						),
-						'delete'=>array(
-                'Id' => array('name' => 'Id','require' => true, 'desc' => "题目id"),
-						),
-
->>>>>>> 3ed2f37ce75c5918f704f741d1e9a608c625b694
         );
     }
 
@@ -98,10 +90,10 @@ class Question extends Api
             'Text' => $this->Text,
             'Type' => $this->Type
         );
-
+     
         $domain = new DomainUpload();
         $id = $domain->upQuestion($newData);
-
+        
         $rs['Id'] = $id;
         return MyStandard::gReturn(0, $rs);
     }
@@ -164,20 +156,12 @@ class Question extends Api
      * 根据题目Id删除题目
      * @return 返回受影响行数
      */
-<<<<<<< HEAD
     public function deleteQuestionByIds()
     {
         $ids = explode(",", $this->Ids);
         $domain = new DomainBasic();
         $re = $domain->deleteQuestions($ids);
         return MyStandard::gReturn(0, $re);
-=======
-    public function deleteQuestionByIds(){
-        $ids=explode(",",$this->Ids);
-        $domain = new DomainBasic();
-        $re=$domain->deleteQuestions($ids);
-        return MyStandard::gReturn(0,$re);
->>>>>>> 3ed2f37ce75c5918f704f741d1e9a608c625b694
     }
     /**
      * 题目数量
@@ -185,7 +169,6 @@ class Question extends Api
     public function getCount()
     {
         $domain = new DomainBasic();
-<<<<<<< HEAD
 
         $re = $domain->countQuestions($this->CategoryId);
         return MyStandard::gReturn(0, $re);
@@ -233,59 +216,4 @@ class Question extends Api
 
         return MyStandard::gReturn(0, '', '更新成功');
     }
-=======
-    
-        $re=$domain->countQuestions($this->CategoryId);
-        return MyStandard::gReturn(0,$re);
-    }
-		
-
-		/* -------------   ipso  -------------- */
-
-		/**
-		 * 获取题库题目数量
-		 */
-		public function getCount(){
-			$domain = new DomainBasic();
-			$count = $domain -> getCount();
-			return MyStandard::gReturn(0, $count);
-		}
-
-		/**
-		 * 删除题目
-		 */
-		public function delete(){
-			$data = $this -> Id;
-			$domain = new DomainBasic();
-			$res = $domain -> delete($data);
-			if($res == 1){
-				return MyStandard::gReturn(1, '', '删除失败');
-			}
-			return MyStandard::gReturn(0, '', '删除成功');
-		}
-
-		/**
-		 * 根据Id更新一道题目
-		 */
-		public function update(){
-			$Id = $this -> Id;
-			$newData = array(
-        'Content'    => $this->Content,
-        'CategoryId' => $this->CategoryId,
-        'KeyWords'   => $this->KeyWords,
-        'Analysis'   => $this->Analysis,
-        'Text'       => $this->Text,
-        'Type'       =>$this->Type
-			);
-			$domain = new DomainBasic();
-			$res = $domain -> updateQuestion($Id, $newData);
-			
-			if($res == 1){
-				return MyStandard::gReturn(1, '', '更新失败');
-			}
-
-			return MyStandard::gReturn(0, '', '更新成功');
-		}
-
->>>>>>> 3ed2f37ce75c5918f704f741d1e9a608c625b694
 }

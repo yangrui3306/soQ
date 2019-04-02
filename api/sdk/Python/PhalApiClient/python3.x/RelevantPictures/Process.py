@@ -1,8 +1,12 @@
+# -*- coding:utf-8 -*-
 from OCR import tesseract_ocr, baidu_orc, baidu_orc_pil
 from Pretreatment import pre_run
 from PIL import Image
 from MyThread import MyThread, runthread
 import re
+import time
+import sys
+import io
 
 
 def get_xuhao(word):
@@ -83,25 +87,26 @@ def cut_question(img, pos, f=True):  # 将img切成pos部分，f为false传入im
     return img.crop((pos["left"], pos["top"], pos["right"], pos["bottom"]))
 
 
-
-# 得到题目范围
+# 得到题目范围（数据中增加words字段为题目内容）
 def get_pos(pre, this, words):
     pos = {"left": 100000, "right": 0, "top": 100000, "bottom": 0}
+    word = ""
     if pre == this:
         this = this + 1
     for i in range(int(pre), int(this)):
         msg = words[i]["location"]
+        word = word+words[i]["words"]
         pos["left"] = min(pos["left"], msg["left"])
         pos["right"] = max(pos["right"], msg["left"] + msg["width"])
         pos["top"] = min(pos["top"], msg["top"])
         pos["bottom"] = max(pos["bottom"], msg["top"] + msg["height"])
 
-    pos["left"] = max(pos["left"] - 5,0)
+    pos["left"] = max(pos["left"] - 5, 0)
     pos["top"] = max(pos["top"] - 5, 0)
-
+    pos["words"] = word
     # pos["bottom"] = max(pos["bottom"] + 5, 0)
     # pos["left"] = max(pos["left"] - 5, 0)
-   
+
     return pos
 
 
@@ -113,6 +118,7 @@ def is_english_test(content):
 
 
 # 得到 与i 同行的内容
+
 def get_line_content(i, words):
     content = words[i]["words"]
     pos = words[i]["location"]
@@ -156,17 +162,28 @@ def get_list_title(words):
 
 
 def baidu_handle(path):
+    # print("orc start:"+str(time.time())) #时间约为2s左右
     result = baidu_orc(path)
+    # print("orc end:"+str(time.time()))
 
     words = result["words_result"]
     title_num = get_list_title(words)  # 得到序号列表
-    print(title_num)
-
+    # print(title_num)
+    # print("get listpost:"+str(time.time())) # 时间较少
+    re = []
     for i in range(1, len(title_num)):  # 遍历序号列表，将相邻题目切出来
         if title_num[i - 1]["xuhao"] == -2:  # 无用行 or 最后一个
             continue
         pos = get_pos(title_num[i - 1]["pos"], title_num[i]["pos"], words)
-        cut_question(path, pos, False).show()
+
+        pos["width"] = pos["right"]-pos["left"]
+        pos["height"] = pos["bottom"]-pos["top"]
+
+        # re.append(pos)
+        print(pos)
+        # cut_question(path, pos, False).show()
+    # print("handle listpost:"+str(time.time())) # 时间较少
+    # return re
 
 
 def pro_run(path):
@@ -197,7 +214,15 @@ def pro_run(path):
     # loop.close()
 
 
-path = "image/english/6.png"
-img = Image.open(path)
-img.show()
-baidu_handle(path)
+if __name__ == "__main__":
+  
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf8')
+    path = sys.argv[1]
+    # print("start: "+str(time.time()))
+    # path='E:/phpstudy/PHPTutorial/WWW/soQ/api/public/upload//cut/2019/04/02/12601921554188495.jpg'
+    # print(path)
+    # print("我是中文")
+    img = Image.open(path)
+    # img.show()
+    baidu_handle(path)
+    # print("end: "+str(time.time()))

@@ -159,6 +159,7 @@ class Match
         }       
         // return $questions[$i]["Similarity"];
       }
+      $reslut=Tools::GetMaxArray($questions, "Similarity", $num);
       return $reslut;
     }
   }

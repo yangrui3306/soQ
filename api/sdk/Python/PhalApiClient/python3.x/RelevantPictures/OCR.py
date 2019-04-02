@@ -30,11 +30,11 @@ def get_baidu_token():
 
 def baidu_orc(path):
     access_token = "24.607dbc19903a32f5e7fde1932acf6c38.2592000.1556360828.282335-15879343"  # 自行注册百度云账号，即可获取自己专属的access_token，必须输入！
-    print(time.time())
+    # print(time.time())
     with open(path, 'rb') as f:
         image_data = f.read()
         base64_ima = base64.b64encode(image_data)
-        print(time.time())
+        # print(time.time())
         data = {
             'image': base64_ima
         }
@@ -43,7 +43,7 @@ def baidu_orc(path):
         }
         url = "https://aip.baidubce.com/rest/2.0/ocr/v1/general?access_token=" + str(access_token)
         r = requests.post(url, params=headers, data=data).json()
-        print(time.time())
+        # print(time.time())
         return r
         # for word in r['words_result']:
         #     yield word['words']

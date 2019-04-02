@@ -147,6 +147,16 @@ class  Tools
       $array[] = mb_substr($str, $i, 1, 'utf-8');
     return $array;
   }
-
-
+  /**
+   * 处理题目Text字段，去除不必要的符号 
+   * @param str 处理文字
+   * @param encoding 编码方案
+   * */
+  public static function handleQuestionText($str,$encoding='utf8')
+  {
+    $pattern =($encoding=='utf8')?'/[\x{4e00}-\x{9fa5}a-zA-Z0-9]/u':'/[\x80-\xFF]/';
+    preg_match_all($pattern,$str,$result);
+    $temp =join('',$result[0]);
+    return $temp;
+  }
 }

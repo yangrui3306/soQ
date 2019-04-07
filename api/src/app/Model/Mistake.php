@@ -165,5 +165,18 @@ class Mistake extends NotORM
           $arr[$i]["Mistake"]=$this->getMistakeById($arr[$i]["MistakeId"]);
         }
       }
-    }
+		}
+		
+	/**
+	 * 获取数值最高的前num条数据
+	 * @param myType 收藏或者点赞的字段名
+	 * @param num    要获取的数量
+	 */
+	public function getByMyType($myType = '', $num = 10){
+		$model = $this -> getORM();
+		if($myType == 'LikeNumber'){
+			return $model -> order('LikeNumber desc') -> limit($num) -> fetchAll();
+		}
+		return $model -> order('CollectNumber desc') -> limit($num) -> fetchAll();
+	}
 }

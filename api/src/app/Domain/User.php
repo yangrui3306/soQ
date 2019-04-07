@@ -11,6 +11,7 @@ use App\Model\Notecategory as ModelNoteCategory;
 use PhalApi\Exception;
 use App\Domain\Question\Basic as QBasic;
 use App\Model\Focus as ModelFocus;
+use App\Model\Loginlog as Log;
 
 class User
 {
@@ -53,6 +54,30 @@ class User
 				'msg'  => "用户密码不正确!",
 				'data' => '',
 			);
+
+		// 记录登录日志
+		$logdata = array(
+			'Uid' => $user['Id'],
+			'Ip'  => '',
+			'Ctime' => time(),
+			'Type' => 1,
+			'Msg'  => '用户登录',
+		);
+
+		$logModel = new Log();
+		$logModel -> insertOne($logdata);
+		
+		// 删除两天前的日志
+		$currTime = time();
+		$beforTime = $currTime - 48 * 60 * 60 * 1000;
+		$newlist = $logModel -> getByTime($beforTime);
+		if($newlist){
+			for($i = 0; $i < count($newlist); $i++){
+				$logModel -> deleteOne($newlist[$i]['Id']);
+			}
+		}
+
+		// 登录成功
 		return array(
 			'code' => 0,
 			'msg'  => "登录数据库验证成功!",

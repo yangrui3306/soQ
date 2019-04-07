@@ -76,7 +76,12 @@ class Mistake extends Api
       'deleteCate'=>array(
         'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
 				'MistakeCateId'   => array('name' => 'MistakeCateId','require' => true, 'default'=>0, 'desc' => '分类Id'),
-      )
+			),
+			'getCollection'=>array(
+			),
+			'getLike'=>array(
+			),
+			
     );
   }
   /**
@@ -227,5 +232,25 @@ class Mistake extends Api
     $mm=new DomainMistake();
     $re=$mm->deleteCategory($data);
     return MyStandard::gReturn(0,$re);
-  }
+	}
+	
+	/* ----------  ipso  ----------- */
+
+	/**
+	 * 获取错题的收藏数
+	 */
+	public function getCollection(){
+		$domain = new DomainMistake();
+		$Collections = $domain -> getCollection();
+		return MyStandard::gReturn(0,$Collections);
+	}
+
+	/**
+	 * 获取错题点赞数
+	 */
+	public function getLike(){
+		$domain = new DomainMistake();
+		$Likes = $domain -> getLike();
+		return MyStandard::gReturn(0,$Likes);
+	}
 }

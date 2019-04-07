@@ -2,6 +2,7 @@
 namespace App\Domain;
 
 use App\Model\Manager as Model;
+use App\Model\Loginlog as Log;
 
 class Manager{
 
@@ -29,6 +30,29 @@ class Manager{
 				'msg'  => '管理员密码不正确'
 			);
 		}
+
+		// 添加登录日志
+		$logdata = array(
+			'Uid' => $isName['Id'],
+			'Ip'  => '',
+			'Ctime' => time(),
+			'Type' => 0,
+			'Msg'  => '管理员登录',
+		);
+
+		$logModel = new Log();
+		$logModel -> insertOne($logdata);
+
+		// 删除两天前的日志
+		$currTime = time();
+		$beforTime = $currTime - 48 * 60 * 60 * 1000;
+		$newlist = $logModel -> getByTime($beforTime);
+		if($newlist){
+			for($i = 0; $i < count($newlist); $i++){
+				$logModel -> deleteOne($newlist[$i]['Id']);
+			}
+		}
+
 		// 登录成功
 		return array(
 			'code' => 0,

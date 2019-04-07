@@ -56,6 +56,7 @@ return array(
 		'Note.*',
 		'QCategory.*',
 		'Recharge.*',
+		'Loginlog.*',
 		'School.*',
 		'Site.*',
 		'Question.*',

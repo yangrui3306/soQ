@@ -124,6 +124,9 @@ class Basic
 		}
 	}
 
+	/**
+	 * 更新题目
+	 */
 	public function updateQuestion($Id, $data){
 		$model = new ModelQBasic();
 		$sql = $model -> update($Id, $data);
@@ -131,5 +134,63 @@ class Basic
 			return 1;
 		}
 		return 0;
+	}
+
+	/**
+	 * 获取题目收藏数前10
+	 */
+	public function getCollection(){
+		$model = new ModelQBasic();
+		$myType = 'CollectNumber';
+		$list = $model -> getByMyType($myType, 10);
+		if(!$list){
+			return 1;
+		}
+		return $list;
+	}
+
+	/**
+	 * 获取题目热度前10 
+	 * (获取收藏数前100的题目，并求每道题目的收藏数和点赞数之和，取前10作为热度前十题目)
+	 */
+	public function getLike(){
+		$model = new ModelQBasic();
+		$myType = 'CollectNumber';
+		$list = $model -> getByMyType($myType, 100);
+		$count = count($list);
+		for($i = 0; $i < $count; $i++){
+			$list[$i]['sum'] = $list[$i]['CollectNumber'] + $list[$i]['LikeNumber'];
+		}
+		$newList = $this -> getMaximum($list);
+		return $newList;
+	}
+
+	/**
+	 * 快速排序获取前十
+	 */
+	private function getMaximum($data){
+		$length = count($data);
+		$newArr = '';
+		// 对数组按$data[key]['sum']排序
+		for($i = 0; $i < $length; ++$i){
+			$k = $i;
+			for($j = $i + 1; $j < $length; ++$j){
+				if($data[$j]['sum'] > $data[$k]['sum']){
+					$k = $j;
+				}
+			}
+			if($k != $i){
+				$arr = $data[$i];
+				$data[$i] = $data[$k];
+				$data[$k] = $arr;
+			}
+		}
+
+		// 取出排序好数组的前10位放入数组newArr中
+		for($i = 0; $i < 10; $i++){
+			$newArr[$i] = $data[$i];
+		}
+
+		return $newArr;
 	}
 }

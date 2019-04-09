@@ -22,14 +22,33 @@ class Basic
    */
   public static function searchQuestion($q,$num=3)
   {
-   
+		$q["Text"]=Tools::handleQuestionText($q["Text"]); //去除不必要的字符
     $keys=Tools::ExtractKeyWords($q["Text"]);
    
     $qs=CommonMatch::GetQuestionsByKeyWord($keys,$num*2);
  
     return CommonMatch::qLevenShtein($q,$qs,$num);
   }
-
+	/**
+   * 匹配多个题目
+   * @param $q 必须含有Text键
+   */
+  public static function searchQuestions($texts)
+  {
+		$qm=new ModelSearchQ();
+		$aq=$qm->getAllQuestion();
+	
+		$re=array();
+		for($i=0;$i<count($texts);$i++)
+		{
+			$texts[$i]=Tools::handleQuestionText($texts[$i]); //去除不必要的字符
+			$q=array("Text"=>$texts[$i]);
+			$keys=Tools::ExtractKeyWords($texts[$i]);
+			$qs=CommonMatch::GetQuestionsByKeyWord($keys,6,$aq,false);
+			$re[$i]=CommonMatch::qLevenShtein($q,$qs,1);
+		}
+		return $re;
+  }
   /**
    * 根据text模糊匹配题目
    */
@@ -129,6 +148,21 @@ class Basic
 	 */
 	public function updateQuestion($Id, $data){
 		$model = new ModelQBasic();
+		
+    /*-------提取关键字---------*/
+    if (!array_key_exists("Text", $data) || !$data["Text"]) $data["Text"] = $data["Content"]; //保证Text必须有文字，否则输入原题的富文本
+    $key=Tools::ExtractKeyWords($data["Text"]);
+   
+    Tools::SortByKey($key,"Weight",false);
+    $idarr = Tools::GetValueByKey($key, "Id"); //生成仅有Id字段的数组
+    $weightarr=Tools::GetValueByKey($key,"Weight");
+    
+		$data["KeyWords"] = implode(",", $idarr);
+    $data["KeysWeight"] = implode(",", $weightarr);
+    
+    /*----------end for keyword------*/
+    $data["Text"]=Tools::handleQuestionText($data["Text"]); //去除不必要的TEXT
+    
 		$sql = $model -> update($Id, $data);
 		if(!$sql){
 			return 1;

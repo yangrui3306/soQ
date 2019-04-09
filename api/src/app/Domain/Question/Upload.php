@@ -23,7 +23,7 @@ class Upload
    * @param $q 题目{CategoryId,Content,Analysis,Type,KeyWords(文字形式.逗号隔开),SchoolId,Text}
    * @return 返回插入的Id,题目重复也将返回对应题目Id
    */
-  public function upQuestion($q)
+  public function upQuestion($q,$Repetition=0.95)
   {
     $mquestion = new ModelAddQ();
     $squestion = new ModelSearchQ();
@@ -49,9 +49,9 @@ class Upload
     $q["KeysWeight"] = implode(",", $weightarr);
     
     /*----------end for keyword------*/
-    $q["Text"]=Tools::handleQuestionText($q["Text"]);
+    $q["Text"]=Tools::handleQuestionText($q["Text"]); //去除不必要的TEXT
     
-    $s = $squestion->checkDuplicate($q); //判重 若重复返回重复的Id
+    $s = $squestion->checkDuplicate($q,$Repetition); //判重 若重复返回重复的Id
     if ($s != null) return $s["Id"];
 
     return $mquestion->AddQuestion($q);

@@ -124,7 +124,7 @@ class Match
      * @param questions 经过处理的数据库可直接操作的题目
      * @return 数据库可操作类型
      */
-  public static function GetQuestionsByKeyWord($keywords, $num = 0, $questions = null)
+  public static function GetQuestionsByKeyWord($keywords, $num = 0, $questions = null,$isorm=true)
   {
     $msq=new ModelSearchQ();
     if ($questions == null) $questions = $msq->mgetAllQuestion();
@@ -132,7 +132,7 @@ class Match
 
     if ($keywords) {
       $keyarr = Match::merageArray($keywords);
-      $questions = $questions->where("NOT KeyWords","")->fetchAll(); //抓取所有
+      if($isorm) $questions = $questions->where("NOT KeyWords","")->fetchAll(); //抓取所有
       $cos = new Cosines();
       $len=count($questions);
       for ($i = 0; $i < $len; $i++) {
@@ -150,7 +150,7 @@ class Match
     }
     else {//如果传入文字未提取到关键字
       $reslut=[];
-      $questions = $questions->where("KeyWords","")->fetchAll(); //抓取所有
+      if($isorm) $questions = $questions->where("KeyWords","")->fetchAll(); //抓取所有
       for ($i = 0; $i < count($questions); $i++) {
 
         if($questions[$i]["KeyWords"]==""){ 

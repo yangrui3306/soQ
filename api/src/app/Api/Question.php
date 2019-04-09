@@ -69,7 +69,11 @@ class Question extends Api
             ),
             'delete' => array(
                 'Id' => array('name' => 'Id', 'require' => true, 'desc' => "题目id"),
-            ),
+						),
+						'getCollection'=>array(
+						),
+						'getLike'=>array(
+						),
         );
     }
 
@@ -215,5 +219,23 @@ class Question extends Api
         }
 
         return MyStandard::gReturn(0, '', '更新成功');
-    }
+		}
+		
+	/**
+	 * 获取题目的收藏前10
+	 */
+	public function getCollection(){
+		$domain = new DomainBasic();
+		$Collections = $domain -> getCollection();
+		return MyStandard::gReturn(0,$Collections);
+	}
+
+	/**
+	 * 获取题题目热度前十 
+	 */
+	public function getLike(){
+		$domain = new DomainBasic();
+		$Likes = $domain -> getLike();
+		return MyStandard::gReturn(0,$Likes);
+	}
 }

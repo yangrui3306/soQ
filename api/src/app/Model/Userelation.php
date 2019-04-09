@@ -27,6 +27,16 @@ class Userelation extends NotORM{
 		return $model -> where('Id', $Id) -> fetchOne();
 	}
 
+	public function getByTid($Tid){
+		$model = $this -> getORM();
+		return $model -> where('Tid', $Tid) -> fetchAll();
+	}
+
+	public function getByCid($Cid){
+		$model = $this -> getORM();
+		return $model -> where('Cid', $Cid) -> fetchAll();
+	}
+
 	/* ----------------  数据库插入  ------------------ */
 
 	public function insertOne($data){

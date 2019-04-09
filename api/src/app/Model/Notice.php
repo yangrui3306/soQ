@@ -30,7 +30,8 @@ class Notice extends NotORM{
 
 	public function insertOne($data){
 		$model = $this -> getORM();
-		return $model -> insert($data);
+		$model -> insert($data);
+		return $model -> insert_id();
 	}
 
 	/* ----------------  数据库更新  ------------------ */

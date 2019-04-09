@@ -120,4 +120,17 @@ class Basic extends NotORM
 		$model = $this -> getORM();
 		return $model -> where('Id', $Id) -> update($data);
 	}
+
+	/**
+	 * 获取数值最高的前num条数据
+	 * @param myType 收藏或者点赞的字段名
+	 * @param num    要获取的数量
+	 */
+	public function getByMyType($myType = '', $num = 10){
+		$model = $this -> getORM();
+		if($myType == 'LikeNumber'){
+			return $model -> order('LikeNumber desc') -> limit($num) -> fetchAll();
+		}
+		return $model -> order('CollectNumber desc') -> limit($num) -> fetchAll();
+	}
 }

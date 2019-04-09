@@ -94,10 +94,10 @@ class Question extends Api
             'Text' => $this->Text,
             'Type' => $this->Type
         );
-
+     
         $domain = new DomainUpload();
         $id = $domain->upQuestion($newData);
-
+        
         $rs['Id'] = $id;
         return MyStandard::gReturn(0, $rs);
     }

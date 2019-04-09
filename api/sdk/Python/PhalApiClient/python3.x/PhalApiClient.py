@@ -10,5 +10,5 @@ def PhalApiClient(host, service = None, params = None, timeout = None):
 		assert params, 'params must is valid values'
 		params = parse.urlencode(params)
 	_request = request.Request(url)
-	response = request.urlopen(_request, data = params, timeout = timeout)
+	response = request.urlopen(_request, data = params.encode(encoding='UTF8'), timeout = timeout)
 	return {'info': response.info(), 'state': response.getcode(), 'data': json.loads(response.read())}

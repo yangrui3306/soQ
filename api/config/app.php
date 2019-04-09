@@ -76,5 +76,6 @@ return array(
 		'User.getTeachers',
 		'User.getTeacherCount',
 		'User.delete',
+		'*.*'
 	),
 );

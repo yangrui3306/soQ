@@ -52,7 +52,7 @@ class Upload extends Api
     public function upload()
     {
         //设置上传路径 设置方法参考3.2
-        \PhalApi\DI()->ucloud->set('save_path', date('Y/m/d'));
+        \PhalApi\DI()->ucloud->set('save_path', "demo/".date('Y/m/d'));
         $name = rand(213123, 1321321);
         //新增修改文件名设置上传的文件名称
 				\PhalApi\DI()->ucloud->set('file_name', $name . $_SERVER['REQUEST_TIME']);

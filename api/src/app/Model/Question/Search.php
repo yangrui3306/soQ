@@ -23,8 +23,12 @@ class Search extends NotORM
   /**
    * 获取所有题目
    */
-  public function getAllQuestion($min=0,$num=10)
+  public function getAllQuestion($min=0,$num=0)
   {
+    if($num==0)
+    {
+      return $this->getORM()->fetchAll();
+    }
     return $this->getORM()->limit($min,$num)->fetchAll();
   }
   /**
@@ -158,7 +162,7 @@ public function getHotQuesion($num)
 
       $questions = $questions->where('KeyWords', $q["KeyWords"]);
 
-      $questions = Match::qLevenShtein($q, $questions->fetchALl(), 1);
+      $questions = Match::qLevenShtein($q, $questions->fetchAll(), 1);
       if($questions==null||count($questions)<=0) return null;
       $question = $questions[0];
 

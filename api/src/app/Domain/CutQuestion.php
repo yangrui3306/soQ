@@ -22,7 +22,7 @@ class CutQuestion
       'height'=>intval(substr($arr[$cnt-1],strpos($arr[$cnt-1]," ")+1,$cnt-strpos($str," "))),
       'words'=>(substr($arr[4],strpos($arr[4]," ")+2))
     );
-    for ($i=5; $i<$cnt-1; $i++) {
+    for ($i=5; $i<$cnt-2; $i++) {
       $re['words']=$re['words'].$arr[$i];
     }
 

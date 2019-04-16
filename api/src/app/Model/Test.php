@@ -15,23 +15,41 @@ class Test extends NotORM{
 		return $model -> count('Id');
 	}
 
-	/**
-	 * 通过ID获取一张试题
-	 */
 	public function getById($ID){
 		$model = $this -> getORM();
 		return $model -> where('Id', $ID) -> fetchOne();
+	}
+
+	public function getList($begin, $num){
+		$model = $this -> getORM();
+		return $model -> limit($begin, $num) -> fetchAll();
+	}
+
+	public function getByTid($tid, $begin = 0, $num = 10){
+		$model = $this -> getORM();
+		return $model -> where('TeacherId', $tid) -> limit($begin, $num) -> fetchAll();
 	}
 
 	/* -----------------    数据库插入     ------------------ */
 
 	public function insertOne($data){
 		$model = $this -> getORM();
+		$model -> insert($data);
+		return $model -> insert_id();
 	}
 
 	/* -----------------    数据库更新     ------------------ */
 
+	public function updateOne($id, $data){
+		$model = $this -> getORM();
+		return $model -> where('Id', $id) -> update($data);
+	}
 
 
 	/* -----------------    数据库删除     ------------------ */
+
+	public function deleteOne($Id){
+		$model = $this -> getORM();
+		return $model -> where('Id', $Id) -> delete();
+	}
 }

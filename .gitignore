@@ -1,10 +1,11 @@
 composer.lock
+api.zip
 
 runtime/*
 gitc
 
 .idea/
 .env
-.zip
+api.zip
 
 node_modules/*

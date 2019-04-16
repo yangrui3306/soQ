@@ -9,13 +9,14 @@ use App\Common\MyStandard;
  */
 class Notice extends Api {
 
-		public function getRules(){
+	public function getRules(){
 		return array(
 			'add' => array(
-				'Status'  => array('name' => 'Name', 'require' => true, 'default' => 0, 'desc' => '消息状态：0未读，1已读'),
+				'Status'  => array('name' => 'Status', 'require' => true, 'default' => 0, 'desc' => '消息状态：0未读，1已读'),
 				'Title'  => array('name' => 'Pass', 'desc' => '通知标题'),
 				'Author' => array('name' => 'Phone', 'desc' => '发送人'),
-				'Content' => array('name' => 'Phone', 'desc' => '通知内容'),
+				'Content' => array('name' => 'Content', 'desc' => '通知内容'),
+				'AcceptId' => array('name' => 'AcceptId', 'desc' => '接收者Id'),
 			),
 			'getCount' => array(
 				
@@ -26,10 +27,11 @@ class Notice extends Api {
 			),
 			'update' => array(
 				'Id' => array('name' => 'Id', 'desc' => '通知Id'),
-				'Status'  => array('name' => 'Name', 'require' => true, 'default' => 0, 'desc' => '消息状态：0未读，1已读'),
+				'Status'  => array('name' => 'Status', 'require' => true, 'default' => 0, 'desc' => '消息状态：0未读，1已读'),
 				'Title'  => array('name' => 'Pass', 'desc' => '通知标题'),
 				'Author' => array('name' => 'Phone', 'desc' => '发送人'),
-				'Content' => array('name' => 'Phone', 'desc' => '通知内容'),
+				'Content' => array('name' => 'Content', 'desc' => '通知内容'),
+				'AcceptId' => array('name' => 'AcceptId', 'desc' => '接收者Id'),
 			),
 			'delete' => array(
 				'Id'  => array('name' => 'Id', 'require' => true, 'desc' => '当前页'),
@@ -43,11 +45,12 @@ class Notice extends Api {
 	public function add(){
 		$model = new Model();
 		$data = array(
-			'Status'  => $this -> Status,
-			'Title'   => $this -> Title,
-			'Content' => $this -> Content,
-			'Author'  => $this -> Author,
-			'Ctime'   => date('Y-m-d H:i:s'),
+			'Status'   => $this -> Status,
+			'Title'    => $this -> Title,
+			'Content'  => $this -> Content,
+			'Author'   => $this -> Author,
+			'Ctime'    => date('Y-m-d H:i:s'),
+			'AcceptId' => $this -> AcceptId,
 		);
 		$sql = $model -> insertOne($data);
 		if(!$sql){
@@ -66,7 +69,7 @@ class Notice extends Api {
 	}
 
 	/**
-	 * 根据Id更新一条数据
+	 * 根据Id更新一条数据 更改通知状态也属于更新
 	 */
 	public function update(){
 		$Id = $this -> Id;
@@ -75,6 +78,8 @@ class Notice extends Api {
 			'Status'  => $this -> Status,
 			'Title'   => $this -> Title,
 			'Content' => $this -> Content,
+			'Author'   => $this -> Author,
+			'AcceptId' => $this -> AcceptId,
 		);
 		$sql = $model -> updateOne($Id, $data);
 		if(!$sql){

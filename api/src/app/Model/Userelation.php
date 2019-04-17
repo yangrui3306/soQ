@@ -27,9 +27,9 @@ class Userelation extends NotORM{
 		return $model -> where('Id', $Id) -> fetchOne();
 	}
 
-	public function getByTid($Tid){
+	public function getByTid($Tid,$begin,$num){
 		$model = $this -> getORM();
-		return $model -> where('Tid', $Tid) -> fetchAll();
+		return $model -> where('Tid', $Tid)-> limit($begin, $num) -> fetchAll();
 	}
 
 	public function getByCid($Cid){
@@ -42,7 +42,7 @@ class Userelation extends NotORM{
 	public function insertOne($data){
 		$model = $this -> getORM();
 		$model -> insert($data);
-		return  insert_id();
+		return  $model->insert_id();
 	}
 
 	/* ----------------  数据库更新  ------------------ */
@@ -51,6 +51,7 @@ class Userelation extends NotORM{
 		$model = $this -> getORM();
 		return $model -> where('Id', $Id) -> update($data);
 	} 
+	
 	
 	/* ----------------  数据库删除  ------------------ */
 

@@ -29,7 +29,10 @@ class Test extends NotORM{
 		$model = $this -> getORM();
 		return $model -> where('TeacherId', $tid) -> limit($begin, $num) -> fetchAll();
 	}
-
+	public function getByTidRid($tid,$rid){
+		$model = $this -> getORM();
+		return $model -> where('TeacherId', $tid)->where('UserrelationId',$rid)->order('id DESC') -> fetchAll();
+	}
 	/* -----------------    数据库插入     ------------------ */
 
 	public function insertOne($data){
@@ -39,10 +42,13 @@ class Test extends NotORM{
 	}
 
 	/* -----------------    数据库更新     ------------------ */
-
+	/**
+	 * 更新异常返回false,无变化为0,否则返回受影响行数
+	 */
 	public function updateOne($id, $data){
 		$model = $this -> getORM();
-		return $model -> where('Id', $id) -> update($data);
+
+		return $model ->where("Id",$id) -> update($data);
 	}
 
 

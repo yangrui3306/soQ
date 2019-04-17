@@ -66,6 +66,7 @@ class Basic extends NotORM
       }
     return $data;
   }
+  
 
   /**根据关键字搜索题目 */
   public function getQuestionsByKeys($keys, $cid = 0, $start = 0, $num = 0)

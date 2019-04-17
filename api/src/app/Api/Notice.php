@@ -3,6 +3,7 @@ namespace App\Api;
 use App\Model\Notice as Model;
 use PhalApi\Api;
 use App\Common\MyStandard;
+use App\Domain\Notice as Domain;
 
 /**
  * 通知类接口
@@ -19,7 +20,9 @@ class Notice extends Api {
 				'AcceptId' => array('name' => 'AcceptId', 'desc' => '接收者Id'),
 			),
 			'getCount' => array(
-				
+			),
+			'getByUserId'=>array(
+				'UserId' => array('name' => 'UserId', 'require' => true, 'desc' => '用户Id'),
 			),
 			'getList' => array(
 				'Page'  => array('name' => 'Page',  'desc' => '当前页'),
@@ -36,6 +39,11 @@ class Notice extends Api {
 			'delete' => array(
 				'Id'  => array('name' => 'Id', 'require' => true, 'desc' => '当前页'),
 			),
+			'updateRead'=>array(
+				'Id' => array('name' => 'Id', 'require' => true,'desc' => '通知Id'),
+				'UserId' => array('name' => 'UserId', 'require' => true, 'desc' => '用户Id'),
+				'ToReaded' => array('name' => 'ToReaded','type'=>'boolean', 'default' => true, 'desc' => '是否标记已读？'),
+			)
 		);
 	}
 
@@ -83,7 +91,7 @@ class Notice extends Api {
 		);
 		$sql = $model -> updateOne($Id, $data);
 		if(!$sql){
-			return MyStandard::gReturn(1,'', '更新失败');
+			return MyStandard::gReturn(1,0, '更新失败');
 		}
 		return MyStandard::gReturn(0,$Id, '更新成功');
 	}
@@ -96,7 +104,7 @@ class Notice extends Api {
 		$model = new Model();
 		$list = $model -> getList($begin, $this -> Number);
 		if(!$list){
-			return MyStandard::gReturn(1,'', '获取失败');
+			return MyStandard::gReturn(1,[], '获取失败');
 		}
 		return MyStandard::gReturn(0,$list, '获取成功');
 	}
@@ -123,5 +131,32 @@ class Notice extends Api {
 			return MyStandard::gReturn(1, '', '失败，'.$notId.'不存在');
 		}
 		return MyStandard::gReturn(0, '', '删除成功');
+	}
+	/**
+	 * 得到用户通知
+	 */
+	public function getByUserId(){
+		$UserId=$this->UserId;
+		$domain=new Domain();
+		$re=$domain->getByUserId(($UserId));	
+		if(!$re){
+			return MyStandard::gReturn(1, [], '无数据');
+		}
+		return MyStandard::gReturn(0, $re, '成功');
+	}
+	/**
+	 * 修改已读未读
+	 */
+	public function updateRead(){
+		$UserId=$this->UserId;
+		$Id=$this->Id;
+		$to=$this->ToReaded;
+		$domain=new Domain();
+	
+		$re=$domain->updateReader($Id,$UserId,$to);	
+		if(!$re){
+			return MyStandard::gReturn(1, [], '无数据');
+		}
+		return MyStandard::gReturn(0, $re, '成功');
 	}
 }

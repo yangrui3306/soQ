@@ -25,6 +25,18 @@ class Notice extends NotORM{
 		$model = $this -> getORM();
 		return $model -> where('Id', $Id) -> fetchOne();
 	}
+	/**得到未读消息 */
+	public function getReadByUserId($Id){
+		$sql = "SELECT Id,Content,Ctime,Author,Title,Handle FROM notice WHERE ReadId like '%,".$Id.",%' ORDER BY Ctime DESC";
+		$params = array(':Id' => 2);
+		return $this->getORM()->queryAll($sql, $params);
+	}
+	/**得到已读消息 */
+	public function getUnreadByUserId($Id){
+		$sql = "SELECT Id,Content,Ctime,Author,Title,Handle FROM notice WHERE AcceptId like '%,".$Id.",%' ORDER BY Ctime DESC";
+		$params = array(intval($Id));
+		return $this->getORM()->queryAll($sql, $params);
+	}
 
 	/* ----------------  数据库插入  ------------------ */
 

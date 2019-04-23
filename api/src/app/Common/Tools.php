@@ -37,7 +37,7 @@ class  Tools
    * @param $key 排序的键值
    * @param $f
    */
-  public static function SortByKey(&$arr, $key, $f)
+  public static function SortByKey(&$arr, $key, $f=true)
   {
     $reslut = array();
     foreach ($arr as $item) {

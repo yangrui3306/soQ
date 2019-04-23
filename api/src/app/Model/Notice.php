@@ -27,14 +27,14 @@ class Notice extends NotORM{
 	}
 	/**得到未读消息 */
 	public function getReadByUserId($Id){
-		$sql = "SELECT Id,Content,Ctime,Author,Title,Handle FROM notice WHERE ReadId like '%,".$Id.",%' ORDER BY Ctime DESC";
-		$params = array(':Id' => 2);
-		return $this->getORM()->queryAll($sql, $params);
+		$sql = "SELECT Id,Content,Ctime,Author,Title,Handle FROM notice WHERE ReadId like ? ORDER BY Ctime DESC";
+		$params = array("%,".$Id.",%");
+		return $this->getORM()->queryRows($sql, $params);
 	}
 	/**得到已读消息 */
 	public function getUnreadByUserId($Id){
-		$sql = "SELECT Id,Content,Ctime,Author,Title,Handle FROM notice WHERE AcceptId like '%,".$Id.",%' ORDER BY Ctime DESC";
-		$params = array(intval($Id));
+		$sql = "SELECT Id,Content,Ctime,Author,Title,Handle FROM notice WHERE AcceptId like ? ORDER BY Ctime DESC";
+		$params = array("%,".$Id.",%");
 		return $this->getORM()->queryAll($sql, $params);
 	}
 

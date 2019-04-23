@@ -66,7 +66,7 @@ class Test extends Api {
 			'Title'          => $this -> Title,
 			'TeacherId'      => $this -> TeacherId,
 			'CateId'         => $this -> CateId,
-			'LimiteTime'     => $this -> LimiteTime,
+			'LimiteTime'     => $this -> LimiteTime*60,
 			'UserrelationId' => $this -> UserrelationId,
 			'Content'        => $this -> Content,
 			'Ctime'          => time(),

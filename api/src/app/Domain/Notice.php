@@ -34,7 +34,6 @@ class Notice {
 			$data["AcceptId"]=str_replace($str,",",$data["AcceptId"]);// 替换
 			if(strstr($data["ReadId"],$str)==null)
 				$data["ReadId"]=$data["ReadId"].$uid.",";
-
 		}
 		else {
 			$data["ReadId"]=str_replace($str,",",$data["ReadId"]);// 替换

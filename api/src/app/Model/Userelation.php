@@ -31,7 +31,11 @@ class Userelation extends NotORM{
 		$model = $this -> getORM();
 		return $model -> where('Tid', $Tid)-> limit($begin, $num) -> fetchAll();
 	}
-
+	public function getByUid($uid,$begin,$num){
+		$sql = "SELECT * FROM userelation WHERE Sid like ? ORDER BY Ctime DESC limit ?,?";
+		$params = array("%,".$uid.",%",intval($begin),intval($num));
+		return $this->getORM()->queryRows($sql, $params);
+	}
 	public function getByCid($Cid){
 		$model = $this -> getORM();
 		return $model -> where('Cid', $Cid) -> fetchAll();
@@ -43,6 +47,11 @@ class Userelation extends NotORM{
 		$model = $this -> getORM();
 		$model -> insert($data);
 		return  $model->insert_id();
+	}
+	public function addSid($id,$sid){
+		$sql="update userelation set Sid=CONCAT(Sid,?) where Id=?";
+		$params = array($sid.",",$id);
+		return $this->getORM()->queryRows($sql, $params);
 	}
 
 	/* ----------------  数据库更新  ------------------ */

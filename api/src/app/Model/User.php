@@ -62,6 +62,11 @@ class User extends NotORM {
 			return $model -> where('Occupation', $type) -> limit($begin, $num) -> fetchAll();
 		}
 
+		public function getUsersByIds($ids){
+			$sql = "select Id,Phone,Class,Sex,SchoolId,Intro,`Name`,Avatar  from user where :users like concat('%,',Id,',%')";
+			$params = array(':users' => $ids);
+			return  $this->getORM()->queryAll($sql,$params);
+		}
     /**
      * 根据用户ID查找用户
      */
@@ -109,7 +114,7 @@ class User extends NotORM {
 		public function updateOne($data){
 			$model = $this -> getORM();
 			$sql = $model -> where('Id', $data['Id']) -> update($data);
-			if($sql>0)
+			if($sql!==false)
 			{
 				$sql=$model->where('Id',$data['Id'])->fetchOne();
 			}

@@ -48,7 +48,7 @@ class Test extends Api {
 				'Number' => array('name' => 'Number','default' => 5,  'desc' => '每页数量'),
 			),
 			'getByTidRid' => array(
-				'TeacherId' => array('name' => 'TeacherId', 'require' => true, 'desc' => '教师Id'),
+				'TeacherId' => array('name' => 'TeacherId',  'desc' => '教师Id'),
 				'UserrelationId' => array('name' => 'UserrelationId', 'require' => true, 'desc' => '班级Id'),
 			),
 			'getTestDetail'=>array(
@@ -154,8 +154,13 @@ class Test extends Api {
 		$TeacherId=$this->TeacherId;
 		$model = new Model();
 		$list = $model -> getByTidRid($TeacherId, $UserrelationId);
+	
 		if(!$list){
 			return MyStandard::gReturn(1, [], '无数据');
+		}
+		for($i=0;$i<count($list);$i++)
+		{
+			$list[$i]["LimiteTime"]=intval($list[$i]["LimiteTime"]/60);
 		}
 		return MyStandard::gReturn(0, $list, '获取成功');
 	}

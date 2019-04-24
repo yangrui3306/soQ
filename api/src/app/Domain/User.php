@@ -299,5 +299,14 @@ class User
 		}
 		return $re;
 	}
+
+	/**
+	 * 根据IdArray得到用户列表 
+	 */
+	public function getByUserIds($arr)
+	{
+		$um=new Model();
+		return $um->getUsersByIds($arr);
+	}
 }
 

@@ -205,21 +205,23 @@ class Basic
 	private function getMaximum($data){
 		$length = count($data);
 		$newArr = '';
+	
 		// 对数组按$data[key]['sum']排序
-		for($i = 0; $i < $length; ++$i){
-			$k = $i;
-			for($j = $i + 1; $j < $length; ++$j){
-				if($data[$j]['sum'] > $data[$k]['sum']){
-					$k = $j;
-				}
-			}
-			if($k != $i){
-				$arr = $data[$i];
-				$data[$i] = $data[$k];
-				$data[$k] = $arr;
-			}
-		}
-
+		Tools::SortByKey($data,"sum",false);
+		// for($i = 0; $i < $length; ++$i){
+		// 	$k = $i;
+		// 	for($j = $i + 1; $j < $length; ++$j){
+		// 		if($data[$j]['sum'] > $data[$k]['sum']){
+		// 			$k = $j;
+		// 		}
+		// 	}
+		// 	if($k != $i){
+		// 		$arr = $data[$i];
+		// 		$data[$i] = $data[$k];
+		// 		$data[$k] = $arr;
+		// 	}
+		// }
+		return array_slice($data,0,10);
 		// 取出排序好数组的前10位放入数组newArr中
 		for($i = 0; $i < 10; $i++){
 			$newArr[$i] = $data[$i];

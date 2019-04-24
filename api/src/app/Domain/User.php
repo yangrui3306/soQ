@@ -262,7 +262,7 @@ class User
 			}
 		
 			$questions=$dq->recommendByUId($uid,0,User::recommendDate,$qnum);
-	
+		
 			if(count($questions)<=0)
 			{
 				$questions=QBasic::hotQuestion($qnum);
@@ -298,6 +298,15 @@ class User
 			$re["Fans"]=$mf->judgeUserFocusUser($id,$rid);
 		}
 		return $re;
+	}
+
+	/**
+	 * 根据IdArray得到用户列表 
+	 */
+	public function getByUserIds($arr)
+	{
+		$um=new Model();
+		return $um->getUsersByIds($arr);
 	}
 }
 

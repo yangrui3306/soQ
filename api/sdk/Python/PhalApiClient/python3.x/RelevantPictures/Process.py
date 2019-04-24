@@ -215,7 +215,6 @@ def pro_run(path):
 
 
 if __name__ == "__main__":
-  
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf8')
     path = sys.argv[1]
     # print("start: "+str(time.time()))

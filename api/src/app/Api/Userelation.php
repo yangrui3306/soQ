@@ -26,6 +26,11 @@ class Userelation extends Api{
 				'Page'  => array('name' => 'Page', 'default'=>1, 'desc' => '当前页'),
 				'Number' => array('name' => 'Number', 'default'=>5,'desc' => '每页数量'),
 			),
+			'getListUid'=>array(
+				'Uid'  => array('name' => 'Uid', 'require' => true, 'desc' => '学生Id，必须'),
+				'Page'  => array('name' => 'Page',  'default'=>1,'desc' => '当前页'),
+				'Number' => array('name' => 'Number','default'=>5, 'desc' => '每页数量'),
+			),
 			'getList' => array(
 				'Page'  => array('name' => 'Page',  'default'=>1,'desc' => '当前页'),
 				'Number' => array('name' => 'Number','default'=>5, 'desc' => '每页数量'),
@@ -45,6 +50,9 @@ class Userelation extends Api{
 				'Id' => array('name' => 'Id',  'require' => true,'desc' => '班级Id'),
 				'Sid'  => array('name' => 'Sid',  'require' => true,'desc' => '学生Id的字符串形式，英文逗号隔开'),
 			),
+			'getUsersById'=>array(
+				'Id' => array('name' => 'Id',  'require' => true,'desc' => '班级Id'),
+			)
 		);
 	}
 
@@ -136,9 +144,25 @@ class Userelation extends Api{
 		$begin = ($this -> Page - 1) * $num ;
 		$model=new model();
 		$list=$model->getByTid($tid,$begin,$num);
-		if(!$list){
-			return MyStandard::gReturn(1, '', '获取失败');
+		if($list===false){
+			return MyStandard::gReturn(1, [], '错误');
 		}
+		else if(!$list)return MyStandard::gReturn(0, [], '没有班级');
+		return MyStandard::gReturn(0, $list, '获取成功');
+	}
+		/**
+	 * 通过学生Id 获取班课列表
+	 */
+	public function getListUid(){
+		$uid=$this->Uid;
+		$num = $this -> Number;
+		$begin = ($this -> Page - 1) * $num ;
+		$model=new model();
+		$list=$model->getByUid($uid,$begin,$num);
+		if($list===false){
+			return MyStandard::gReturn(1, [], '错误');
+		}
+		else if(!$list)return MyStandard::gReturn(0, [], '没有班级');
 		return MyStandard::gReturn(0, $list, '获取成功');
 	}
 	/**
@@ -149,9 +173,20 @@ class Userelation extends Api{
 		$Sid=$this->Sid;
 		$domain=new Domain();
 		$re=$domain->addSid($id,$Sid);
-		if(!$re){
-			return MyStandard::gReturn(1, '', '添加失败');
+		if($re===false){
+			return MyStandard::gReturn(1, '', '失败');
 		}
 		return MyStandard::gReturn(0, $re, '添加成功');
+	}
+	/**
+	 * 根据班级Id获取学生列表
+	 */
+	public function getUsersById()
+	{
+		$id=$this->Id;
+		$domain=new Domain();
+		$res=$domain->getUserById($id);
+		if($res===false) return MyStandard::gReturn(1, [], '失败');
+		return MyStandard::gReturn(0, $res, '成功');
 	}
 }

@@ -4,7 +4,10 @@ namespace App\Model;
 use PhalApi\Model\NotORMModel as NotORM;
 
 class Recharge extends NotORM{
-
+	protected function getTableName($id)
+  {
+    return 'recharge';
+	}
 
 	/* -----------------   数据库查询操作   ------------------- */
 
@@ -27,7 +30,11 @@ class Recharge extends NotORM{
 		 */
 		public function insertOne($data){
 			$model = $this -> getORM();
+			$data["RechargeTime"]=strtotime('now');
 			$sql = $model -> insert($data);
+			if($sql){
+				return $data;
+			}
 			return $sql;
 		}
 

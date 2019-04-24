@@ -28,7 +28,7 @@ class User extends Api {
 				'SchoolId'        => array('name' => 'schoolId', 'desc' => '用户学校', 'source' => 'post'),
 				'Address'       => array('name' => 'address', 'desc' => '用户地址', 'source' => 'post'),
 				'Intro'         => array('name' => 'intro', 'desc' => '用户简介', 'source' => 'post'),
-				'Occupation'    => array('name' => 'occupation', 'desc' => '用户职业', 'type' => 'int', 'max' => 1, 'source' => 'post'),
+				'Occupation'    => array('name' => 'occupation', 'desc' => '用户职业', 'type' => 'int', 'min' => 1, 'source' => 'post'),
 			),
 			'getByName' => array(
 				'Name' => array('name' => 'name', 'require' => true, 'min' => 1, 'max' => 50, 'desc' => '用户名'),
@@ -48,7 +48,7 @@ class User extends Api {
 				'SchoolId'        => array('name' => 'schoolId', 'desc' => '用户学校', 'source' => 'post'),
 				'Address'       => array('name' => 'address', 'desc' => '用户地址', 'source' => 'post'),
 				'Intro'         => array('name' => 'intro', 'desc' => '用户简介', 'source' => 'post'),
-				'Occupation'    => array('name' => 'occupation', 'desc' => '用户职业', 'type' => 'int', 'max' => 1, 'source' => 'post'),
+				// 'Occupation'    => array('name' => 'occupation', 'desc' => '用户职业', 'type' => 'int', 'min' => 1, 'source' => 'post'),
 			),
 			'getTest'=>array(
 				'UserId' => array('name' => 'UserId', 'require' => true, 'desc' => "用户id"),
@@ -83,6 +83,9 @@ class User extends Api {
 			'delete' => array(
 				'Ids'   => array('name' => 'Ids', 'desc' => "用户ID"),
 			),
+			'getByIds'=>array(
+				'Ids'   => array('name' => 'Ids', 'desc' => "逗号隔开的用户ID，例如：1,2,3,"),
+			)
 		);
 	}
 
@@ -153,10 +156,6 @@ class User extends Api {
 	 * @desc 用户资料更新
 	 */
 	public function update(){
-		$Occ = $this -> Occupation;
-		if($Occ == null){
-			$Occ = 1;
-		}
 		$data=array(
 			'Id'						=> $this->Id,
 			// 'Password'      => $this -> Password,
@@ -165,7 +164,7 @@ class User extends Api {
 			'SchoolId'      => $this -> SchoolId,
 			'Address'       => $this -> Address,
 			'Intro'         => $this -> Intro,
-			'Occupation'    => $Occ,
+			// 'Occupation'    => $Occ,
 		); 
 		
 		$domain=new Domain();
@@ -367,7 +366,19 @@ class User extends Api {
 		}
 	}
 
-
+	/**
+	 * 得到多个用户信息
+	 */
+	public function getByIds()
+	{
+		$ids=$this->Ids;
+		if($ids[0]!=',') $ids=",".$ids;
+		if($ids[strlen($ids)-1]!=',') $ids=$ids.",";
+		$domain = new Domain();
+		$res= $domain->getByUserIds($ids);
+		if($res!==false) return  MyStandard::gReturn(0, $res,"请求成功");
+		else return MyStandard::gReturn(0, [],"请求失败");
+	}
 
 	private function unsetUserPassword(&$arr)
 	{
@@ -382,4 +393,6 @@ class User extends Api {
 			return [];
 		}
 	}
+	
+	
 } 

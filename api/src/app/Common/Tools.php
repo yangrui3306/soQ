@@ -7,7 +7,7 @@
 namespace App\Common;
 
 use App\Model\KeyWord as KeyWord;
-
+use App\Model\User as userModel;
 class  Tools
 {
   /** 
@@ -37,7 +37,7 @@ class  Tools
    * @param $key 排序的键值
    * @param $f
    */
-  public static function SortByKey(&$arr, $key, $f)
+  public static function SortByKey(&$arr, $key, $f=true)
   {
     $reslut = array();
     foreach ($arr as $item) {
@@ -159,4 +159,22 @@ class  Tools
     $temp =join('',$result[0]);
     return $temp;
   }
+  /**
+   * 更新用户金币
+   * @param coin >0
+   * @return 修改后用户进步数量
+   */
+  public static function updateUserCoin($uid,$coin)
+	{
+    if($coin<0) return -1;
+    $model=new userModel();
+    $data=array(
+      "Id"=>$uid,
+      "Coin"=>$coin
+    );
+    $sql=$model->updateOne($data);
+    if($sql) 
+      return $sql["Coin"];
+    else return -1;
+	}
 }

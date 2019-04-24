@@ -2,17 +2,18 @@
 namespace App\Domain;
 
 use App\Model\Recharge as Model;
-
+use App\Model\User as UserModel;
+use App\Common\Tools as Tools;
 class Recharge {
 	/**
 	 * 获取用户金币
 	 * @param UserId 用户ID
 	 */
 	public function getCoin($UserId){
-		$model = new Model();
-		$sql = $model -> getByUserId($UserId);
+		$model = new UserModel();
+		$sql = $model ->getUserById($UserId);
 		if(!$sql){
-			return 0;
+			return -1;
 		}
 		return $sql['Coin'];
 	}
@@ -84,13 +85,29 @@ class Recharge {
 	 */
 	public function rechargeMoney($data){
 		$model = new Model();
-		$curr = $model -> getByUserId($data['UserId']);
-		$data['Money'] += $curr['Money'];
-
-		$sql = $model -> updateOne($data);
+		$data["Coin"] = $data["Money"]*10;
+	
+		$sql=$model->insertOne($data);
 		if(!$sql){
-			return 0;
+			return -1;
 		}
-		return 1;
+		$newcon=$this->updateCoin($data["UserId"],$data["Coin"]);
+		$sql["NewCoin"]=$newcon;
+		return $sql;
+	}	
+	/**
+	 * 更改用户余额
+	 * @return -1 余额不足，>=0 成功,false更新出错
+	 */
+	public function updateCoin($uid,$coin)
+	{
+		$model = new UserModel();
+		$sql = $model ->getUserById($uid);
+		$old=$sql["Coin"];
+		$new=$old+$coin;
+		if($new<0) return -1;
+		else{
+			return Tools::updateUserCoin($uid,$new);
+		}
 	}
 }

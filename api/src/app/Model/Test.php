@@ -31,7 +31,7 @@ class Test extends NotORM{
 	}
 	public function getByTidRid($tid,$rid){
 		$model = $this -> getORM();
-		return $model -> where('TeacherId', $tid)->where('UserrelationId',$rid)->order('id DESC') -> fetchAll();
+		return $model ->where('UserrelationId',$rid)->order('id DESC') -> fetchAll();
 	}
 	/* -----------------    数据库插入     ------------------ */
 

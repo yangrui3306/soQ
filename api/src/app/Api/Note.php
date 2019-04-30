@@ -68,7 +68,6 @@ class Note extends Api
 				'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
 				'Intro' => array('name' => 'Intro',   'default' => null, 'desc' => '介绍'),
 			),
-
 		);
 	}
 	/** 得到用户笔记数量

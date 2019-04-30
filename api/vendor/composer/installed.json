@@ -1,23 +1,66 @@
 [
     {
+        "name": "aliyuncs/oss-sdk-php",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/aliyun/aliyun-oss-php-sdk.git",
+            "reference": "339a4021da5e763eaa967bd7f67357b7061a3962"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/aliyun/aliyun-oss-php-sdk/zipball/339a4021da5e763eaa967bd7f67357b7061a3962",
+            "reference": "339a4021da5e763eaa967bd7f67357b7061a3962",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.0",
+            "satooshi/php-coveralls": "~1.0"
+        },
+        "time": "2018-02-03T06:35:38+00:00",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "OSS\\": "src/OSS"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Aliyuncs",
+                "homepage": "http://www.aliyun.com"
+            }
+        ],
+        "description": "Aliyun OSS SDK for PHP",
+        "homepage": "http://www.aliyun.com/product/oss/"
+    },
+    {
         "name": "phalapi/cli",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
             "url": "https://github.com/phalapi/cli.git",
-            "reference": "8aedab4231a7089672d02f7b9e59447b3dc787ea"
+            "reference": "c5df41e5fa483ad5990296421cde808a0d29f36f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phalapi/cli/zipball/8aedab4231a7089672d02f7b9e59447b3dc787ea",
-            "reference": "8aedab4231a7089672d02f7b9e59447b3dc787ea",
+            "url": "https://api.github.com/repos/phalapi/cli/zipball/c5df41e5fa483ad5990296421cde808a0d29f36f",
+            "reference": "c5df41e5fa483ad5990296421cde808a0d29f36f",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2017-10-25T13:50:45+00:00",
+        "time": "2019-03-30T15:41:41+00:00",
         "type": "library",
         "installation-source": "source",
         "autoload": {
@@ -47,24 +90,24 @@
     },
     {
         "name": "phalapi/kernal",
-        "version": "2.5.0",
-        "version_normalized": "2.5.0.0",
+        "version": "2.6.1",
+        "version_normalized": "2.6.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/phalapi/kernal.git",
-            "reference": "75f10dd95930721d7959d5f058ba1c8d2f4d1c14"
+            "reference": "a087d0f0f7fac5a85e8c8341fc5dbe49d439dade"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phalapi/kernal/zipball/75f10dd95930721d7959d5f058ba1c8d2f4d1c14",
-            "reference": "75f10dd95930721d7959d5f058ba1c8d2f4d1c14",
+            "url": "https://api.github.com/repos/phalapi/kernal/zipball/a087d0f0f7fac5a85e8c8341fc5dbe49d439dade",
+            "reference": "a087d0f0f7fac5a85e8c8341fc5dbe49d439dade",
             "shasum": ""
         },
         "require": {
-            "phalapi/notorm": "2.3.0",
+            "phalapi/notorm": "2.*.*",
             "php": ">=5.3.3"
         },
-        "time": "2019-02-19T06:51:42+00:00",
+        "time": "2019-04-26T11:04:13+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -103,23 +146,23 @@
     },
     {
         "name": "phalapi/notorm",
-        "version": "2.3.0",
-        "version_normalized": "2.3.0.0",
+        "version": "2.6.1",
+        "version_normalized": "2.6.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/phalapi/notorm.git",
-            "reference": "a35e6ce3557b1c4559fefc1de366f28d866f2776"
+            "reference": "3937c0557ffa2988e0a515be664366aaec356073"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phalapi/notorm/zipball/a35e6ce3557b1c4559fefc1de366f28d866f2776",
-            "reference": "a35e6ce3557b1c4559fefc1de366f28d866f2776",
+            "url": "https://api.github.com/repos/phalapi/notorm/zipball/3937c0557ffa2988e0a515be664366aaec356073",
+            "reference": "3937c0557ffa2988e0a515be664366aaec356073",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2018-12-09T07:58:36+00:00",
+        "time": "2019-03-29T06:42:38+00:00",
         "type": "library",
         "installation-source": "source",
         "autoload": {
@@ -281,6 +324,52 @@
             "phalapi",
             "phalapi-ucloud",
             "ucloud"
+        ]
+    },
+    {
+        "name": "vivlong/phalapi-aliyun-oss",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/vivlong/phalapi-aliyun-oss.git",
+            "reference": "87e5d76b231c7643ac7c21b02e8950415d0c0f79"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/vivlong/phalapi-aliyun-oss/zipball/87e5d76b231c7643ac7c21b02e8950415d0c0f79",
+            "reference": "87e5d76b231c7643ac7c21b02e8950415d0c0f79",
+            "shasum": ""
+        },
+        "require": {
+            "aliyuncs/oss-sdk-php": "dev-master"
+        },
+        "time": "2019-04-23T08:43:24+00:00",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "PhalApi\\AliyunOss\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-3.0+"
+        ],
+        "authors": [
+            {
+                "name": "vivlong",
+                "email": "vivlonglz@gmail.com",
+                "homepage": "http://vivlong.github.io",
+                "role": "Developer"
+            }
+        ],
+        "description": "PhalApi 2.x 扩展类库：基于Aliyun的OSS扩展",
+        "homepage": "https://www.phalapi.net/",
+        "keywords": [
+            "oss",
+            "phalapi",
+            "phalapi-aliyun-oss"
         ]
     }
 ]

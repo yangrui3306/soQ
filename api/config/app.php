@@ -26,7 +26,18 @@ return array(
 	// 	'space_host' => 'http://pocqqayls.bkt.clouddn.com', // 如果有配置此项，则优先使用此域名
 	// 	'preffix' => 'vNote_', // 上传文件名前缀
 	// ),
-	
+	  /**
+     * 阿里云OSS相关配置
+     */
+    'AliyunOss' =>  array(
+			'accessKeyId'       => '',
+			'accessKeySecret'   => '',
+			'bucket'            => 'goodtimp-vnote',
+			'endpoint'          => 'oss-cn-hangzhou.aliyuncs.com',
+			'isCName'           => false,
+			'securityToken'     => null,
+			'requestProxy'      => null,
+	),
  /**
      * 云上传引擎,支持local,oss,upyun
      */

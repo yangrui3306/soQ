@@ -55,7 +55,13 @@
             "type": "zip",
             "url": "https://api.github.com/repos/phalapi/cli/zipball/c5df41e5fa483ad5990296421cde808a0d29f36f",
             "reference": "c5df41e5fa483ad5990296421cde808a0d29f36f",
-            "shasum": ""
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
         },
         "require": {
             "php": ">=5.3.3"
@@ -74,7 +80,7 @@
         ],
         "authors": [
             {
-                "name": "Dogstar Huang",
+                "name": "dogstar huang",
                 "email": "chanzonghuang@gmail.com",
                 "homepage": "http://my.oschina.net/dogstar",
                 "role": "Developer"
@@ -90,6 +96,7 @@
     },
     {
         "name": "phalapi/kernal",
+
         "version": "2.6.1",
         "version_normalized": "2.6.1.0",
         "source": {
@@ -102,12 +109,15 @@
             "url": "https://api.github.com/repos/phalapi/kernal/zipball/a087d0f0f7fac5a85e8c8341fc5dbe49d439dade",
             "reference": "a087d0f0f7fac5a85e8c8341fc5dbe49d439dade",
             "shasum": ""
+
         },
         "require": {
             "phalapi/notorm": "2.*.*",
             "php": ">=5.3.3"
         },
+
         "time": "2019-04-26T11:04:13+00:00",
+
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -155,9 +165,17 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phalapi/notorm/zipball/3937c0557ffa2988e0a515be664366aaec356073",
-            "reference": "3937c0557ffa2988e0a515be664366aaec356073",
-            "shasum": ""
+
+            "url": "https://api.github.com/repos/phalapi/notorm/zipball/a35e6ce3557b1c4559fefc1de366f28d866f2776",
+            "reference": "a35e6ce3557b1c4559fefc1de366f28d866f2776",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+
         },
         "require": {
             "php": ">=5.3.3"
@@ -203,7 +221,13 @@
             "type": "zip",
             "url": "https://api.github.com/repos/phalapi/qrcode/zipball/cbb3c5f3f95a7902b0a72786a77495ada0c006b7",
             "reference": "cbb3c5f3f95a7902b0a72786a77495ada0c006b7",
-            "shasum": ""
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
         },
         "time": "2017-12-29T12:03:03+00:00",
         "type": "library",
@@ -247,7 +271,13 @@
             "type": "zip",
             "url": "https://api.github.com/repos/phalapi/task/zipball/552421219a3097a81c576fc2607d96894d489def",
             "reference": "552421219a3097a81c576fc2607d96894d489def",
-            "shasum": ""
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
         },
         "require": {
             "php": ">=5.3.3"
@@ -293,7 +323,13 @@
             "type": "zip",
             "url": "https://api.github.com/repos/gongshunkai/phalapi-ucloud/zipball/6b6f0bc91f8729906175e37641612b8ec232cfa7",
             "reference": "6b6f0bc91f8729906175e37641612b8ec232cfa7",
-            "shasum": ""
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
         },
         "require": {
             "php": ">=5.3.3"

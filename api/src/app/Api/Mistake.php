@@ -6,6 +6,7 @@ use App\Common\Match as Match;
 
 use App\Domain\Mistake as DomainMistake;
 use App\Common\MyStandard;
+use App\Model\Mistake as Model;
 
 /**
  * 错题整理部分
@@ -81,7 +82,12 @@ class Mistake extends Api
 			),
 			'getLike'=>array(
 			),
-			
+			'getList' => array(
+				'Page'   => array('name' => 'Page', 'require' => true, 'desc' => '当前页'),
+				'Number' => array('name' => 'Number',  'default' => null, 'desc' => '每页数量'),
+			),
+			'getCount' => array(
+			),
     );
   }
   /**
@@ -252,5 +258,31 @@ class Mistake extends Api
 		$domain = new DomainMistake();
 		$Likes = $domain -> getLike();
 		return MyStandard::gReturn(0,$Likes);
+	}
+
+	/**
+	 * 分页获取错题列表
+	 */
+	public function getList(){
+		$model = new Model();
+		$begin = ($this -> Page - 1) * $this -> Number;
+		$list = $model -> getList($begin, $this -> Number);
+		if(!$list){
+			return MyStandard::gReturn(1, '', '获取失败');
+		}
+		return MyStandard::gReturn(0, $list, '获取成功');
+	}
+
+
+	/**
+	 * 获取错题数量
+	 */
+	public function getCount(){
+		$model = new Model();
+		$count = $model -> getCount();
+		if(!$count){
+			return MyStandard::gReturn(1, '', '获取失败');
+		}
+		return MyStandard::gReturn(0, $count, '获取成功');
 	}
 }

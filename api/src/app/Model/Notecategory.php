@@ -61,7 +61,15 @@ class Notecategory extends NotORM {
 		public function getCidByName($name){
 			$model = $this -> getORM();
 			return $model -> where('Name', $name) -> select("Id") -> fetchOne();
-        }
+		}
+		
+		/**
+		 * @author ipso
+		 */
+		public function getAll(){
+			$model = $this -> getORM();
+			return $model -> select("Id, Name, UserId, Intro") -> fetchAll();
+		}
         	
 		/**
 		 * @author goodtimp

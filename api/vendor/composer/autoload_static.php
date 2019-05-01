@@ -17,6 +17,7 @@ class ComposerStaticInit6835957bc29912b8a4cd2dd758af2e80
         array (
             'PhalApi\\UCloud\\' => 15,
             'PhalApi\\Task\\' => 13,
+            'PhalApi\\Redis\\' => 14,
             'PhalApi\\QrCode\\' => 15,
             'PhalApi\\NotORM\\' => 15,
             'PhalApi\\CLI\\' => 12,
@@ -36,6 +37,10 @@ class ComposerStaticInit6835957bc29912b8a4cd2dd758af2e80
         'PhalApi\\Task\\' => 
         array (
             0 => __DIR__ . '/..' . '/phalapi/task/src',
+        ),
+        'PhalApi\\Redis\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phalapi/redis/src',
         ),
         'PhalApi\\QrCode\\' => 
         array (

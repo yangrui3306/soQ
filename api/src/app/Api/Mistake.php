@@ -7,6 +7,7 @@ use App\Common\Match as Match;
 use App\Domain\Mistake as DomainMistake;
 use App\Common\MyStandard;
 use App\Model\Mistake as Model;
+use App\Model\MistakeCategory as Cate;
 
 /**
  * 错题整理部分
@@ -87,6 +88,8 @@ class Mistake extends Api
 				'Number' => array('name' => 'Number',  'default' => null, 'desc' => '每页数量'),
 			),
 			'getCount' => array(
+			),
+			'getAllCate' => array(
 			),
     );
   }
@@ -284,5 +287,17 @@ class Mistake extends Api
 			return MyStandard::gReturn(1, '', '获取失败');
 		}
 		return MyStandard::gReturn(0, $count, '获取成功');
+	}
+
+	/**
+	 * 获取所有笔记分类
+	 */
+	public function getAllCate(){
+		$model = new Cate();
+		$cateList = $model -> getAll();
+		if(!$cateList){
+			return MyStandard::gReturn(1, '', '获取失败');
+		}
+		return MyStandard::gReturn(0, $cateList, '获取成功');
 	}
 }

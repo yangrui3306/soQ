@@ -216,6 +216,58 @@
         ]
     },
     {
+        "name": "phalapi/redis",
+        "version": "2.0.0",
+        "version_normalized": "2.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wenzhenxi/phalapi2-redis.git",
+            "reference": "143a25ae863ca580a761e38eb6b5466693a2a49e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wenzhenxi/phalapi2-redis/zipball/143a25ae863ca580a761e38eb6b5466693a2a49e",
+            "reference": "143a25ae863ca580a761e38eb6b5466693a2a49e",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "time": "2018-01-25T06:56:53+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "PhalApi\\Redis\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-3.0-or-later"
+        ],
+        "authors": [
+            {
+                "name": "喵了个咪",
+                "email": "wenzhenxi@vip.qq.com",
+                "homepage": "http://w-blog.cn",
+                "role": "Developer"
+            }
+        ],
+        "description": "PhalApi 2.x 扩展类库 - Redis 丰富基础redisCache类功能,更贴切复杂场景下的redis使用。",
+        "homepage": "https://www.phalapi.net/",
+        "keywords": [
+            "phalapi",
+            "phalapi-redis",
+            "redis"
+        ]
+    },
+    {
         "name": "phalapi/task",
         "version": "dev-master",
         "version_normalized": "9999999-dev",

@@ -57,6 +57,14 @@ class MistakeCategory extends NotORM
     
     return $orm->where("UserId",$data["UserId"])->where("Id",$data["Id"])->delete();
     
-  }
+	}
+	
+	/**
+	 * @author ipso
+	 */
+	public function getAll(){
+		$model = $this -> getORM();
+		return $model -> select("Id, Name, UserId, Intro") -> fetchAll();
+	}
 
 }

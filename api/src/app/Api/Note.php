@@ -75,6 +75,7 @@ class Note extends Api
 			),
 			'getCount' => array(
 			),
+			'getAllCate'  => array(),
 		);
 	}
 	/** 得到用户笔记数量
@@ -247,5 +248,17 @@ class Note extends Api
 			return MyStandard::gReturn(1, '', '获取失败');
 		}
 		return MyStandard::gReturn(0, $count, '获取成功');
+	}
+
+	/**
+	 * 获取所有笔记分类
+	 */
+	public function getAllCate(){
+		$model = new ModelNoteCategory();
+		$cateList = $model -> getAll();
+		if(!$cateList){
+			return MyStandard::gReturn(1, '', '获取失败');
+		}
+		return MyStandard::gReturn(0, $cateList, '获取成功');
 	}
 }

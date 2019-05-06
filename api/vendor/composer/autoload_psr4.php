@@ -12,6 +12,8 @@ return array(
     'PhalApi\\QrCode\\' => array($vendorDir . '/phalapi/qrcode/src'),
     'PhalApi\\NotORM\\' => array($vendorDir . '/phalapi/notorm/src'),
     'PhalApi\\CLI\\' => array($vendorDir . '/phalapi/cli/src'),
+    'PhalApi\\AliyunOss\\' => array($vendorDir . '/vivlong/phalapi-aliyun-oss/src'),
     'PhalApi\\' => array($vendorDir . '/phalapi/kernal/src'),
+    'OSS\\' => array($vendorDir . '/aliyuncs/oss-sdk-php/src/OSS'),
     'App\\' => array($baseDir . '/src/app'),
 );

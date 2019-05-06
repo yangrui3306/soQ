@@ -21,7 +21,12 @@ class ComposerStaticInit6835957bc29912b8a4cd2dd758af2e80
             'PhalApi\\QrCode\\' => 15,
             'PhalApi\\NotORM\\' => 15,
             'PhalApi\\CLI\\' => 12,
+            'PhalApi\\AliyunOss\\' => 18,
             'PhalApi\\' => 8,
+        ),
+        'O' => 
+        array (
+            'OSS\\' => 4,
         ),
         'A' => 
         array (
@@ -54,9 +59,17 @@ class ComposerStaticInit6835957bc29912b8a4cd2dd758af2e80
         array (
             0 => __DIR__ . '/..' . '/phalapi/cli/src',
         ),
+        'PhalApi\\AliyunOss\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/vivlong/phalapi-aliyun-oss/src',
+        ),
         'PhalApi\\' => 
         array (
             0 => __DIR__ . '/..' . '/phalapi/kernal/src',
+        ),
+        'OSS\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/aliyuncs/oss-sdk-php/src/OSS',
         ),
         'App\\' => 
         array (

@@ -7,5 +7,6 @@ gitc
 .idea/
 .env
 api.zip
+vendoer/*
 
 node_modules/*

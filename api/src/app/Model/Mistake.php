@@ -179,4 +179,17 @@ class Mistake extends NotORM
 		}
 		return $model -> order('CollectNumber desc') -> limit($num) -> fetchAll();
 	}
+
+
+	/* ---------------  ipso  --------------- */
+
+	public function getCount(){
+		$model = $this -> getORM();
+		return $model -> count("Id");
+	}
+
+	public function getList($begin = 1, $num = 10){
+		$model = $this -> getORM();
+		return $model -> limit($begin, $num) -> fetchAll();
+	}
 }

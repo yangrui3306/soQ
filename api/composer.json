@@ -20,8 +20,8 @@
         "phalapi/qrcode": "dev-master",
         "phalapi/cli": "dev-master",
         "phalapi/task": "dev-master",
-        "phalapi/ucloud":"dev-master",
-        "vivlong/phalapi-aliyun-oss":"dev-master"
+        "vivlong/phalapi-aliyun-oss":"dev-master",
+				"phalapi/ucloud":"dev-master"
     },
     
     "autoload": {

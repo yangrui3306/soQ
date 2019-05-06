@@ -8,6 +8,7 @@ use App\Common\MyStandard;
 use App\Domain\Behavior\Statistics as ModelStatistics;
 use App\Model\Notecategory as ModelNoteCategory;
 use App\Domain\Note as DomainNote;
+use App\Model\Note as Model;
 
 /**
  * 笔记接口类
@@ -68,6 +69,14 @@ class Note extends Api
 				'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
 				'Intro' => array('name' => 'Intro',   'default' => null, 'desc' => '介绍'),
 			),
+			'getList' => array(
+				'Page'   => array('name' => 'Page', 'require' => true, 'desc' => '当前页'),
+				'Number' => array('name' => 'Number',  'default' => null, 'desc' => '每页数量'),
+			),
+			'getCount' => array(
+			),
+			'getAllCate'  => array(),
+
 		);
 	}
 	/** 得到用户笔记数量
@@ -211,5 +220,46 @@ class Note extends Api
 		$domain = new DomainNote();
 		$re = $domain->deleteCategory($data);
 		return MyStandard::gReturn(0, $re);
+	}
+
+
+	/* ----------------  ipso  ---------------- */
+
+	/**
+	 * 分页获取笔记列表
+	 */
+	public function getList(){
+		$model = new Model();
+		$begin = ($this -> Page - 1) * $this -> Number;
+		$list = $model -> getList($begin, $this -> Number);
+		if(!$list){
+			return MyStandard::gReturn(1, '', '获取失败');
+		}
+		return MyStandard::gReturn(0, $list, '获取成功');
+	}
+
+
+	/**
+	 * 获取笔记数量
+	 */
+	public function getCount(){
+		$model = new Model();
+		$count = $model -> getCount();
+		if(!$count){
+			return MyStandard::gReturn(1, '', '获取失败');
+		}
+		return MyStandard::gReturn(0, $count, '获取成功');
+	}
+
+	/**
+	 * 获取所有笔记分类
+	 */
+	public function getAllCate(){
+		$model = new ModelNoteCategory();
+		$cateList = $model -> getAll();
+		if(!$cateList){
+			return MyStandard::gReturn(1, '', '获取失败');
+		}
+		return MyStandard::gReturn(0, $cateList, '获取成功');
 	}
 }

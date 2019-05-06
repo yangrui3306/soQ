@@ -143,5 +143,12 @@ class Note extends NotORM
         $re=$data->count();
         $data->delete();
         return $re;
-    }
+		}
+		
+		/* ---------------  ipso  --------------- */
+
+		public function getList($begin = 1, $num = 10){
+			$model = $this -> getORM();
+			return $model -> limit($begin, $num) -> fetchAll();
+		}
 }

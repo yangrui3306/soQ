@@ -96,7 +96,6 @@
     },
     {
         "name": "phalapi/kernal",
-
         "version": "2.6.1",
         "version_normalized": "2.6.1.0",
         "source": {
@@ -108,16 +107,19 @@
             "type": "zip",
             "url": "https://api.github.com/repos/phalapi/kernal/zipball/a087d0f0f7fac5a85e8c8341fc5dbe49d439dade",
             "reference": "a087d0f0f7fac5a85e8c8341fc5dbe49d439dade",
-            "shasum": ""
-
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
         },
         "require": {
             "phalapi/notorm": "2.*.*",
             "php": ">=5.3.3"
         },
-
         "time": "2019-04-26T11:04:13+00:00",
-
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -166,8 +168,9 @@
         "dist": {
             "type": "zip",
 
-            "url": "https://api.github.com/repos/phalapi/notorm/zipball/a35e6ce3557b1c4559fefc1de366f28d866f2776",
-            "reference": "a35e6ce3557b1c4559fefc1de366f28d866f2776",
+            "url": "https://api.github.com/repos/phalapi/notorm/zipball/3937c0557ffa2988e0a515be664366aaec356073",
+            "reference": "3937c0557ffa2988e0a515be664366aaec356073",
+
             "shasum": "",
             "mirrors": [
                 {
@@ -256,6 +259,58 @@
             "phalapi-qrcode",
             "qrcode",
             "二维码"
+        ]
+    },
+    {
+        "name": "phalapi/redis",
+        "version": "2.0.0",
+        "version_normalized": "2.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wenzhenxi/phalapi2-redis.git",
+            "reference": "143a25ae863ca580a761e38eb6b5466693a2a49e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wenzhenxi/phalapi2-redis/zipball/143a25ae863ca580a761e38eb6b5466693a2a49e",
+            "reference": "143a25ae863ca580a761e38eb6b5466693a2a49e",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "time": "2018-01-25T06:56:53+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "PhalApi\\Redis\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-3.0-or-later"
+        ],
+        "authors": [
+            {
+                "name": "喵了个咪",
+                "email": "wenzhenxi@vip.qq.com",
+                "homepage": "http://w-blog.cn",
+                "role": "Developer"
+            }
+        ],
+        "description": "PhalApi 2.x 扩展类库 - Redis 丰富基础redisCache类功能,更贴切复杂场景下的redis使用。",
+        "homepage": "https://www.phalapi.net/",
+        "keywords": [
+            "phalapi",
+            "phalapi-redis",
+            "redis"
         ]
     },
     {

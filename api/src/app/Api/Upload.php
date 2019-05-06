@@ -90,7 +90,18 @@ class Upload extends Api
                     'range' => array('image/jpg', 'image/jpeg', 'image/png'),
                     'ext' => array('jpg', 'jpeg', 'png')
                 ),
-            )
+            ),
+            'uploadVideo' => array(
+                'file' => array(
+                    'name' => 'file',
+                    'type' => 'file',
+                    'min' => 0,
+                    'max' => 1024 * 1024 * 1024 * 200,
+                    // 'range' => array('video/eot-mp4','video/mp4'),
+                    // 'ext' => array('mp4', 'avi'),
+                    'desc'=>"视频文件"
+                ),
+            ),
         );
     }
 
@@ -230,6 +241,32 @@ class Upload extends Api
         $filePath=$file["tmp_name"]; //获取路径信息
         $filetype=substr($file["name"],strripos($file["name"],"."));
         $filename  = "questions/".date('Y/m/d').rand(213123, 1321321).$filetype; //设置上传路径
+        
+        $bucket = "goodtimp-vnote"; 
+
+        //新增修改文件名设置上传的文件名称
+        $re=\PhalApi\DI()->aliyunOss->uploadFile($bucket, $filename, $filePath);
+        try {
+            $rs["errno"] = 0;
+            $rs["data"] = [];
+            $rs["data"][0] = $re["info"]["url"];
+            unset($rs["file"]);
+
+            return MyStandard::gReturn(0, $rs);
+        } catch (Exception $e) {
+            $rs["data"] = [];
+            $rs["errno"] = 1;
+            $rs["data"] = [];
+            return MyStandard::gReturn(1, $rs);
+        }
+    }
+    public function uploadVideo(){
+        //设置上传路径 设置方法参考3.2
+     
+        $file=$this->file;
+        $filePath=$file["tmp_name"]; //获取路径信息
+        $filetype=substr($file["name"],strripos($file["name"],"."));
+        $filename  = "videos/".date('Y/m/d').rand(213123, 1321321).$filetype; //设置上传路径
         
         $bucket = "goodtimp-vnote"; 
 

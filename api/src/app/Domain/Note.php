@@ -4,7 +4,7 @@ namespace App\Domain;
 use App\Model\Note as ModelNote;
 use App\Model\Notecategory as ModelCate;
 use App\Common\Tools;
-
+use PhalApi\Tool;
 
 class Note {
 	/**用户笔记数量 */
@@ -50,18 +50,9 @@ class Note {
 		 * 
 		 */
 		public function add($data){
-		
-			 // 判断NoteCategory是分类的id还是name  无需判断
-			// $flag = is_int($data['NoteCategory']);
-			// if($flag == true){
-			// 	$data['NoteCategoryId'] = $data['NoteCategory'];
-			// 	unset($data['NoteCategory']);
-			// }else{
-			// 	$cateModel = new ModelCate();
-			// 	$cateid = $cateModel -> getCidByName($data['NoteCategory']);
-			// 	$data['NoteCategoryId'] = $cateid;
-			// 	unset($data['NoteCategory']);
-			// }
+			$keys = Tools::ExtractKeyWords($data["Content"]);
+			$data["KeyWords"]=implode(",",Tools::GetValueByKey($keys,"Id"));
+			$data["KeysWeight"]=implode(",",Tools::GetValueByKey($keys,"Weight"));
 			
 			// 将数据写入数据库
 			$model = new ModelNote();
@@ -86,6 +77,10 @@ class Note {
 			// 	unset($data['NoteCategory']);
 			// }
 			// 将数据写入数据库
+			$keys = Tools::ExtractKeyWords($data["Content"]);
+			$data["KeyWords"]=implode(",",Tools::GetValueByKey($keys,"Id"));
+			$data["KeysWeight"]=implode(",",Tools::GetValueByKey($keys,"Weight"));
+			
 			$model = new ModelNote();
 			$sql = $model -> updateOne($data);
 			return $sql;

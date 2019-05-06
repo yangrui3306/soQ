@@ -42,15 +42,15 @@ class Note extends Api
 			),
 			'add' => array(
 				'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
-				'Headline'     => array('name' => 'Headline', 'desc' => '笔记标题'),
-				'NoteCategoryId' => array('name' => 'NoteCategoryId', 'desc' => '笔记分类id'),
-				'Content'      => array('name' => 'Content', 'desc' => '笔记内容'),
+				'Headline'     => array('name' => 'Headline', 'require' => true,'desc' => '笔记标题'),
+				'NoteCategoryId' => array('name' => 'NoteCategoryId', 'require' => true,'desc' => '笔记分类id'),
+				'Content'      => array('name' => 'Content','require' => true, 'desc' => '笔记内容'),
 			),
 			'update' => array(
-				'Id'           => array('name' => 'Id', 'desc' => '笔记id'),
-				'Headline'     => array('name' => 'Headline', 'desc' => '笔记标题'),
-				'NoteCategoryId' => array('name' => 'NoteCategoryId', 'desc' => '笔记分类id'),
-				'Content'      => array('name' => 'Content', 'desc' => '笔记内容'),
+				'Id'           => array('name' => 'Id', 'require' => true,'desc' => '笔记id'),
+				'Headline'     => array('name' => 'Headline', 'require' => true,'desc' => '笔记标题'),
+				'NoteCategoryId' => array('name' => 'NoteCategoryId', 'require' => true,'desc' => '笔记分类id'),
+				'Content'      => array('name' => 'Content', 'require' => true,'desc' => '笔记内容'),
 			),
 			'delete' => array(
 				'Nid'  => array('name' => 'Id', 'require' => true, 'desc' => '笔记id'),
@@ -127,7 +127,6 @@ class Note extends Api
 		$page = $this->Page;
 		//分页
 		$re = $dn->getNotesByCateId($this->NoteCategoryId, $this->UserId, $page, $num);
-
 		return MyStandard::gReturn(0, $re);
 	}
 
@@ -176,7 +175,6 @@ class Note extends Api
 	 */
 	public function delete()
 	{
-
 		$nid = $this->Nid;
 		$domain = new DomainNote();
 		$result = $domain->delete($nid);

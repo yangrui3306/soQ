@@ -103,6 +103,24 @@ class Note extends NotORM
         return $model->limit($begin, $length)->fetchAll();
     }
 
+    /**
+     * 更具关键字Id查找用户分类中所有笔记
+     */
+    public function getBykeyId($uid,$cid=0,$kid)
+    {
+        $kid='%,'.$kid.',%';
+        $command = 'select Id,Headline,Content,NoteCategoryId,DateTime,KeyWords from note where UserId=:uid and concat(",",KeyWords,",") like :kid';
+       
+        $params = array(
+            ':uid' => $uid,
+            ':kid'=>$kid,
+            );
+        if($cid!=0) {
+            $command=$command."and NoteCategoryId = :cid";
+            $params[":cid"]=$cid;
+        }
+        return  $this->getORM()->queryAll($command,$params);    
+    }
 
     /* --------------      数据库插入      ----------------- */
 

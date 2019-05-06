@@ -62,11 +62,11 @@ class Userelation extends Api{
 	public function add(){
 		$data = array(
 			'Tid'     => $this -> Tid,
-			'Sid'     => $this -> Sid,
 			'Cid'     => $this -> Cid,
 			'Endtime' => $this -> Endtime,
 			'Intor'   => $this -> Intor,
 		);
+		if($this->Sid===null) $data["Sid"]="0,";
 		if(!$this->Endtime) {
 			$data["Endtime"] = date("Y-m-d", strtotime("+1 years", strtotime("now")));
 		}

@@ -43,15 +43,15 @@ class Note extends Api
 			),
 			'add' => array(
 				'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
-				'Headline'     => array('name' => 'Headline', 'desc' => '笔记标题'),
-				'NoteCategoryId' => array('name' => 'NoteCategoryId', 'desc' => '笔记分类id'),
-				'Content'      => array('name' => 'Content', 'desc' => '笔记内容'),
+				'Headline'     => array('name' => 'Headline', 'require' => true,'desc' => '笔记标题'),
+				'NoteCategoryId' => array('name' => 'NoteCategoryId', 'require' => true,'desc' => '笔记分类id'),
+				'Content'      => array('name' => 'Content','require' => true, 'desc' => '笔记内容'),
 			),
 			'update' => array(
-				'Id'           => array('name' => 'Id', 'desc' => '笔记id'),
-				'Headline'     => array('name' => 'Headline', 'desc' => '笔记标题'),
-				'NoteCategoryId' => array('name' => 'NoteCategoryId', 'desc' => '笔记分类id'),
-				'Content'      => array('name' => 'Content', 'desc' => '笔记内容'),
+				'Id'           => array('name' => 'Id', 'require' => true,'desc' => '笔记id'),
+				'Headline'     => array('name' => 'Headline', 'require' => true,'desc' => '笔记标题'),
+				'NoteCategoryId' => array('name' => 'NoteCategoryId', 'require' => true,'desc' => '笔记分类id'),
+				'Content'      => array('name' => 'Content', 'require' => true,'desc' => '笔记内容'),
 			),
 			'delete' => array(
 				'Nid'  => array('name' => 'Id', 'require' => true, 'desc' => '笔记id'),
@@ -76,6 +76,15 @@ class Note extends Api
 			'getCount' => array(
 			),
 			'getAllCate'  => array(),
+			'getKeysByUser'=>array(
+				'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
+				'NoteCategoryId' => array('name' => 'NoteCategoryId', 'default'=>0, 'desc' => '分类Id'),
+			),
+			'notesByKeyId'=>array(
+				'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
+				'NoteCategoryId' => array('name' => 'NoteCategoryId', 'default'=>0, 'desc' => '分类Id'),
+				'KeyWordId'=>array('name' => 'KeyWordId', 'default'=>0,'require' => true, 'desc' => '关键字Id')
+			)
 		);
 	}
 	/** 得到用户笔记数量
@@ -122,6 +131,18 @@ class Note extends Api
 
 		return MyStandard::gReturn(0, $re);
 	}
+	/**
+   * 根据关键字搜索用户笔记
+   */
+	public function notesByKeyId()
+	{
+		$dn = new DomainNote();
+		$uid = $this->UserId;
+		$re = $dn->getNotesByKeyId($uid, $this->NoteCategoryId, $this->KeyWordId);
+
+		return MyStandard::gReturn(0, $re);
+	}
+
 
 
 	/**
@@ -135,7 +156,6 @@ class Note extends Api
 		$page = $this->Page;
 		//分页
 		$re = $dn->getNotesByCateId($this->NoteCategoryId, $this->UserId, $page, $num);
-
 		return MyStandard::gReturn(0, $re);
 	}
 
@@ -184,7 +204,6 @@ class Note extends Api
 	 */
 	public function delete()
 	{
-
 		$nid = $this->Nid;
 		$domain = new DomainNote();
 		$result = $domain->delete($nid);
@@ -213,7 +232,6 @@ class Note extends Api
 	{
 		$data = array(
 			"UserId" => $this->UserId,
-
 			"Id" => $this->NoteCategoryId
 		);
 		$domain = new DomainNote();
@@ -221,7 +239,14 @@ class Note extends Api
 		return MyStandard::gReturn(0, $re);
 	}
 
-
+	/**
+	 * 获取用户或者分类笔记所有关键字信息
+	 */
+	public function getKeysByUser(){
+		$domain = new DomainNote();
+		$re = $domain->getKeysByUserNotes($this->UserId,$this->NoteCategoryId);
+		return MyStandard::gReturn(0, $re);
+	}
 	/* ----------------  ipso  ---------------- */
 
 	/**

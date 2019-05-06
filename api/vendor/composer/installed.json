@@ -1,5 +1,48 @@
 [
     {
+        "name": "aliyuncs/oss-sdk-php",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/aliyun/aliyun-oss-php-sdk.git",
+            "reference": "339a4021da5e763eaa967bd7f67357b7061a3962"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/aliyun/aliyun-oss-php-sdk/zipball/339a4021da5e763eaa967bd7f67357b7061a3962",
+            "reference": "339a4021da5e763eaa967bd7f67357b7061a3962",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.0",
+            "satooshi/php-coveralls": "~1.0"
+        },
+        "time": "2018-02-03T06:35:38+00:00",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "OSS\\": "src/OSS"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Aliyuncs",
+                "homepage": "http://www.aliyun.com"
+            }
+        ],
+        "description": "Aliyun OSS SDK for PHP",
+        "homepage": "http://www.aliyun.com/product/oss/"
+    },
+    {
         "name": "phalapi/cli",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
@@ -12,13 +55,7 @@
             "type": "zip",
             "url": "https://api.github.com/repos/phalapi/cli/zipball/c5df41e5fa483ad5990296421cde808a0d29f36f",
             "reference": "c5df41e5fa483ad5990296421cde808a0d29f36f",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
+            "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
@@ -64,13 +101,7 @@
             "type": "zip",
             "url": "https://api.github.com/repos/phalapi/kernal/zipball/a087d0f0f7fac5a85e8c8341fc5dbe49d439dade",
             "reference": "a087d0f0f7fac5a85e8c8341fc5dbe49d439dade",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
+            "shasum": ""
         },
         "require": {
             "phalapi/notorm": "2.*.*",
@@ -126,13 +157,7 @@
             "type": "zip",
             "url": "https://api.github.com/repos/phalapi/notorm/zipball/3937c0557ffa2988e0a515be664366aaec356073",
             "reference": "3937c0557ffa2988e0a515be664366aaec356073",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
+            "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
@@ -178,13 +203,7 @@
             "type": "zip",
             "url": "https://api.github.com/repos/phalapi/qrcode/zipball/cbb3c5f3f95a7902b0a72786a77495ada0c006b7",
             "reference": "cbb3c5f3f95a7902b0a72786a77495ada0c006b7",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
+            "shasum": ""
         },
         "time": "2017-12-29T12:03:03+00:00",
         "type": "library",
@@ -228,13 +247,7 @@
             "type": "zip",
             "url": "https://api.github.com/repos/wenzhenxi/phalapi2-redis/zipball/143a25ae863ca580a761e38eb6b5466693a2a49e",
             "reference": "143a25ae863ca580a761e38eb6b5466693a2a49e",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
+            "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
@@ -280,13 +293,7 @@
             "type": "zip",
             "url": "https://api.github.com/repos/phalapi/task/zipball/552421219a3097a81c576fc2607d96894d489def",
             "reference": "552421219a3097a81c576fc2607d96894d489def",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
+            "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
@@ -332,13 +339,7 @@
             "type": "zip",
             "url": "https://api.github.com/repos/gongshunkai/phalapi-ucloud/zipball/6b6f0bc91f8729906175e37641612b8ec232cfa7",
             "reference": "6b6f0bc91f8729906175e37641612b8ec232cfa7",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
+            "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
@@ -369,6 +370,52 @@
             "phalapi",
             "phalapi-ucloud",
             "ucloud"
+        ]
+    },
+    {
+        "name": "vivlong/phalapi-aliyun-oss",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/vivlong/phalapi-aliyun-oss.git",
+            "reference": "87e5d76b231c7643ac7c21b02e8950415d0c0f79"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/vivlong/phalapi-aliyun-oss/zipball/87e5d76b231c7643ac7c21b02e8950415d0c0f79",
+            "reference": "87e5d76b231c7643ac7c21b02e8950415d0c0f79",
+            "shasum": ""
+        },
+        "require": {
+            "aliyuncs/oss-sdk-php": "dev-master"
+        },
+        "time": "2019-04-23T08:43:24+00:00",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "PhalApi\\AliyunOss\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-3.0+"
+        ],
+        "authors": [
+            {
+                "name": "vivlong",
+                "email": "vivlonglz@gmail.com",
+                "homepage": "http://vivlong.github.io",
+                "role": "Developer"
+            }
+        ],
+        "description": "PhalApi 2.x 扩展类库：基于Aliyun的OSS扩展",
+        "homepage": "https://www.phalapi.net/",
+        "keywords": [
+            "oss",
+            "phalapi",
+            "phalapi-aliyun-oss"
         ]
     }
 ]

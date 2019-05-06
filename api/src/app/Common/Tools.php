@@ -176,5 +176,18 @@ class  Tools
     if($sql) 
       return $sql["Coin"];
     else return -1;
-	}
+  }
+  /**
+   * 去除二维数组内某个键
+   */
+  public static function unsetKeys($arr,$key)
+  {
+    for ($i = 0; $i < count($arr); $i++) {
+      if(array_key_exists($key,$arr[$i]))
+      {
+        unset($arr[$i][$key]);
+      }
+    }
+    return $arr;
+  }
 }

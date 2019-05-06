@@ -76,7 +76,15 @@ class Note extends Api
 			'getCount' => array(
 			),
 			'getAllCate'  => array(),
-
+			'getKeysByUser'=>array(
+				'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
+				'NoteCategoryId' => array('name' => 'NoteCategoryId', 'default'=>0, 'desc' => '分类Id'),
+			),
+			'notesByKeyId'=>array(
+				'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
+				'NoteCategoryId' => array('name' => 'NoteCategoryId', 'default'=>0, 'desc' => '分类Id'),
+				'KeyWordId'=>array('name' => 'KeyWordId', 'default'=>0,'require' => true, 'desc' => '关键字Id')
+			)
 		);
 	}
 	/** 得到用户笔记数量
@@ -123,6 +131,18 @@ class Note extends Api
 
 		return MyStandard::gReturn(0, $re);
 	}
+	/**
+   * 根据关键字搜索用户笔记
+   */
+	public function notesByKeyId()
+	{
+		$dn = new DomainNote();
+		$uid = $this->UserId;
+		$re = $dn->getNotesByKeyId($uid, $this->NoteCategoryId, $this->KeyWordId);
+
+		return MyStandard::gReturn(0, $re);
+	}
+
 
 
 	/**
@@ -212,7 +232,6 @@ class Note extends Api
 	{
 		$data = array(
 			"UserId" => $this->UserId,
-
 			"Id" => $this->NoteCategoryId
 		);
 		$domain = new DomainNote();
@@ -220,7 +239,14 @@ class Note extends Api
 		return MyStandard::gReturn(0, $re);
 	}
 
-
+	/**
+	 * 获取用户或者分类笔记所有关键字信息
+	 */
+	public function getKeysByUser(){
+		$domain = new DomainNote();
+		$re = $domain->getKeysByUserNotes($this->UserId,$this->NoteCategoryId);
+		return MyStandard::gReturn(0, $re);
+	}
 	/* ----------------  ipso  ---------------- */
 
 	/**

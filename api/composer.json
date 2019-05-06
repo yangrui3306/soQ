@@ -21,7 +21,8 @@
         "phalapi/cli": "dev-master",
         "phalapi/task": "dev-master",
         "vivlong/phalapi-aliyun-oss":"dev-master",
-				"phalapi/ucloud":"dev-master"
+        "phalapi/ucloud":"dev-master",
+        "phalapi/redis": "2.0.*"
     },
     
     "autoload": {

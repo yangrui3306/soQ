@@ -84,7 +84,11 @@ class Note extends Api
 				'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
 				'NoteCategoryId' => array('name' => 'NoteCategoryId', 'default'=>0, 'desc' => '分类Id'),
 				'KeyWordId'=>array('name' => 'KeyWordId', 'default'=>0,'require' => true, 'desc' => '关键字Id')
-			)
+			),
+			'deleteByAdmin' => array(
+				"Id" => array('name' => 'Id', 'require' => true, 'desc' => '需要删除的笔记Id'),
+				"UId" => array('name' => 'UserId', 'require' => true, 'desc' => '需要删除的笔记的用户id'),
+			),
 		);
 	}
 	/** 得到用户笔记数量
@@ -285,5 +289,19 @@ class Note extends Api
 			return MyStandard::gReturn(1, '', '获取失败');
 		}
 		return MyStandard::gReturn(0, $cateList, '获取成功');
+	}
+
+	/**
+	 * 管理员清理敏感笔记
+	 */
+	public function deleteByAdmin(){
+		$domain = new DomainNote();
+		$UId = $this -> UId;
+		$Id = $this -> Id;
+		$res = $domain -> deleteByAdmin($UId, $Id);
+		if($res == false){
+			return MyStandard::gReturn(1, '', '删除失败');
+		}
+		return MyStandard::gReturn(0, '', '删除成功');
 	}
 }

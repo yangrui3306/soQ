@@ -91,6 +91,10 @@ class Mistake extends Api
 			),
 			'getAllCate' => array(
 			),
+			'deleteByAdmin' => array(
+				"Id" => array('name' => 'Id', 'require' => true, 'desc' => '需要删除的错题Id'),
+				"UId" => array('name' => 'UserId', 'require' => true, 'desc' => '需要删除的错题的用户id'),
+			),
     );
   }
   /**
@@ -299,5 +303,19 @@ class Mistake extends Api
 			return MyStandard::gReturn(1, '', '获取失败');
 		}
 		return MyStandard::gReturn(0, $cateList, '获取成功');
+	}
+
+	/**
+	 * 管理员清理敏感错题
+	 */
+	public function deleteByAdmin(){
+		$domain = new DomainMistake();
+		$UId = $this -> UId;
+		$Id = $this -> Id;
+		$res = $domain -> deleteByAdmin($UId, $Id);
+		if($res == false){
+			return MyStandard::gReturn(1, '', '删除失败');
+		}
+		return MyStandard::gReturn(0, '', '删除成功');
 	}
 }

@@ -192,4 +192,9 @@ class Mistake extends NotORM
 		$model = $this -> getORM();
 		return $model -> limit($begin, $num) -> fetchAll();
 	}
+
+  public function deleteOne($id){
+      $model = $this->getORM();
+      return $model->where('Id', $id)->delete();
+  }
 }

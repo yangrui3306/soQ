@@ -8,6 +8,7 @@ use App\Model\Question\Basic as ModelQBasic;
 use App\Model\Collection as ModelCollection;
 use App\Model\Like as ModelLike;
 use App\Model\Interest as ModelInterest;
+use App\Model\Notice;
 
 use App\Common\Tools;
 use App\Model\User as ModelUser;
@@ -247,6 +248,32 @@ class Mistake
 		}
 
 		return $newArr;
+	}
+
+	/* -------------   ipso   ---------------- */
+
+	/**
+	 * 管理员清除敏感错题
+	 * @param userId 错题所属的用户Id
+	 * @param Id     错题Id
+	 */
+	public function deleteByAdmin($userId = 1, $Id = 1){
+		$model = new ModelMistake();
+		$notice = array(
+			'Status'   => 1,
+			'Title'    => "违规错题",
+			'Content'  => "出现违规痕迹,请重新整理你的错题",
+			'Author'   => "Admin",
+			'Ctime'    => date('Y-m-d H:i:s'),
+			'AcceptId' => $userId,
+		);
+		$sql = $model -> deleteOne($Id);
+		if(!$sql){
+			return false;
+		}
+		$NModel = new Notice();
+		$nsql = $NModel -> insertOne($data);
+		return true;
 	}
 }
 

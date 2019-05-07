@@ -80,10 +80,10 @@ class Note extends Api
 				'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
 				'NoteCategoryId' => array('name' => 'NoteCategoryId', 'default'=>0, 'desc' => '分类Id'),
 			),
-			'notesByKeyId'=>array(
+			'notesByKeyIds'=>array(
 				'UserId' => array('name' => 'UserId', 'require' => true, 'min' => 1, 'desc' => 'user id'),
 				'NoteCategoryId' => array('name' => 'NoteCategoryId', 'default'=>0, 'desc' => '分类Id'),
-				'KeyWordId'=>array('name' => 'KeyWordId', 'default'=>0,'require' => true, 'desc' => '关键字Id')
+				'KeyIds'=>array('name' => 'KeyIds', 'default'=>0,'default'=>"",'desc' => '关键字Id,逗号隔开,例如1,2')
 			)
 		);
 	}
@@ -134,11 +134,11 @@ class Note extends Api
 	/**
    * 根据关键字搜索用户笔记
    */
-	public function notesByKeyId()
+	public function notesByKeyIds()
 	{
 		$dn = new DomainNote();
 		$uid = $this->UserId;
-		$re = $dn->getNotesByKeyId($uid, $this->NoteCategoryId, $this->KeyWordId);
+		$re = $dn->getNotesByKeyIds($uid, $this->NoteCategoryId, $this->KeyIds);
 
 		return MyStandard::gReturn(0, $re);
 	}

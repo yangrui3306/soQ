@@ -6,6 +6,7 @@ use App\Model\Notecategory as ModelCate;
 use App\Common\Tools;
 use PhalApi\Tool;
 use App\Model\KeyWord as ModelKeyWord;
+use App\Model\Notice;
 
 class Note {
 	/**用户笔记数量 */
@@ -199,4 +200,30 @@ class Note {
 			Tools::unsetKeys($data,"Weight");
 			return $data;
 		}
+
+		/* -------------   ipso   ---------------- */
+
+	/**
+	 * 管理员清除敏感笔记
+	 * @param userId 笔记所属的用户Id
+	 * @param Id     笔记Id
+	 */
+	public function deleteByAdmin($userId = 1, $Id = 1){
+		$model = new ModelNote();
+		$notice = array(
+			'Status'   => 1,
+			'Title'    => "违规笔记",
+			'Content'  => "出现违规痕迹,请重新整理你的笔记",
+			'Author'   => "Admin",
+			'Ctime'    => date('Y-m-d H:i:s'),
+			'AcceptId' => $userId,
+		);
+		$sql = $model -> deleteOne($Id);
+		if(!$sql){
+			return false;
+		}
+		$NModel = new Notice();
+		$nsql = $NModel -> insertOne($data);
+		return true;
+	}
 }

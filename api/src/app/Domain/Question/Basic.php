@@ -31,7 +31,6 @@ class Basic
 
 
     $qs=CommonMatch::GetQuestionsByKeyWord($keys,$num*2,$qs);
-		return $qs;
     return CommonMatch::qLevenShtein($q,$qs,$num);
   }
 	/**

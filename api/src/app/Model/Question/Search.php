@@ -178,8 +178,8 @@ class Search extends NotORM
   public function mreduceQuestion($qs, $text)
   {
     $len = mb_strlen($text, 'utf-8');
-    $minlen = ($len - 100 > 0) ? ($len - 100) : 0;
-    $maxlen=($len *2) ;
+    $minlen = ($len- 100) / 4 ;
+    $maxlen=($len+100) * 4  ;
     return $qs->where("length(Text) > ?", $minlen)->where("length(Text) < ?",$maxlen);
   }
 }

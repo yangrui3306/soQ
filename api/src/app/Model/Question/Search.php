@@ -86,7 +86,6 @@ class Search extends NotORM
   }
   /**
    * 根据分类Id查找所有题目
-   * 
    */
   public function getQuestionsByCategoryId($cid)
   {

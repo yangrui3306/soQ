@@ -52,6 +52,9 @@ class Userelation extends Api{
 			),
 			'getUsersById'=>array(
 				'Id' => array('name' => 'Id',  'require' => true,'desc' => '班级Id'),
+			),
+			'getById'=>array(
+				'Id' => array('name' => 'Id',  'require' => true,'desc' => '班级Id'),
 			)
 		);
 	}
@@ -188,5 +191,14 @@ class Userelation extends Api{
 		$res=$domain->getUserById($id);
 		if($res===false) return MyStandard::gReturn(1, [], '失败');
 		return MyStandard::gReturn(0, $res, '成功');
+	}
+	/**
+	 * 得到班级信息
+	 */
+	public function getById(){
+		$id=$this->Id;
+		$model=new Model();
+		$re=$model->getById($id);
+		return MyStandard::gReturn(0,$re,'成功');
 	}
 }

@@ -1,6 +1,7 @@
 composer.lock
 
 runtime/*
+*.log
 gitc
 
 .idea/

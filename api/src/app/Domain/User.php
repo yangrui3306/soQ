@@ -262,7 +262,7 @@ class User
 			}
 		
 			$questions=$dq->recommendByUId($uid,0,User::recommendDate,$qnum);
-			return $questions;
+		
 			if(count($questions)<=0)
 			{
 				$questions=QBasic::hotQuestion($qnum);

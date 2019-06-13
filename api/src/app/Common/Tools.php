@@ -117,9 +117,12 @@ class  Tools
   /** 针对于Keyword操作合并相同的Key，并相加Weight */
   public static function mergeKeyWeight(&$arr)
   {
+
     $reslut = array();
 
     foreach ($arr as $item) {
+      if($item["Id"])
+      {
         for ($i = 0; $i < count($reslut); $i++) {
             if ($reslut[$i]["Id"] == $item["Id"]) break;
           }
@@ -128,6 +131,7 @@ class  Tools
         else
           $reslut[$i]["Weight"] = $reslut[$i]["Weight"] + $item["Weight"];
       }
+    }
     $arr = $reslut;
     return $reslut;
   }

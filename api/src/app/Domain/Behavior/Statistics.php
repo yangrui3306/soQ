@@ -31,6 +31,7 @@ class Statistics
     //$ss=$this->getStatisticsSearch($uid,$cid,$date,$num);//去除搜索行为
 
     $keys = array_merge($cs, $ls, $ms);
+    
     Tools::mergeKeyWeight($keys);
     Tools::SortByKey($keys, "Weight", false);
     return $keys;
@@ -49,7 +50,7 @@ class Statistics
   {
     $sbh = new ModelSearch();
     $mq = new ModelSearchQ();
-
+    
     $bhs = $sbh->mGetCollectionsByUserId($uid, $data, $num)->where("NOT QuestionId", array(null, 0)); //剔除未上传题库的题目
 
     $idarr = Tools::GetValueByKey($bhs, "QuestionId");
@@ -133,8 +134,10 @@ class Statistics
       $weightarr = explode(",", $q["KeysWeight"]);
       $key1 = array();
       for ($i = 0; $i < count($idarr); $i++) {
+        if(strlen($idarr[$i])>0&&$idarr[$i]){
         $key1[$i]["Id"] = $idarr[$i];
         $key1[$i]["Weight"] = $weightarr[$i];
+      }
       }
       $key = array_merge($key, $key1);
     }

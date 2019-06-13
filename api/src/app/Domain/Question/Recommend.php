@@ -51,10 +51,9 @@ class Recommend
   {
     $ds=new Statistics();
     $keys=$ds->getStatisticsBehavior($uid,$cid,$date,$num);
-    $mquestion = new ModelSearchQ();
     $qs=QTools::deleteQuestionsForUser($uid);//去除用户已经操作（收藏、错题整理等）部分
     
-    $questions = CommonMatch::GetQuestionsByKeyWord($keys,$num,$qs); //关键字匹配相应题目
+    $questions = CommonMatch::GetQuestionsByKeyWord($keys,$num,$qs,true); //关键字匹配相应题目
     return $questions;
   } 
 }

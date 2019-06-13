@@ -85,6 +85,16 @@ class Search extends NotORM
       ->where('Not Id', $id);
   }
   /**
+   * 得到有keyword的大致题目
+   */
+  public function mGetByKeyWord($key,$questions=null)
+  {
+    if ($questions == null) $questions = $this->getORM();
+    $key='%'.$key.'%';
+    return $questions
+      ->where('KeyWords like ?',$key);
+  }
+  /**
    * 根据分类Id查找所有题目
    */
   public function getQuestionsByCategoryId($cid)
@@ -181,4 +191,5 @@ class Search extends NotORM
     $maxlen=($len+100) * 4  ;
     return $qs->where("length(Text) > ?", $minlen)->where("length(Text) < ?",$maxlen);
   }
+
 }

@@ -16,26 +16,26 @@ class Recommend
    * 通过题目Id，推荐相应题目,需修改用户Id
    * @param $id 题目Id
    * @param $num 需要推荐的数量，默认为3
-   * @return 题目信息
+   * @return 题目信息 -2 原题不存在
    */
   public function recommendByQId($id, $uid=0, $num = 3)
   {
     $mquestion = new ModelSearchQ();
 
     $question = $mquestion->getQuestionById($id);
+    if(!$question) return -2;
     
     $questions = $mquestion->mGetQuestionsByCategoryId($question['CategoryId']); //查找分类相同的题目
   
     if($uid!=0) $questions = QTools::deleteQuestionsForUser($uid); //剔除用户已经操作的题目
     $questions = $mquestion->mGetNotQuestionById($id, $questions);//去除本题
-
-
+    
     //$keys = explode(",", $question["KeyWords"]); //转数组
     $keys=QTools::mergeQuestionKeys($question["KeyWords"],$question["KeysWeight"]);
   
-
-    $questions = CommonMatch::GetQuestionsByKeyWord($keys, $num, $questions); //已修改
-   
+    if(count($keys)) $questions=$mquestion->mGetByKeyWord($keys[0]["Id"],$questions); //得到有最重要的key的题目 大大剪枝
+  
+    $questions = CommonMatch::GetQuestionsByKeyWord($keys, $num, $questions,true,$question); //已修改
     return CommonMatch::qLevenShtein($question, $questions, $num);
   }
 

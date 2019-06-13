@@ -57,9 +57,12 @@ class Match
     //排序
     $reslut = array();
     $leven = array();
-    foreach ($qs as $mq) {
+    for($j=0;$j<count($qs);$j++)
+    {
+      $mq=$qs[$j];
       $re = Match::levenShtein($q["Text"], $mq["Text"]);
-
+      $mq["LevenShtein"]=$re;
+     
       for ($i = 0; $i < count($reslut); $i++) {
         if ($leven[$i] < $re) break;
       }
@@ -125,13 +128,14 @@ class Match
      * @param questions 经过处理的数据库可直接操作的题目
      * @return 数据库可操作类型
      */
-  public static function GetQuestionsByKeyWord($keywords, $num = 0, $questions = null,$isorm=true)
+  public static function GetQuestionsByKeyWord($keywords, $num = 0, $questions = null,$isorm=true,$searchq=null)
   {
+   
     $msq=new ModelSearchQ();
     if ($questions == null) $questions = $msq->mgetAllQuestion();
     if ($num == null || $num < 1) $num = 3;
-  
     if ($keywords) {
+
       $keyarr = Match::merageArray($keywords);
       if($isorm) $questions = $questions->where("NOT KeyWords","")->fetchAll(); //抓取所有
       
@@ -155,15 +159,19 @@ class Match
     else {//如果传入文字未提取到关键字
       $reslut=[];
       if($isorm) $questions = $questions->where("KeyWords","")->fetchAll(); //抓取所有
+  
       for ($i = 0; $i < count($questions); $i++) {
-
         if($questions[$i]["KeyWords"]==""){ 
-          $questions[$i]["Similarity"] = 1;
+          $questions[$i]["Text"]=Tools::handleQuestionText($questions[$i]["Text"]);
+          $questions[$i]["TextLen"]=strlen($questions[$i]["Text"]);
+          $questions[$i]["Similarity"] = -abs(strlen($searchq["Text"])-strlen($questions[$i]["Text"]));
+    
           array_push($reslut,$questions[$i]);
         }       
         // return $questions[$i]["Similarity"];
 
       }
+  
       $reslut=Tools::GetMaxArray($questions, "Similarity", $num);
 
       return $reslut;

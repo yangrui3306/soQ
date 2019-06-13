@@ -21,8 +21,8 @@ class QTools
   */
   public static function mergeQuestionKeys($keywords,$keysweight)
   {
+    if(strlen($keywords)==0||!$keywords) return [];
     try{
-    
       $id = explode(",", $keywords); //转数组
       $weight =explode(",", $keysweight);
       

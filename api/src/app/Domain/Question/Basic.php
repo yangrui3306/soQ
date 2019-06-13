@@ -29,7 +29,8 @@ class Basic
 		$qs=$qm->mGetQuestionsByCategoryId($cid);
 		$qs=$qm->mreduceQuestion($qs,$q["Text"]);// 去除一些太长 或 太短的题目
 
-    $qs=CommonMatch::GetQuestionsByKeyWord($keys,$num*2,$qs);
+		$qs=CommonMatch::GetQuestionsByKeyWord($keys,$num*2,$qs,true,$q);
+	
     return CommonMatch::qLevenShtein($q,$qs,$num);
   }
 	/**

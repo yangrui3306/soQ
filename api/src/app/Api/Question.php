@@ -167,7 +167,9 @@ class Question extends Api
     public function getRecommendByQId()
     {
         $dq = new DomainRecommend();
+    
         $re = $dq->recommendByQId($this->Id, $this->UserId, $this->Number);
+        if($re==-2) return MyStandard::gReturn(1,[],"原题不存在");
         return MyStandard::gReturn(0, $re);
     }
     /**

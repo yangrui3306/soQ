@@ -122,7 +122,7 @@ class Upload extends Api
         try {
             $rs["errno"] = 0;
             $rs["data"] = [];
-            $rs["data"][0] = "http://1975386453.38haotyhn.duihuanche.com/upload/" . $rs["file"];
+            $rs["data"][0] = "http://47.107.80.19:8086/upload/" . $rs["file"];
             unset($rs["file"]);
 
             return MyStandard::gReturn(0, $rs);

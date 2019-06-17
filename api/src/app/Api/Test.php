@@ -71,7 +71,7 @@ class Test extends Api {
 			'Content'        => $this -> Content,
 			'Ctime'          => time(),
 		);
-	
+		
 		$domain= new Domain();
 		$re=$domain->add($data);
 	
@@ -171,9 +171,11 @@ class Test extends Api {
 	
 		$domain = new Domain();
 		$re=$domain->getByTestDetail($this->Id);
+
 		if(!$re){
 			return MyStandard::gReturn(1, [], '无数据');
 		}
+		$re['CreateTime']=date("Y-m-d H:i",$re["Ctime"]) ;
 		return MyStandard::gReturn(0, $re, '获取成功');
 	}
 }

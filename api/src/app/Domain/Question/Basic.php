@@ -63,7 +63,7 @@ class Basic
 			$texts[$i]=Tools::handleQuestionText($texts[$i]); //去除不必要的字符
 			$q=array("Text"=>$texts[$i]);
 		
-			$qs=CommonMatch::GetQuestionsByKeyWord($keys,6,$aq,false);
+			$qs=CommonMatch::GetQuestionsByKeyWord($keys,6,$aq,false,$q);
 			$re[$i]=CommonMatch::qLevenShtein($q,$qs,1);
 		}
 		return $re;

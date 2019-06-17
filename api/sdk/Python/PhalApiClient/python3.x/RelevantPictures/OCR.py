@@ -7,7 +7,7 @@ import requests
 import base64
 from io import BytesIO
 
-access_token="24.29a35fb9c34a6f43f1b226321f16d21a.2592000.1559871249.282335-15879343"
+access_token="24.678d847861d01af051aaddbc9c65d352.2592000.1562991590.282335-15879343"
 # 文字识别 传入 PIL的Img 和 识别语言
 
 def tesseract_ocr(img, lang='chi_sim'):

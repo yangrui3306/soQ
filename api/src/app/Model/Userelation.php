@@ -44,6 +44,7 @@ class Userelation extends NotORM{
 	/* ----------------  数据库插入  ------------------ */
 
 	public function insertOne($data){
+		$data['Ctime']=date("Y-m-d H:i:s");
 		$model = $this -> getORM();
 		$model -> insert($data);
 		return  $model->insert_id();

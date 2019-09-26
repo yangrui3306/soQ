@@ -7,7 +7,8 @@
 
 &#8195;&#8195;vNote和AIQ可以称为一个项目，只是**前端页面**有所不同，其后端与数据库都是同一套，所以我们在下面就称为AIQ（因为我们确实不只是做了一个笔记软件）了。
 
-&#8195;&#8195;[vNote网页端](http://note.mccyu.com/#/home/index)、[AIQ网页端](http://cq.mccyu.co2m/#/home/index)、[项目后台](http://burialheart.com/)、[后台接口文档](http://www.goodtimp.com:8086/docs.php)。
+&#8195;&#8195;[AIQ网页端](http://47.106.130.141/#/home/index)、[项目后台（已关，已开源）](http://burialheart.com/)、[后台接口文档](http://www.goodtimp.com:8086/docs.php)。
+
 ## 项目介绍
 &#8195;&#8195;本项目是 **集搜题、归纳、学情分析为一体的线上教育平台**，支持 **教师、学生绑定发布测试和通知**。
 
